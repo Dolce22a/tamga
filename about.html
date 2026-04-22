@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О проекте — TAMGA</title>
+  <meta name="description" content="TAMGA — три человека, одна цель: сохранить и открыть наследие казахстанского кино." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root,
+    [data-theme="light"] {
+      --bg: #f3efe8;
+      --bg-soft: #ebe4d8;
+      --surface: rgba(255,255,255,0.58);
+      --surface-strong: rgba(255,255,255,0.72);
+      --text: #1f1a17;
+      --text-muted: #655c56;
+      --line: rgba(31,26,23,0.12);
+      --accent: #8f6740;
+      --accent-2: #c79d5f;
+      --shadow: 0 10px 30px rgba(31,26,23,0.10);
+      --hero-glow: radial-gradient(circle at 50% 30%, rgba(199,157,95,0.20), transparent 45%);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f0d0c;
+      --bg-soft: #171311;
+      --surface: rgba(255,255,255,0.05);
+      --surface-strong: rgba(255,255,255,0.08);
+      --text: #f3eee7;
+      --text-muted: #b8ada2;
+      --line: rgba(255,255,255,0.10);
+      --accent: #b78a57;
+      --accent-2: #e2b97d;
+      --shadow: 0 20px 40px rgba(0,0,0,0.35);
+      --hero-glow: radial-gradient(circle at 50% 30%, rgba(226,185,125,0.16), transparent 45%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.02)),
+        var(--hero-glow),
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03), transparent 20%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.02), transparent 18%),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08) 0, transparent 22%),
+        repeating-linear-gradient(
+          115deg,
+          rgba(255,255,255,0.025) 0px,
+          rgba(255,255,255,0.025) 2px,
+          transparent 2px,
+          transparent 10px
+        );
+      mix-blend-mode: soft-light;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; background: none; cursor: pointer; }
+
+    .container {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .site-header {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 74%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 76px; gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  background: var(--surface); box-shadow: var(--shadow);
+  position: relative;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--accent-2); border-radius: 50%;
+}
+.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 0.85rem; color: var(--text-muted);
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); }
+
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem;
+}
+.theme-toggle:hover { background: var(--surface-strong); }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* SHARED */
+    .section-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      line-height: 0.98;
+      margin-bottom: 18px;
+    }
+    .section-text {
+      max-width: 60ch;
+      color: var(--text-muted);
+      line-height: 1.9;
+      font-size: 1rem;
+    }
+
+    /* BTN */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      backdrop-filter: blur(10px);
+      transition: 0.25s ease;
+    }
+    .btn:hover { background: var(--surface-strong); transform: translateY(-2px); border-color: var(--accent-2); }
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+      color: #fff;
+    }
+    .btn-accent:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* =====================
+       HERO ABOUT
+    ===================== */
+    .about-hero {
+      position: relative;
+      padding: 160px 0 100px;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .about-hero::after {
+      content: "";
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226,185,125,0.08), transparent 65%);
+      pointer-events: none;
+    }
+    .about-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+      font-size: 0.84rem;
+    }
+    .about-hero-eyebrow::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 18px rgba(226,185,125,0.5);
+    }
+    .about-hero-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+    .about-hero-title em {
+      font-style: normal;
+      color: var(--accent-2);
+    }
+    .about-hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-muted);
+      max-width: 52ch;
+      margin-bottom: 32px;
+    }
+    .about-hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+    .about-hero-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .stat-card {
+      padding: 26px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+    .stat-card-num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      color: var(--accent-2);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card-label { color: var(--text-muted); font-size: 0.9rem; }
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    /* =====================
+       MISSION QUOTE
+    ===================== */
+    .mission-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .mission-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .mission-quote-block {
+      padding: 40px;
+      border-radius: 30px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(226,185,125,0.08), transparent 30%),
+        var(--surface);
+      backdrop-filter: blur(14px);
+    }
+    .mission-quote-text {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .mission-quote-text span { color: var(--accent-2); }
+    .mission-quote-attr {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .mission-points { display: grid; gap: 18px; }
+    .mission-point {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+    }
+    .mission-point-num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2.2rem;
+      color: var(--accent-2);
+      line-height: 1;
+      min-width: 36px;
+    }
+    .mission-point h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .mission-point p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; }
+
+    /* =====================
+       ORIGIN TIMELINE
+    ===================== */
+    .origin-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .origin-head { max-width: 700px; margin-bottom: 56px; }
+    .origin-timeline { position: relative; padding-left: 32px; }
+    .origin-timeline::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 10px; bottom: 10px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent-2), transparent);
+    }
+    .origin-item {
+      position: relative;
+      padding: 0 0 48px 36px;
+    }
+    .origin-item::before {
+      content: "";
+      position: absolute;
+      left: -5px; top: 8px;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 16px rgba(226,185,125,0.45);
+    }
+    .origin-year {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--accent-2);
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .origin-item h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .origin-item p { color: var(--text-muted); line-height: 1.75; max-width: 60ch; font-size: 0.96rem; }
+
+    /* =====================
+       TEAM
+    ===================== */
+    .team-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .team-head { max-width: 700px; margin-bottom: 56px; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .team-card {
+      padding: 32px 28px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)),
+        var(--surface);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.28s ease, border-color 0.28s ease;
+    }
+    .team-card:hover { transform: translateY(-6px); border-color: rgba(226,185,125,0.28); }
+    .team-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% auto;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(226,185,125,0.12), transparent 65%);
+      pointer-events: none;
+    }
+    .team-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      display: grid;
+      place-items: center;
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .team-avatar::before, .team-avatar::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+    .team-avatar::before {
+      width: 28px; height: 28px;
+      border: 1.5px solid var(--accent-2);
+    }
+    .team-avatar::after {
+      width: 9px; height: 9px;
+      background: var(--accent-2);
+    }
+    .team-avatar.blue::before { border-color: #9fb7c9; }
+    .team-avatar.blue::after { background: #9fb7c9; }
+    .team-avatar.purple::before { border-color: #b89ac8; }
+    .team-avatar.purple::after { background: #b89ac8; }
+
+    .team-role {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 8px;
+    }
+    .team-avatar.blue + .team-role { color: #9fb7c9; }
+    .team-avatar.purple + .team-role { color: #b89ac8; }
+
+    .team-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .team-quote {
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.75;
+      font-size: 0.94rem;
+      margin-bottom: 18px;
+      padding-left: 14px;
+      border-left: 2px solid var(--accent);
+    }
+    .team-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .team-tags span {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* =====================
+       EXPERTS
+    ===================== */
+    .experts-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .experts-head { max-width: 700px; margin-bottom: 56px; }
+    .experts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .expert-card {
+      padding: 28px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 90% 10%, rgba(226,185,125,0.05), transparent 28%),
+        var(--surface);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease;
+    }
+    .expert-card:hover { transform: translateY(-4px); }
+    .expert-org {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 8px;
+    }
+    .expert-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .expert-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .expert-quote {
+      font-size: 0.94rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      font-style: italic;
+      padding-left: 14px;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* =====================
+       VALUES
+    ===================== */
+    .values-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .values-head { max-width: 700px; margin-bottom: 56px; }
+    .values-list { display: grid; gap: 2px; }
+    .value-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 32px 28px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      cursor: default;
+    }
+    .value-row:hover {
+      background: var(--surface);
+      border-color: var(--line);
+    }
+    .value-num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      color: var(--accent-2);
+      opacity: 0.35;
+      line-height: 1;
+    }
+    .value-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      line-height: 1.1;
+    }
+    .value-desc { color: var(--text-muted); line-height: 1.75; font-size: 0.94rem; }
+
+    /* =====================
+       CTA FINAL
+    ===================== */
+    .cta-section {
+      padding: 100px 0 120px;
+    }
+    .cta-inner {
+      padding: 60px;
+      border-radius: 36px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 30%, rgba(226,185,125,0.10), transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(159,183,201,0.07), transparent 30%),
+        var(--surface);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .cta-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .cta-title span { color: var(--accent-2); }
+    .cta-sub {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 52ch;
+      margin: 0 auto 36px;
+    }
+    .cta-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+    /* FOOTER */
+    .site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+    .footer-brand { font-family: "Cormorant Garamond", serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
+    .footer-text { color: var(--text-muted); }
+    .footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .footer-meta span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 980px) {
+      .about-hero-inner { grid-template-columns: 1fr; }
+      .mission-inner { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .experts-grid { grid-template-columns: 1fr; }
+      .value-row { grid-template-columns: 80px 1fr; }
+      .value-desc { display: none; }
+    }
+    @media (max-width: 640px) {
+      .about-hero { padding: 130px 0 70px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .cta-inner { padding: 36px 24px; }
+      .footer-inner { flex-direction: column; align-items: start; }
+      .stat-row { grid-template-columns: 1fr; }
+      .value-row { grid-template-columns: 1fr; gap: 10px; }
+      .value-num { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
+    </a>
+    <nav class="site-nav">
+      <a href="LL.html">Главная</a>
+      <a href="films.html" >Каталог</a>
+      <a href="persons.html">Персоналии</a>
+      <a href="collections.html">Коллекции</a>
+      <a href="timeline.html">Хроника</a>
+      <a href="media.html">Медиа</a>
+      <a href="about.html"class="active">О проекте</a>
+      <a href="contacts.html">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">☀</button>
+    </div>
+  </div>
+</header>
+
+
+  <main>
+
+    <!-- =====================
+         HERO
+    ===================== -->
+    <section class="about-hero">
+      <div class="container about-hero-inner">
+
+        <div class="reveal">
+          <div class="about-hero-eyebrow">О проекте · Команда · Миссия</div>
+          <h1 class="about-hero-title">
+            Три человека.<br>
+            <em>Одна память.</em>
+          </h1>
+          <p class="about-hero-sub">
+            TAMGA — это не просто дипломный проект. Это попытка дать казахстанскому кино
+            инфраструктуру, которой оно заслуживает: открытый, структурированный и живой архив.
+          </p>
+          <div class="about-hero-btns">
+            <a href="#team" class="btn btn-accent">Познакомиться с командой</a>
+            <a href="LL.html" class="btn">← На главную</a>
+          </div>
+        </div>
+
+        <div class="about-hero-visual reveal">
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-card-num">3</div>
+              <div class="stat-card-label">Автора проекта</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-num">80+</div>
+              <div class="stat-card-label">Фильмов в концепте архива</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-num">1938—2020</div>
+            <div class="stat-card-label">Охватываемый период казахстанского кино</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-card-num">5</div>
+              <div class="stat-card-label">Экспертных интервью</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-num">2</div>
+              <div class="stat-card-label">Года исследования</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================
+         MISSION
+    ===================== -->
+    <section class="mission-section">
+      <div class="container mission-inner">
+
+        <div class="mission-quote-block reveal">
+          <p class="mission-quote-text">
+            «Казахское кино существует.<br>
+            Но его <span>нельзя найти</span>.<br>
+            Мы это исправляем.»
+          </p>
+          <div class="mission-quote-attr">— Команда TAMGA, 2024</div>
+        </div>
+
+        <div class="mission-points reveal">
+          <div class="mission-point">
+            <div class="mission-point-num">I</div>
+            <div>
+              <h4>Сохранение без потери смысла</h4>
+              <p>Мы храним не только названия фильмов, но и контекст — эпоху, авторов, культурную значимость и производственную историю.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-num">II</div>
+            <div>
+              <h4>Доступность без упрощения</h4>
+              <p>Архив должен быть понятен студенту, исследователю и широкой аудитории одновременно — не теряя глубины.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-num">III</div>
+            <div>
+              <h4>Память как живая система</h4>
+              <p>Архив — не склад. Это интерфейс культурной памяти, который должен расти, обновляться и отвечать на вопросы.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================
+         ORIGIN
+    ===================== -->
+    <section class="origin-section">
+      <div class="container">
+        <div class="origin-head reveal">
+          <div class="section-kicker">История создания</div>
+          <h2 class="section-title">Как это начиналось</h2>
+          <p class="section-text">
+            Идея возникла из простого наблюдения: казахское кино богато и разнообразно,
+            но у него нет единого открытого архива. Мы решили это изменить.
+          </p>
+        </div>
+
+        <div class="origin-timeline">
+          <div class="origin-item reveal">
+            <span class="origin-year">Осень 2023</span>
+            <h3>Первый вопрос</h3>
+            <p>На одной из пар по медиатехнологиям возник вопрос: где найти полную информацию о казахстанских фильмах? Ответа не нашлось. Это стало отправной точкой.</p>
+          </div>
+          <div class="origin-item reveal">
+            <span class="origin-year">2024</span>
+            <h3>Исследование и интервью</h3>
+            <p>Мы провели серию интервью с архивистами, киноведами и деятелями кино. Изучили опыт международных архивов — BFI, Cinémathèque française, Harvard Film Archive.</p>
+          </div>
+          <div class="origin-item reveal">
+            <span class="origin-year">2024–2025</span>
+            <h3>Концепция и архитектура</h3>
+            <p>Разработка архивной логики, структуры метаданных и навигационных принципов. Первые прототипы интерфейса и тестирование с пользователями.</p>
+          </div>
+          <div class="origin-item reveal">
+            <span class="origin-year">2025–2026</span>
+            <h3>TAMGA — публичный концепт</h3>
+            <p>Итоговая платформа как дипломный проект и одновременно задел для масштабирования. Открытый архив. Живая система. Национальная инфраструктура памяти.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================
+         TEAM
+    ===================== -->
+    <section class="team-section" id="team">
+      <div class="container">
+        <div class="team-head reveal">
+          <div class="section-kicker">Команда</div>
+          <h2 class="section-title">Авторы проекта</h2>
+          <p class="section-text">
+            Три человека с разными специализациями, объединённые одной идеей —
+            что казахское кино заслуживает архива мирового уровня.
+          </p>
+        </div>
+
+        <div class="team-grid">
+
+          <article class="team-card reveal">
+            <div class="team-avatar"></div>
+            <div class="team-role">Дизайн · Концепция · Интерфейс</div>
+            <h3 class="team-name">Алуа</h3>
+            <p class="team-quote">
+              «Я верю, что архив — это форма уважения. Каждый экран, каждый переход
+              должны говорить: эта история важна.»
+            </p>
+            <div class="team-tags">
+              <span>UI/UX</span>
+              <span>Визуальный язык</span>
+              <span>Медиатехнологии</span>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-avatar blue"></div>
+            <div class="team-role">Исследование · Архивная логика</div>
+            <h3 class="team-name">Имя</h3>
+            <p class="team-quote">
+              «Кино — это документ. Если мы не сохраним его сейчас, следующее
+              поколение будет искать то, чего уже нет.»
+            </p>
+            <div class="team-tags">
+              <span>Киноведение</span>
+              <span>Архивистика</span>
+              <span>Исследования</span>
+            </div>
+          </article>
+
+          <article class="team-card reveal">
+            <div class="team-avatar purple"></div>
+            <div class="team-role">Разработка · Структура данных</div>
+            <h3 class="team-name">Имя</h3>
+            <p class="team-quote">
+              «Хороший архив — это не база данных. Это навигация. Ты приходишь
+              с вопросом и уходишь с открытием.»
+            </p>
+            <div class="team-tags">
+              <span>Frontend</span>
+              <span>Метаданные</span>
+              <span>Каталогизация</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================
+         EXPERTS
+    ===================== -->
+    <section class="experts-section">
+      <div class="container">
+        <div class="experts-head reveal">
+          <div class="section-kicker">Голоса, которые легли в основу</div>
+          <h2 class="section-title">Экспертные интервью</h2>
+          <p class="section-text">
+            В основе TAMGA — не только наши идеи, но и разговоры с людьми,
+            которые работают с казахским кино каждый день.
+          </p>
+        </div>
+
+        <div class="experts-grid">
+
+          <div class="expert-card reveal">
+            <div class="expert-org">Архив / Киноведение</div>
+            <h3 class="expert-name">Имя эксперта</h3>
+            <p class="expert-title">Должность, Организация</p>
+            <p class="expert-quote">
+              «Одна из ключевых цитат из интервью — здесь должна быть мысль,
+              которая повлияла на архитектуру проекта.»
+            </p>
+          </div>
+
+          <div class="expert-card reveal">
+            <div class="expert-org">Кинопроизводство</div>
+            <h3 class="expert-name">Имя эксперта</h3>
+            <p class="expert-title">Должность, Организация</p>
+            <p class="expert-quote">
+              «Ещё одна значимая цитата — про доступность, сохранение
+              или важность цифрового архива для культуры.»
+            </p>
+          </div>
+
+          <div class="expert-card reveal">
+            <div class="expert-org">Кинообразование</div>
+            <h3 class="expert-name">Имя эксперта</h3>
+            <p class="expert-title">Должность, Организация</p>
+            <p class="expert-quote">
+              «Цитата о том, как студенты и исследователи сталкиваются
+              с проблемой поиска информации о казахском кино.»
+            </p>
+          </div>
+
+          <div class="expert-card reveal">
+            <div class="expert-org">Международный опыт</div>
+            <h3 class="expert-name">Имя эксперта</h3>
+            <p class="expert-title">Должность, Организация</p>
+            <p class="expert-quote">
+              «Цитата о международном контексте — как другие страны
+              решали задачу оцифровки и доступности кинонаследия.»
+            </p>
+          </div>
+
+        </div>
+
+        <p style="margin-top: 24px; color: var(--text-muted); font-size: 0.88rem; line-height: 1.7;">
+          * Интервью проводились в рамках дипломного исследования 2024–2025 гг.
+          Цитаты публикуются с согласия участников.
+        </p>
+      </div>
+    </section>
+
+    <!-- =====================
+         VALUES
+    ===================== -->
+    <section class="values-section">
+      <div class="container">
+        <div class="values-head reveal">
+          <div class="section-kicker">Принципы</div>
+          <h2 class="section-title">Чем руководствуется TAMGA</h2>
+        </div>
+
+        <div class="values-list">
+          <div class="value-row reveal">
+            <div class="value-num">01</div>
+            <div class="value-title">Контекст важнее каталога</div>
+            <p class="value-desc">Фильм — это не только название и год. Это эпоха, автор, культурное событие. Архив должен передавать смысл, а не только факты.</p>
+          </div>
+          <div class="value-row reveal">
+            <div class="value-num">02</div>
+            <div class="value-title">Открытость по умолчанию</div>
+            <p class="value-desc">Знание о казахском кино не должно быть привилегией специалистов. Архив строится так, чтобы быть понятным любому.</p>
+          </div>
+          <div class="value-row reveal">
+            <div class="value-num">03</div>
+            <div class="value-title">Национальное — это глобальное</div>
+            <p class="value-desc">Казахское кино — часть мирового культурного наследия. Его архив должен соответствовать международным стандартам каталогизации.</p>
+          </div>
+          <div class="value-row reveal">
+            <div class="value-num">04</div>
+            <div class="value-title">Дизайн как уважение</div>
+            <p class="value-desc">Интерфейс — не обёртка. Это способ сказать: эта история важна. Каждое визуальное решение несёт смысл.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================
+         CTA
+    ===================== -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <h2 class="cta-title">
+            Казахское кино заслуживает<br>
+            <span>архива мирового уровня</span>
+          </h2>
+          <p class="cta-sub">
+            TAMGA — первый шаг. Исследуй хронику, открывай персоналии,
+            погружайся в историю через коллекции.
+          </p>
+          <div class="cta-btns">
+            <a href="chronicle.html" class="btn btn-accent">Хроника кино →</a>
+            <a href="personalities.html" class="btn">Персоналии →</a>
+            <a href="collections.html" class="btn">Коллекции →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">TAMGA</div>
+        <p class="footer-text">Концепт цифрового архива истории казахстанского кино.</p>
+      </div>
+      <div class="footer-meta">
+        <span>Дипломный проект</span>
+        <span>Русская версия</span>
+        <span>Dark / Light mode</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      toggle.textContent = next === "dark" ? "☼" : "◐";
+    });
+
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("is-visible"); });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
+

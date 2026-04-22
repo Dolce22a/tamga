@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог фильмов — TAMGA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root,
+    [data-theme="light"] {
+      --bg: #f3efe8;
+      --bg-soft: #ebe4d8;
+      --surface: rgba(255,255,255,0.58);
+      --surface-strong: rgba(255,255,255,0.72);
+      --text: #1f1a17;
+      --text-muted: #655c56;
+      --line: rgba(31,26,23,0.12);
+      --accent: #8f6740;
+      --accent-2: #c79d5f;
+      --shadow: 0 10px 30px rgba(31,26,23,0.10);
+      --hero-glow: radial-gradient(circle at 50% 30%, rgba(199,157,95,0.20), transparent 45%);
+    }
+[data-theme="dark"] {
+  --bg: #0f0d0c; --bg-soft: #171311;
+  --surface: rgba(255,255,255,0.05); --surface-strong: rgba(255,255,255,0.08);
+  --text: #f3eee7; --text-muted: #b8ada2;
+  --line: rgba(255,255,255,0.10); --accent: #b78a57; --accent-2: #e2b97d;
+  --shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; border: none; background: none; cursor: pointer; }
+.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+
+/* ===== ХЕДЕР ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 74%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 76px; gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  background: var(--surface); box-shadow: var(--shadow);
+  position: relative;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--accent-2); border-radius: 50%;
+}
+.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+
+/* NAV */
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 0.85rem; color: var(--text-muted);
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); }
+
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem;
+}
+.theme-toggle:hover { background: var(--surface-strong); }
+
+/* ===== PAGE HERO ===== */
+.page-hero {
+  padding: 120px 0 60px;
+  border-bottom: 1px solid var(--line);
+}
+.page-hero__kicker {
+  font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 16px;
+}
+.page-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.92; margin-bottom: 20px;
+}
+.page-hero__sub {
+  max-width: 56ch; color: var(--text-muted);
+  font-size: 1rem; line-height: 1.8;
+}
+.page-hero__stats {
+  display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap;
+}
+.stat { }
+.stat strong {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem; color: var(--accent-2); line-height: 1;
+}
+.stat span { font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.08em; }
+
+/* ===== СЛАЙДЕР ПО ГОДАМ ===== */
+.timeline-bar {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  position: sticky; top: 76px; z-index: 50;
+  backdrop-filter: blur(12px);
+}
+.timeline-bar__inner {
+  display: flex; align-items: center; gap: 24px;
+}
+.timeline-year-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  color: var(--accent-2); line-height: 1;
+  min-width: 120px; flex-shrink: 0;
+}
+.timeline-bar__right { flex: 1; }
+.timeline-era-label {
+  font-size: 0.82rem; color: var(--text-muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.year-slider {
+  width: 100%; appearance: none; height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(226,185,125,0.22), rgba(226,185,125,0.82));
+  outline: none; margin-bottom: 10px;
+}
+.year-slider::-webkit-slider-thumb {
+  appearance: none; width: 24px; height: 24px;
+  border-radius: 50%; border: 1px solid rgba(255,255,255,0.24);
+  background: radial-gradient(circle at 35% 35%, #fff6e8, #d4a76b 70%);
+  box-shadow: 0 0 0 6px rgba(226,185,125,0.12); cursor: pointer;
+}
+.year-slider::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.24);
+  background: radial-gradient(circle at 35% 35%, #fff6e8, #d4a76b 70%);
+  box-shadow: 0 0 0 6px rgba(226,185,125,0.12); cursor: pointer;
+}
+.timeline-ticks {
+  display: flex; justify-content: space-between;
+  font-size: 0.78rem; color: var(--text-muted);
+}
+
+/* ===== ФИЛЬТРЫ ===== */
+.filters-bar {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+}
+.filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--text-muted); font-size: 0.82rem;
+  transition: all 0.2s ease; cursor: pointer;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--accent-2); }
+.filter-btn.active {
+  background: var(--accent-2); color: var(--bg);
+  border-color: var(--accent-2);
+}
+.search-wrap {
+  margin-left: auto;
+  position: relative;
+}
+.search-input {
+  padding: 8px 16px 8px 36px;
+  border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 0.85rem; width: 220px;
+  outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--accent-2); }
+.search-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); color: var(--text-muted);
+  font-size: 0.9rem; pointer-events: none;
+}
+
+/* ===== КАТАЛОГ ===== */
+.catalog-section { padding: 40px 0 80px; }
+.catalog-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 28px;
+}
+.catalog-count {
+  font-size: 0.85rem; color: var(--text-muted);
+}
+.view-toggle { display: flex; gap: 8px; }
+.view-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--text-muted); display: grid; place-items: center;
+  transition: all 0.2s;
+}
+.view-btn.active { background: var(--accent-2); color: var(--bg); border-color: var(--accent-2); }
+
+/* СЕТКА КАРТОЧЕК */
+.films-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.films-grid.list-view {
+  grid-template-columns: 1fr;
+}
+
+/* КАРТОЧКА ФИЛЬМА */
+.film-card {
+  border-radius: 20px; border: 1px solid var(--line);
+  background: var(--surface);
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
+.film-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(226,185,125,0.3);
+  box-shadow: var(--shadow);
+}
+.film-card__poster {
+  width: 100%; aspect-ratio: 2/3;
+  background: linear-gradient(135deg, var(--bg-soft), var(--bg));
+  position: relative; overflow: hidden;
+}
+.film-card__poster img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.film-card:hover .film-card__poster img { transform: scale(1.05); }
+.film-card__poster-placeholder {
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--bg-soft) 0%, var(--bg) 100%);
+}
+.film-card__poster-placeholder svg {
+  opacity: 0.18; width: 40%;
+}
+.film-card__year {
+  position: absolute; top: 12px; left: 12px;
+  padding: 4px 10px; border-radius: 999px;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  font-size: 0.75rem; color: var(--accent-2);
+  letter-spacing: 0.1em;
+}
+.film-card__body { padding: 16px; }
+.film-card__direction {
+  font-size: 0.72rem; color: var(--accent-2);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.film-card__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; line-height: 1.1; margin-bottom: 8px;
+}
+.film-card__director {
+  font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;
+}
+.film-card__tags { display:
+     flex; flex-wrap: wrap; gap: 6px; }
+.film-card__tag {
+  padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.72rem; color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+}
+
+/* LIST VIEW */
+.films-grid.list-view .film-card {
+  display: grid; grid-template-columns: 120px 1fr;
+}
+.films-grid.list-view .film-card__poster {
+  aspect-ratio: 2/3; width: 120px;
+}
+.films-grid.list-view .film-card__body {
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ПУСТОЙ КАТАЛОГ */
+.catalog-empty {
+  grid-column: 1/-1; text-align: center;
+  padding: 80px 20px; color: var(--text-muted);
+}
+.catalog-empty h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem; margin-bottom: 12px; color: var(--text);
+}
+
+/* ЗАГРУЗКА */
+.catalog-loading {
+  grid-column: 1/-1; text-align: center;
+  padding: 60px 20px; color: var(--text-muted);
+}
+.loading-spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent-2);
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* МОДАЛКА */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  display: grid; place-items: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.is-open { opacity: 1; pointer-events: all; }
+.modal {
+  width: min(900px, 100%); max-height: 90vh;
+  border-radius: 28px; border: 1px solid var(--line);
+  background: var(--bg); overflow-y: auto;
+  transform: translateY(20px); transition: transform 0.3s ease;
+}
+.modal-overlay.is-open .modal { transform: translateY(0); }
+.modal__inner {
+  display: grid; grid-template-columns: 280px 1fr;
+}
+.modal__poster {
+  width: 280px; aspect-ratio: 2/3;
+  background: var(--bg-soft); flex-shrink: 0;
+}
+.modal__poster img { width: 100%; height: 100%; object-fit: cover; }
+.modal__poster-placeholder {
+  width: 100%; height: 100%;
+  display: grid; place-items: center; background: var(--bg-soft);
+}
+.modal__poster-placeholder svg { opacity: 0.15; width: 50%; }
+.modal__body { padding: 32px; overflow-y: auto; }
+.modal__kicker {
+  font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 12px;
+}
+.modal__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem); line-height: 1; margin-bottom: 6px;
+}
+.modal__title-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+.modal__meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.modal__meta-item small { display: block; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.modal__meta-item span { font-size: 0.9rem; }
+.modal__synopsis { color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+.modal__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.modal__tag { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.78rem; color: var(--text-muted); }
+.modal__close {
+  position: absolute; top: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--text); display: grid; place-items: center;
+  font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+}
+.modal__close:hover { background: var(--surface-strong); }
+
+/* FOOTER */
+.site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); margin-top: 40px; }
+.footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; flex-wrap: wrap; }
+.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
+.footer-text { color: var(--text-muted); font-size: 0.9rem; }
+.footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-meta span { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--text-muted); font-size: 0.82rem; }
+
+@media (max-width: 1080px) { .films-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 780px) {
+  .films-grid { grid-template-columns: repeat(2, 1fr); }
+  .site-nav { display: none; }
+  .modal__inner { grid-template-columns: 1fr; }
+  .modal__poster { width: 100%; aspect-ratio: 3/2; }
+}
+@media (max-width: 480px) { .films-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<!-- ХЕДЕР -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
+    </a>
+    <nav class="site-nav">
+      <a href="LL.html">Главная</a>
+      <a href="films.html" class="active">Каталог</a>
+      <a href="persons.html">Персоналии</a>
+      <a href="collections.html">Коллекции</a>
+      <a href="timeline.html">Хроника</a>
+      <a href="media.html">Медиа</a>
+      <a href="about.html">О проекте</a>
+      <a href="contacts.html">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">☀</button>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero__kicker">Архив · Казахское кино</div>
+    <h1 class="page-hero__title">Каталог<br>фильмов</h1>
+    <p class="page-hero__sub">Полная коллекция казахских фильмов с 1938 года — художественные, документальные, анимационные.</p>
+    <div class="page-hero__stats">
+      <div class="stat"><strong id="statFilms">0</strong><span>фильмов</span></div>
+      <div class="stat"><strong>1938</strong><span>первый фильм</span></div>
+      <div class="stat"><strong id="statYears">0</strong><span>лет истории</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- СЛАЙДЕР ПО ГОДАМ -->
+<div class="timeline-bar">
+  <div class="container timeline-bar__inner">
+    <div class="timeline-year-display" id="yearDisplay">Все</div>
+    <div class="timeline-bar__right">
+      <div class="timeline-era-label" id="eraLabel">Все эпохи</div>
+      <input type="range" min="0" max="100" value="0" class="year-slider" id="yearSlider">
+      <div class="timeline-ticks">
+        <span>1938</span><span>1960</span><span>1980</span><span>2000</span><span>2024</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ФИЛЬТРЫ -->
+<div class="container">
+  <div class="filters-bar">
+    <div class="filter-group" id="directionFilters">
+      <button class="filter-btn active" data-filter="direction" data-value="all">Все</button>
+      <button class="filter-btn" data-filter="direction" data-value="Художественное">Художественные</button>
+      <button class="filter-btn" data-filter="direction" data-value="Документальное">Документальные</button>
+      <button class="filter-btn" data-filter="direction" data-value="Анимационное">Анимационные</button>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Поиск фильма...">
+    </div>
+  </div>
+</div>
+<!-- КАТАЛОГ -->
+<section class="catalog-section">
+  <div class="container">
+    <div class="catalog-header">
+      <div class="catalog-count" id="catalogCount">Загрузка...</div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" title="Сетка">⊞</button>
+        <button class="view-btn" id="listViewBtn" title="Список">☰</button>
+      </div>
+    </div>
+    <div class="films-grid" id="filmsGrid">
+      <div class="catalog-loading">
+        <div class="loading-spinner"></div>
+        <p>Загружаем каталог...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ФУТЕР -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">TAMGA</div>
+      <p class="footer-text">Цифровой архив казахского кино</p>
+    </div>
+    <div class="footer-meta">
+      <span>© 2024 TAMGA</span>
+      <span>Алматы, Казахстан</span>
+    </div>
+  </div>
+</footer>
+
+<!-- МОДАЛКА -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal__close" id="modalClose">✕</button>
+    <div class="modal__inner">
+      <div class="modal__poster" id="modalPoster"></div>
+      <div class="modal__body">
+        <div class="modal__kicker" id="modalKicker"></div>
+        <h2 class="modal__title" id="modalTitle"></h2>
+        <p class="modal__title-sub" id="modalTitleSub"></p>
+        <div class="modal__meta" id="modalMeta"></div>
+        <p class="modal__synopsis" id="modalSynopsis"></p>
+        <div class="modal__tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// ===== НАСТРОЙКИ =====
+const SPREADSHEET_ID = '1oCMcofMMof0uTL28qvxO1SJRNWuKL3cYtl4rk6dC_PQ';
+const API_KEY = 'AIzaSyACQxPG8ljmrAnTlad3ZpvgEkBz5mafviA';
+
+// ===== ТЕМА =====
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '☀' : '☾';
+});
+
+// ===== ДАННЫЕ =====
+let allFilms = [];
+let filteredFilms = [];
+let activeDirection = 'all';
+let activeYear = 0;
+let searchQuery = '';
+
+// Колонки из Google Sheets
+const COLS = {
+  id: 0, title_kz: 1, title_ru: 2, title_en: 3,
+  year: 4, direction: 5, genre: 6, director: 7,
+  operator: 8, duration: 9, studio: 10,
+  synopsis_ru: 11, synopsis_kz: 12, synopsis_en: 13,
+  poster_url: 14, stills: 15, access: 16,
+  tags: 17, era: 18, status: 19
+};
+
+async function loadFilms() {
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Films?key=${API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
+    // Пропускаем заголовок
+    allFilms = rows.slice(1).map(row => ({
+      id: row[COLS.id] || '',
+      title_kz: row[COLS.title_kz] || '',
+      title_ru: row[COLS.title_ru] || '',
+      title_en: row[COLS.title_en] || '',
+      year: parseInt(row[COLS.year]) || 0,
+      direction: (row[COLS.direction] || '').trim(),
+      genre: row[COLS.genre] || '',
+      director: row[COLS.director] || '',
+            operator: row[COLS.operator] || '',
+      duration: row[COLS.duration] || '',
+      studio: row[COLS.studio] || '',
+      synopsis_ru: row[COLS.synopsis_ru] || '',
+      poster_url: row[COLS.poster_url] || '',
+      tags: row[COLS.tags] || '',
+      era: row[COLS.era] || '',
+      status: row[COLS.status] || ''
+    }));
+
+    // Статистика
+    document.getElementById('statFilms').textContent = allFilms.length;
+    const years = allFilms.map(f => f.year).filter(y => y > 0);
+    if (years.length) {
+      const minY = Math.min(...years);
+      const maxY = Math.max(...years);
+      document.getElementById('statYears').textContent = maxY - minY;
+    }
+
+    applyFilters();
+  } catch (e) {
+    document.getElementById('filmsGrid').innerHTML = `
+      <div class="catalog-empty">
+        <h3>Ошибка загрузки</h3>
+        <p>Не удалось загрузить каталог. Проверьте подключение.</p>
+      </div>`;
+  }
+}
+
+// ===== ФИЛЬТРАЦИЯ =====
+function applyFilters() {
+  filteredFilms = allFilms.filter(film => {
+    const matchDirection = activeDirection === 'all' || film.direction === activeDirection;
+    const matchYear = activeYear === 0 || Math.abs(film.year - activeYear) <= 5;
+    const q = searchQuery.toLowerCase();
+    const matchSearch = !q ||
+      film.title_ru.toLowerCase().includes(q) ||
+      film.title_kz.toLowerCase().includes(q) ||
+      film.director.toLowerCase().includes(q) ||
+      film.genre.toLowerCase().includes(q);
+    return matchDirection && matchYear && matchSearch;
+  });
+
+  renderFilms();
+}
+
+// ===== РЕНДЕР КАРТОЧЕК =====
+function renderFilms() {
+  const grid = document.getElementById('filmsGrid');
+  const count = document.getElementById('catalogCount');
+
+  if (filteredFilms.length === 0) {
+    grid.innerHTML = `
+      <div class="catalog-empty">
+        <h3>Фильмы не найдены</h3>
+        <p>Попробуйте изменить фильтры или поисковый запрос.</p>
+      </div>`;
+    count.textContent = 'Ничего не найдено';
+    return;
+  }
+
+  count.textContent = `Найдено: ${filteredFilms.length} фильмов`;
+  grid.innerHTML = filteredFilms.map((film, i) => `
+    <div class="film-card" onclick="window.location.href='film.html?id=${film.id}'">
+      <div class="film-card__poster">
+        ${film.poster_url
+          ? `<img src="${film.poster_url}" alt="${film.title_ru}" loading="lazy" onerror="this.parentNode.innerHTML='${posterPlaceholder()}'"/>`
+          : posterPlaceholder()
+        }
+        <div class="film-card__year">${film.year || '—'}</div>
+      </div>
+      <div class="film-card__body">
+        <div class="film-card__direction">${film.direction || 'Фильм'}</div>
+        <h3 class="film-card__title">${film.title_ru || film.title_kz || 'Без названия'}</h3>
+        <p class="film-card__director">${film.director ? '— ' + film.director : ''}</p>
+        <div class="film-card__tags">
+          ${film.genre.split(',').slice(0,2).map(t => `<span class="film-card__tag">${t.trim()}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function posterPlaceholder() {
+  return `<div class="film-card__poster-placeholder">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="15" width="60" height="70" rx="4" stroke="currentColor" stroke-width="2"/>
+      ircle cx="50" cy="42" r="12" stroke="currentColor" stroke-width="2"/>
+      <path d="M30 72 Q50 55 70 72" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </div>`;
+}
+
+// ===== МОДАЛКА =====
+function openModal(index) {
+  const film = allFilms[index];
+  if (!film) return;
+
+  const overlay = document.getElementById('modalOverlay');
+  const tags = film.tags.split(',').filter(t => t.trim());
+
+  document.getElementById('modalPoster').innerHTML = film.poster_url
+    ? `<img src="${film.poster_url}" alt="${film.title_ru}">`
+    : `<div class="modal__poster-placeholder">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="15" width="60" height="70" rx="4" stroke="currentColor" stroke-width="2"/>
+          ircle cx="50" cy="42" r="12" stroke="currentColor" stroke-width="2"/>
+          <path d="M30 72 Q50 55 70 72" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>`;
+
+  document.getElementById('modalKicker').textContent = `${film.year} · ${film.direction}`;
+  document.getElementById('modalTitle').textContent = film.title_ru || film.title_kz;
+  document.getElementById('modalTitleSub').textContent = film.title_kz && film.title_ru !== film.title_kz
+    ? `${film.title_kz}${film.title_en ? ' · ' + film.title_en : ''}`
+    : film.title_en || '';
+
+  document.getElementById('modalMeta').innerHTML = `
+    <div class="modal__meta-item"><small>Режиссёр</small><span>${film.director || '—'}</span></div>
+    <div class="modal__meta-item"><small>Жанр</small><span>${film.genre || '—'}</span></div>
+    <div class="modal__meta-item"><small>Студия</small><span>${film.studio || '—'}</span></div>
+    <div class="modal__meta-item"><small>Длительность</small><span>${film.duration ? film.duration + ' мин' : '—'}</span></div>
+    <div class="modal__meta-item"><small>Оператор</small><span>${film.operator || '—'}</span></div>
+    <div class="modal__meta-item"><small>Доступ</small><span>${film.status || '—'}</span></div>
+  `;
+
+  document.getElementById('modalSynopsis').textContent = film.synopsis_ru || 'Описание отсутствует.';
+  document.getElementById('modalTags').innerHTML = tags.map(t =>
+    `<span class="modal__tag">${t.trim()}</span>`
+  ).join('');
+
+  overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== СЛАЙДЕР ПО ГОДАМ =====
+const yearSlider = document.getElementById('yearSlider');
+const yearDisplay = document.getElementById('yearDisplay');
+const eraLabel = document.getElementById('eraLabel');
+
+const MIN_YEAR = 1938;
+const MAX_YEAR = 2024;
+
+function getEraText(year) {
+  if (year === 0) return 'Все эпохи';
+  if (year < 1955) return 'Зарождение казахского кино';
+  if (year < 1970) return 'Золотой век';
+  if (year < 1985) return 'Советская эпоха';
+  if (year < 1995) return 'Новая волна';
+  if (year < 2010) return 'Переходный период';
+  return 'Современное кино';
+}
+
+yearSlider.addEventListener('input', e => {
+  const val = parseInt(e.target.value);
+  if (val === 0) {
+    activeYear = 0;
+    yearDisplay.textContent = 'Все';
+  } else {
+    activeYear = Math.round(MIN_YEAR + (val / 100) * (MAX_YEAR - MIN_YEAR));
+    yearDisplay.textContent = activeYear;
+  }
+  eraLabel.textContent = getEraText(activeYear);
+  applyFilters();
+});
+
+// ===== ФИЛЬТРЫ ПО НАПРАВЛЕНИЮ =====
+document.querySelectorAll('.filter-btn[data-filter="direction"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-filter="direction"]')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeDirection = btn.dataset.value;
+    applyFilters();
+  });
+});
+
+// ===== ПОИСК =====
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = e.target.value;
+    applyFilters();
+  }, 300);
+});
+
+// ===== ВИД СЕТКИ =====
+const gridViewBtn = document.getElementById('gridViewBtn');
+const listViewBtn = document.getElementById('listViewBtn');
+const filmsGrid = document.getElementById('filmsGrid');
+
+gridViewBtn.addEventListener('click', () => {
+  filmsGrid.classList.remove('list-view');
+  gridViewBtn.classList.add('active');
+  listViewBtn.classList.remove('active');
+});
+
+listViewBtn.addEventListener('click', () => {
+  filmsGrid.classList.add('list-view');
+  listViewBtn.classList.add('active');
+  gridViewBtn.classList.remove('active');
+});
+
+// ===== СТАРТ =====
+window.addEventListener('load', loadFilms);
+</script>
+</body>
+</html>
