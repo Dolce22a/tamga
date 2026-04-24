@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контакты — TAMGA</title>
+//fonts.googleapis.com">
+//fonts.gstatic.com" crossorigin>
+//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="light"] {
+  --bg: #f0ebe2;
+  --bg-soft: #e4ddd1;
+  --bg-card: #ffffff;
+  --surface: rgba(255,255,255,0.9);
+  --surface-strong: rgba(255,255,255,1);
+  --text: #1a1510;
+  --text-muted: #5a5048;
+  --text-label: #8a7a6a;
+  --line: rgba(31,26,23,0.15);
+  --accent: #8f6740;
+  --accent-2: #a07840;
+  --shadow: 0 10px 30px rgba(31,26,23,0.12);
+  --card-bg: #ffffff;
+}
+[data-theme="dark"] {
+  --bg: #0f0d0c;
+  --bg-soft: #171311;
+  --bg-card: #1a1714;
+  --surface: rgba(255,255,255,0.05);
+  --surface-strong: rgba(255,255,255,0.08);
+  --text: #f3eee7;
+  --text-muted: #b8ada2;
+  --text-label: #8a8078;
+  --line: rgba(255,255,255,0.10);
+  --accent: #b78a57;
+  --accent-2: #e2b97d;
+  --shadow: 0 20px 40px rgba(0,0,0,0.35);
+  --card-bg: #1a1714;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; border: none; background: none; cursor: pointer; }
+.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 76px; gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  background: var(--surface); box-shadow: var(--shadow);
+  position: relative;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--accent-2); border-radius: 50%;
+}
+.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; color: var(--text); }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 0.85rem; color: var(--text-muted);
+  transition: color 0.2s, background 0.2s; white-space: nowrap;
+}
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem; cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-strong); }
+@media (max-width: 900px) { .site-nav { display: none; } }
+
+/* ===== BACK BTN ===== */
+.back-btn {
+  position: fixed;
+  top: 96px; left: 24px; z-index: 99;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  color: var(--text-muted); font-size: 0.82rem;
+  transition: all 0.2s; cursor: pointer;
+  box-shadow: var(--shadow); white-space: nowrap;
+}
+.back-btn:hover { color: var(--accent-2); border-color: var(--accent-2); background: var(--surface-strong); }
+
+/* ===== PAGE HERO ===== */
+.page-hero {
+  padding: 120px 0 64px;
+  border-bottom: 1px solid var(--line);
+}
+.page-kicker {
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 16px; font-weight: 600;
+}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 0.95; color: var(--text);
+  margin-bottom: 20px;
+}
+.page-subtitle {
+  font-size: 1rem; color: var(--text-muted);
+  max-width: 520px; line-height: 1.7;
+}
+
+/* ===== SECTION ===== */
+.contacts-section { padding: 72px 0 100px; }
+.contacts-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 32px; align-items: start;
+}
+
+/* ===== КАРТОЧКИ КОНТАКТОВ ===== */
+.contact-cards { display: grid; gap: 16px; margin-bottom: 32px; }
+.contact-card {
+  display: flex; align-items: center; gap: 20px;
+  padding: 24px 28px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.contact-card:hover {
+  border-color: var(--accent-2);
+  transform: translateY(-2px);
+}
+.contact-card__icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--line);
+  display: grid; place-items: center; flex-shrink: 0;
+  font-size: 1.2rem;
+}
+.contact-card__body { flex: 1; min-width: 0; }
+.contact-card__label {
+  font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-label); margin-bottom: 4px; font-weight: 500;
+}
+.contact-card__value {
+  font-size: 0.95rem; color: var(--text); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.contact-card__arrow {
+  color: var(--text-label); font-size: 1rem; flex-shrink: 0;
+  transition: color 0.2s;
+}
+.contact-card:hover .contact-card__arrow { color: var(--accent-2); }
+
+/* ===== СОЦСЕТИ ===== */
+.socials-block {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px;
+  box-shadow: var(--shadow);
+}
+.socials-block__title {
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 18px; font-weight: 600;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+.socials-list { display: flex; flex-direction: column; gap: 4px; }
+.social-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px; border-radius: 12px;
+  transition: background 0.2s; color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.social-item:hover { background: var(--surface); color: var(--accent-2); }
+.social-item__icon { width: 32px; text-align: center; font-size: 1.1rem; flex-shrink: 0; }
+.social-item__name { flex: 1; font-weight: 500; }
+.social-item__handle { font-size: 0.8rem; color: var(--text-label); }
+
+/* ===== ФОРМА ===== */
+.contact-form-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px; padding: 36px;
+  box-shadow: var(--shadow);
+  position: sticky; top: 100px;
+}
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; color: var(--text);
+  margin-bottom: 6px;
+}
+.form-subtitle {
+  font-size: 0.85rem; color: var(--text-muted);
+  margin-bottom: 28px; line-height: 1.6;
+}
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-label); margin-bottom: 8px; font-weight: 500;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 13px 16px;
+  background: var(--bg-soft, var(--surface));
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+}
+[data-theme="light"] .form-input,
+[data-theme="light"] .form-textarea,
+[data-theme="light"] .form-select {
+  background: #f8f5f0;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-label); }
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(183,138,87,0.12);
+}
+.form-textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+.form-select option { background: var(--bg-card); color: var(--text); }
+.form-submit {
+  width: 100%; padding: 14px;
+  background: var(--accent-2); color: #0f0d0c;
+  border: none; border-radius: 12px;
+  font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.06em;
+  margin-top: 8px;
+}
+.form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+.form-submit:active { transform: translateY(0); }
+.form-note {
+  font-size: 0.75rem; color: var(--text-label);
+  text-align: center; margin-top: 14px; line-height: 1.5;
+}
+
+/* ===== SUCCESS STATE ===== */
+.form-success {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px;
+  padding: 40px 20px; text-align: center;
+}
+.form-success__icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(183,138,87,0.12);
+  border: 1px solid var(--accent-2);
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.form-success__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; color: var(--text);
+}
+.form-success__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ===== INFO STRIP ===== */
+.info-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line);
+  border
+      border-radius: 20px; overflow: hidden;
+  margin-top: 32px; box-shadow: var(--shadow);
+}
+.info-strip__item {
+  background: var(--card-bg);
+  padding: 24px 20px; text-align: center;
+}
+.info-strip__value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem; color: var(--accent-2);
+  font-weight: 600; margin-bottom: 4px;
+}
+.info-strip__label {
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-label); font-weight: 500;
+}
+
+/* ===== FAQ ===== */
+.faq-section { padding: 0 0 100px; }
+.section-header { margin-bottom: 40px; }
+.section-kicker {
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 12px; font-weight: 600;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--text);
+}
+.faq-list { display: grid; gap: 12px; }
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+.faq-item:hover { border-color: var(--accent); }
+.faq-question {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; text-align: left;
+  font-size: 0.95rem; font-weight: 500; color: var(--text);
+  cursor: pointer; gap: 16px;
+  background: none; border: none; font-family: inherit;
+}
+.faq-question__icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  font-size: 1rem; color: var(--accent-2); flex-shrink: 0;
+  transition: transform 0.25s, background 0.2s;
+}
+.faq-item.open .faq-question__icon { transform: rotate(45deg); background: var(--surface); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.25s;
+  padding: 0 24px;
+}
+.faq-item.open .faq-answer { max-height: 300px; padding: 0 24px 20px; }
+.faq-answer p {
+  font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+  border-top: 1px solid var(--line); padding-top: 16px;
+}
+
+/* ===== FOOTER ===== */
+.site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); }
+.footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; flex-wrap: wrap; }
+.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
+.footer-text { color: var(--text-muted); font-size: 0.9rem; }
+.footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-meta span {
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--text-muted);
+  font-size: 0.78rem; background: var(--surface);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .contacts-grid { grid-template-columns: 1fr; }
+  .contact-form-wrap { position: static; }
+  .info-strip { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .page-hero { padding: 100px 0 48px; }
+  .contacts-section { padding: 48px 0 64px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">
+        <strong>TAMGA</strong>
+        <span>Архив казахского кино</span>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Главная</a>
+      <a href="films.html">Каталог</a>
+      <a href="persons.html">Персоналии</a>
+      <a href="collections.html">Коллекции</a>
+      <a href="timeline.html">Хроника</a>
+      <a href="media.html">Медиа</a>
+      <a href="about.html">О проекте</a>
+      <a href="contacts.html" class="active">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">☀</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-kicker">Связь с архивом</div>
+    <h1 class="page-title">Контакты</h1>
+    <p class="page-subtitle">
+      TAMGA открыт для сотрудничества, исследований и предложений.
+      Если вы хотите передать материалы, сообщить об ошибке или стать
+      партнёром — напишите нам.
+    </p>
+  </div>
+</section>
+
+<!-- ОСНОВНОЙ БЛОК -->
+<section class="contacts-section">
+  <div class="container">
+    <div class="contacts-grid">
+
+      <!-- ЛЕВАЯ КОЛОНКА -->
+      <div>
+
+        <!-- Карточки контактов -->
+        <div class="contact-cards">
+          <a href="mailto:archive@tamga.kz" class="contact-card">
+            <div class="contact-card__icon">✉</div>
+            <div class="contact-card__body">
+              <div class="contact-card__label">Основной email</div>
+              <div class="contact-card__value">archive@tamga.kz</div>
+            </div>
+            <div class="contact-card__arrow">→</div>
+          </a>
+          <a href="mailto:research@tamga.kz" class="contact-card">
+            <div class="contact-card__icon">🎞</div>
+            <div class="contact-card__body">
+              <div class="contact-card__label">Исследования и фондовая работа</div>
+              <div class="contact-card__value">research@tamga.kz</div>
+            </div>
+            <div class="contact-card__arrow">→</div>
+          </a>
+          <a href="mailto:partner@tamga.kz" class="contact-card">
+            <div class="contact-card__icon">🤝</div>
+            <div class="contact-card__body">
+              <div class="contact-card__label">Партнёрство и коллаборации</div>
+              <div class="contact-card__value">partner@tamga.kz</div>
+            </div>
+            <div class="contact-card__arrow">→</div>
+          </a>
+          <a href="tel:+77212000000" class="contact-card">
+            <div class="contact-card__icon">☎</div>
+            <div class="contact-card__body">
+              <div class="contact-card__label">Телефон (Алматы)</div>
+              <div class="contact-card__value">+7 (727) 200-00-00</div>
+            </div>
+            <div class="contact-card__arrow">→</div>
+          </a>
+        </div>
+
+        <!-- Соцсети -->
+        <div class="socials-block">
+          <div class="socials-block__title">Мы в социальных сетях</div>
+          <div class="socials-list">
+            <a href="#" class="social-item">
+              <div class="social-item__icon">▶</div>
+              <div class="social-item__name">YouTube</div>
+              <div class="social-item__handle">@tamga.archive</div>
+            </a>
+            <a href="#" class="social-item">
+              <div class="social-item__icon">📷</div>
+              <div class="social-item__name">Instagram</div>
+              <div class="social-item__handle">@tamga.kz</div>
+            </a>
+            <a href="#" class="social-item">
+              <div class="social-item__icon">✈</div>
+              <div class="social-item__name">Telegram</div>
+              <div class="social-item__handle">@tamga_archive</div>
+            </a>
+            <a href="#" class="social-item">
+              <div class="social-item__icon">in</div>
+              <div class="social-item__name">LinkedIn</div>
+              <div class="social-item__handle">TAMGA Film Archive</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Инфо-полоска -->
+        <div class="info-strip">
+          <div class="info-strip__item">
+            <div class="info-strip__value">24ч</div>
+            <div class="info-strip__label">Время ответа</div>
+          </div>
+          <div class="info-strip__item">
+            <div class="info-strip__value">КЗ</div>
+            <div class="info-strip__label">Казахстан</div>
+          </div>
+          <div class="info-strip__item">
+            <div class="info-strip__value">RU·KZ·EN</div>
+            <div class="info-strip__label">Языки</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ФОРМА -->
+      <div class="contact-form-wrap">
+
+        <!-- Форма -->
+        <div id="formBlock">
+          <div class="form-title">Написать нам</div>
+          <div class="form-subtitle">Ответим в течение одного рабочего дня на казахском, русском или английском языке.</div>
+
+          <form id="contactForm" novalidate>
+
+            <div class="form-group">
+              abel class="form-label" for="cf-name">Ваше имя</label>
+              <input class="form-input" type="text" id="cf-name" placeholder="Айгерим Сейткали" required>
+            </div>
+
+            <div class="form-group">
+              abel class="form-label" for="cf-email">Email</label>
+              <input class="form-input" type="email" id="cf-email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+              abel class="form-label" for="cf-topic">Тема обращения</label>
+              <select class="form-select" id="cf-topic">
+                <option value="">— Выберите тему —</option>
+                <option>Передача материалов в архив</option>
+                <option>Исправление данных в каталоге</option>
+                <option>Исследовательский запрос</option>
+                <option>Партнёрство и сотрудничество</option>
+                <option>Технические вопросы</option>
+                <option>Другое</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              abel class="form-label" for="cf-message">Сообщение</label>
+              <textarea class="form-textarea" id="cf-message" placeholder="Опишите ваш запрос подробнее..." required></textarea>
+            </div>
+
+            <button type="submit" class="form-submit">Отправить сообщение</button>
+            <p class="form-note">Нажимая кнопку, вы соглашаетесь с политикой обработки данных TAMGA.</p>
+
+          </form>
+        </div>
+
+        <!-- Успех -->
+        <div class="form-success" id="formSuccess">
+          <div class="form-success__icon">✓</div>
+          <div class="form-success__title">Сообщение отправлено</div>
+          <p class="form-success__text">Спасибо за обращение. Мы свяжемся с вами в течение 24 часов.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-kicker">Частые вопросы</div>
+      <h2 class="section-title">Ответы на популярные запросы</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Как передать плёнку или документы в архив TAMGA?
+          <span class="faq-question__icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Напишите нам на research@tamga.kz с кратким описанием материала — год, тип носителя, источник. Наши специалисты свяжутся с вами для организации передачи и оцифровки.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Можно ли использовать материалы архива в исследовательских целях?
+          <span class="faq-question__icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Да. Академические и образовательные запросы рассматриваются в приоритетном порядке. Укажите тему исследования и аффилиацию при обращении — это ускорит процесс.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button         class="faq-question">
+          Я нашёл ошибку в данных фильма — как сообщить?
+          <span class="faq-question__icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Выберите тему «Исправление данных в каталоге» в форме выше и укажите название фильма, поле с ошибкой и корректную информацию. Мы проверим и внесём правки в течение 3 рабочих дней.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Как стать партнёром или волонтёром проекта?
+          <span class="faq-question__icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>TAMGA всегда открыт для историков кино, разработчиков, дизайнеров и волонтёров. Напишите на partner@tamga.kz с кратким рассказом о себе и чём вы готовы помочь.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          На каких языках работает архив?
+          <span class="faq-question__icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Архив ведётся на трёх языках: казахском, русском и английском. Мы принимаем обращения и отвечаем на любом из этих языков.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">TAMGA</div>
+      <p class="footer-text">Цифровой архив казахского кино</p>
+    </div>
+    <div class="footer-meta">
+      <span>EN 15907</span>
+      <span>FIAF</span>
+      <span>© 2024 TAMGA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== ТЕМА =====
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const saved = localStorage.getItem('tamga-theme') || 'dark';
+root.setAttribute('data-theme', saved);
+themeToggle.textContent = saved === 'dark' ? '☀' : '☾';
+themeToggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('tamga-theme', next);
+});
+
+// ===== FAQ АККОРДЕОН =====
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ===== ФОРМА (имитация отправки) =====
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+
+  if (!name || !email || !message) {
+    // Подсветить пустые поля
+    [['cf-name', name], ['cf-email', email], ['cf-message', message]].forEach(([id, v]) => {
+      const el = document.getElementById(id);
+      if (!v) {
+        el.style.borderColor = '#c0392b';
+        el.addEventListener('input', () => el.style.borderColor = '', { once: true });
+      }
+    });
+    return;
+  }
+
+  // Имитация отправки
+  const btn = this.querySelector('.form-submit');
+  btn.textContent = 'Отправляем...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    document.getElementById('formBlock').style.display = 'none';
+    const success = document.getElementById('formSuccess');
+    success.style.display = 'flex';
+  }, 1200);
+});
+</script>
+</body>
+</html>

@@ -406,7 +406,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
       <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
     </a>
     <nav class="site-nav">
-      <a href="LL.html">Главная</a>
+      <a href="index.html">Главная</a>
       <a href="films.html" class="active">Каталог</a>
       <a href="persons.html">Персоналии</a>
       <a href="collections.html">Коллекции</a>
@@ -626,7 +626,7 @@ function renderFilms() {
     <div class="film-card" onclick="window.location.href='film.html?id=${film.id}'">
       <div class="film-card__poster">
         ${film.poster_url
-          ? `<img src="${film.poster_url}" alt="${film.title_ru}" loading="lazy" onerror="this.parentNode.innerHTML='${posterPlaceholder()}'"/>`
+          ? `<img src="${film.poster_url}" alt="${film.title_ru}" loading="lazy" onerror="this.parentNode.innerHTML='${posterPlaceholder()}`
           : posterPlaceholder()
         }
         <div class="film-card__year">${film.year || '—'}</div>

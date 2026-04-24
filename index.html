@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
->
 
   <style>
 
@@ -131,7 +130,24 @@
   display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem;
 }
 .theme-toggle:hover { background: var(--surface-strong); }
-
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+}
+.lang-switcher button {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.lang-switcher button:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
     .hero {
       position: relative;
       min-height: 100vh;
@@ -933,241 +949,226 @@
   <div class="container site-header__inner">
     <a href="index.html" class="brand">
       <div class="brand-mark"></div>
-      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
+      <div class="brand-text">
+        <strong>TAMGA</strong>
+        <span data-i18n="brand_sub">Архив казахского кино</span>
+      </div>
     </a>
     <nav class="site-nav">
-      <a href="index.html"class="active">Главная</a>
-      <a href="films.html" >Каталог</a>
-      <a href="persons.html">Персоналии</a>
-      <a href="collections.html">Коллекции</a>
-      <a href="timeline.html">Хроника</a>
-      <a href="media.html">Медиа</a>
-      <a href="about.html">О проекте</a>
-      <a href="contacts.html">Контакты</a>
+      <a href="index.html" class="active" data-i18n="nav_home">Главная</a>
+      <a href="films.html" data-i18n="nav_catalog">Каталог</a>
+      <a href="persons.html" data-i18n="nav_persons">Персоналии</a>
+      <a href="collections.html" data-i18n="nav_collections">Коллекции</a>
+      <a href="timeline.html" data-i18n="nav_timeline">Хроника</a>
+      <a href="media.html" data-i18n="nav_media">Медиа</a>
+      <a href="about.html" data-i18n="nav_about">О проекте</a>
+      <a href="contacts.html" data-i18n="nav_contacts">Контакты</a>
     </nav>
     <div class="header-actions">
+      <!-- Переключатель языка -->
+      <div class="lang-switcher">
+        <button onclick="applyLang('ru')">RU</button>
+        <button onclick="applyLang('en')">EN</button>
+        <button onclick="applyLang('kz')">KZ</button>
+      </div>
       <button class="theme-toggle" id="themeToggle">☀</button>
     </div>
   </div>
 </header>
-  <main>
 
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy reveal">
-          <div class="eyebrow">Архив. Память. Кинонаследие Казахстана.</div>
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy reveal">
+        <div class="eyebrow" data-i18n="hero_eyebrow">Архив. Память. Кинонаследие Казахстана.</div>
 
-          <h1 class="hero-title">
-            TAMGA
-            <span>Разум хранит эпохи</span>
-          </h1>
+        <h1 class="hero-title">
+          TAMGA
+          <span data-i18n="hero_title_sub">Разум хранит эпохи</span>
+        </h1>
 
-          <p class="hero-subtitle">
-            Сохранение и расширение доступности наследия истории казахстанского кино
-            посредством цифровой архивной системы. Концепт платформы для исследования,
-            навигации и культурной памяти — от первых хроник до будущей национальной базы.
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
+          Сохранение и расширение доступности наследия истории казахстанского кино
+          посредством цифровой архивной системы.
+        </p>
+
+        <div class="hero-quote">
+          <span data-i18n="hero_quote">«Только разум, наука, воля, совесть возвышают человека».</span>
+          <small>Абай Кунанбаев</small>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" id="parallaxScene">
+        <div class="stone-orbit" id="stoneOrbit">
+          <div class="petro-line">
+            <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M60 180C75 120 110 88 150 88C190 88 228 118 240 176" stroke="#D8B07A" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="150" cy="78" r="18" stroke="#D8B07A" stroke-width="2"/>
+              <path d="M150 96V156" stroke="#D8B07A" stroke-width="2"/>
+              <path d="M120 132L150 114L180 132" stroke="#D8B07A" stroke-width="2"/>
+              <path d="M126 205C136 182 164 182 174 205" stroke="#D8B07A" stroke-width="2"/>
+              <path d="M112 214L188 214" stroke="#D8B07A" stroke-width="2"/>
+              <circle cx="96" cy="126" r="4" fill="#D8B07A"/>
+              <circle cx="204" cy="126" r="4" fill="#D8B07A"/>
+              <circle cx="150" cy="214" r="4" fill="#D8B07A"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <strong data-i18n="meta_title">Идея образа</strong>
+          <p data-i18n="meta_desc">
+            Камень, знак и круг памяти. Интерфейс вдохновлён археологическим
+            ландшафтом Тамгалы как образом древнего архива, где след равен истории.
           </p>
-
-          <div class="hero-quote">
-            «Только разум, наука, воля, совесть возвышают человека».
-            <small>Абай Кунанбаев</small>
-          </div>
         </div>
+      </div>
+    </div>
+    <div class="scroll-mark"></div>
+  </section>
 
-        <div class="hero-visual reveal" id="parallaxScene">
-          <div class="stone-orbit" id="stoneOrbit">
-            <div class="petro-line">
-              <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M60 180C75 120 110 88 150 88C190 88 228 118 240 176" stroke="#D8B07A" stroke-width="2.2" stroke-linecap="round"/>
-                <circle cx="150" cy="78" r="18" stroke="#D8B07A" stroke-width="2"/>
-                <path d="M150 96V156" stroke="#D8B07A" stroke-width="2"/>
-                <path d="M120 132L150 114L180 132" stroke="#D8B07A" stroke-width="2"/>
-                <path d="M126 205C136 182 164 182 174 205" stroke="#D8B07A" stroke-width="2"/>
-                <path d="M112 214L188 214" stroke="#D8B07A" stroke-width="2"/>
-                <circle cx="96" cy="126" r="4" fill="#D8B07A"/>
-                <circle cx="204" cy="126" r="4" fill="#D8B07A"/>
-                <circle cx="150" cy="214" r="4" fill="#D8B07A"/>
-              </svg>
-            </div>
-          </div>
-
-          <div class="hero-meta">
-            <strong>Идея образа</strong>
-            <p>
-              Камень, знак и круг памяти. Интерфейс вдохновлён археологическим
-              ландшафтом Тамгалы как образом древнего архива, где след равен истории.
-            </p>
-          </div>
+  <section class="dna-section">
+    <div class="container dna-layout">
+      <div class="dna-copy reveal">
+        <div class="section-kicker" data-i18n="dna_kicker">Спираль памяти</div>
+        <h2 class="section-title" data-i18n="dna_title">История кино не движется по прямой</h2>
+        <p class="section-text" data-i18n="dna_text">
+          В TAMGA хронология раскрывается как живая спираль.
+          Точка хранит информацию о фильме и оставленным культурном следе. Вращай структуру, выбирай узлы
+          и открывай фрагменты истории казахстанского кино.
+        </p>
+        <div class="dna-legend">
+          <a href="collections.html" class="btn-link" data-i18n="dna_link">Перейти в коллекции →</a>
         </div>
       </div>
 
-      <div class="scroll-mark">Scroll</div>
-    </section>
-      <section class="dna-section">
-  <div class="container dna-layout">
-    <div class="dna-copy reveal">
-      <div class="section-kicker">Спираль памяти</div>
-      <h2 class="section-title">История кино не движется по прямой</h2>
-      <p class="section-text">
-        В TAMGA хронология раскрывается как живая спираль: каждая точка хранит
-        фильм, эпоху, имя и культурный след. Вращай структуру, выбирай узлы
-        и открывай фрагменты истории казахстанского кино.
-      </p>
-
-      <div class="dna-legend">
-          <a href="collections.html" class="btn-link">
-  Перейти в коллекции →
-</a>
+      <div class="dna-stage reveal">
+        <canvas id="dnaCanvas" width="760" height="760" aria-label="Интерактивная спираль фильмов"></canvas>
+        <div class="film-card" id="filmCard">
+          <small class="film-year">1963</small>
+          <h3 class="film-title">Меня зовут Кожа</h3>
+          <p class="film-desc">Классика казахского кино, ставшая частью культурной памяти нескольких поколений.</p>
+          <div class="film-meta">Режиссёр: Абдулла Карсакбаев</div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="dna-stage reveal">
-      <canvas id="dnaCanvas" width="760" height="760" aria-label="Интерактивная спираль фильмов"></canvas>
-
-      <div class="film-card" id="filmCard">
-        <small class="film-year">1963</small>
-        <h3 class="film-title">Меня зовут Кожа</h3>
-        <p class="film-desc">
-          Классика казахского кино, ставшая частью культурной памяти нескольких поколений.
+  <section class="stars-section">
+    <div class="container">
+      <div class="stars-head reveal">
+        <div class="section-kicker" data-i18n="stars_kicker">Созвездия авторов</div>
+        <h2 class="section-title" data-i18n="stars_title">Карта режиссёров казахстанского кино</h2>
+        <p class="section-text" data-i18n="stars_text">
+          Объединение 8 звезд дает созвездие Уркер (Плеяда). Каждая звезда это отдельная фигура, голос и направление.
+          Вместо списка имён здесь возникает небесная карта влияний: поколения, школы, художественные
+          пересечения и линии культурной памяти.
         </p>
-        <div class="film-meta">Режиссёр: Абдулла Карсакбаев</div>
-      </div>
-    </div>
-  </div>
-</section>
-      <section class="stars-section">
-  <div class="container">
-    <div class="stars-head reveal">
-      <div class="section-kicker">Созвездия авторов</div>
-      <h2 class="section-title">Карта режиссёров казахстанского кино</h2>
-      <p class="section-text">
-        Каждая звезда — отдельная фигура, голос и направление. Вместо списка имён
-        здесь возникает небесная карта влияний: поколения, школы, художественные
-        пересечения и линии культурной памяти.
-      </p>
-    </div>
-
-    <div class="stars-stage reveal">
-      <canvas id="starsCanvas" width="1200" height="760" aria-label="Интерактивная карта режиссёров"></canvas>
-
-      <div class="director-card" id="directorCard">
-        <small class="director-era">1960–1970-е</small>
-        <h3 class="director-name">Султан-Ахмет Ходжиков</h3>
-        <p class="director-desc">
-          Один из авторов, через которых исторический эпос и национальная визуальная поэтика получили экранное звучание.
-        </p>
-        <div class="director-meta">Связь: историческое кино • визуальная традиция • эпоха становления</div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="about-section">
-  <div class="container">
-    <div class="about-head reveal">
-      <div class="section-kicker">О проекте</div>
-      <h2 class="section-title">Цифровой архив как инфраструктура культурной памяти</h2>
-      <p class="section-text">
-        TAMGA — концепт цифровой архивной системы, направленной на сохранение,
-        описание и расширение доступности истории казахстанского кино. Проект
-        разрабатывается как дипломная работа, но мыслится как основа для
-        масштабирования на национальном уровне.
-      </p>
-    </div>
-
-    <div class="principles-grid reveal">
-      <article class="principle-card">
-        <small>01</small>
-        <h3>Сохранение</h3>
-        <p>
-          Архив хранит не только название фильма, но и контекст: эпоху, авторов,
-          жанр, производственную историю и культурную значимость.
-        </p>
-      </article>
-
-      <article class="principle-card">
-        <small>02</small>
-        <h3>Метаданные</h3>
-        <p>
-          Основа системы — структурированное описание фильмов по архивным принципам,
-          совместимым с международной каталогизацией кинонаследия.
-        </p>
-      </article>
-
-      <article class="principle-card">
-        <small>03</small>
-        <h3>Доступ</h3>
-        <p>
-          Цель интерфейса — сделать сложный архив понятным для студентов,
-          исследователей, кураторов и широкой аудитории.
-        </p>
-      </article>
-
-      <article class="principle-card">
-        <small>04</small>
-        <h3>Масштабирование</h3>
-        <p>
-          Платформа проектируется как база для будущего расширения: национальный
-          каталог, поисковая система, архивные коллекции и цифровые выставки.
-        </p>
-      </article>
-    </div>
-
-    <div class="method-grid">
-      <div class="method-block reveal">
-        <div class="section-kicker">Архивная логика</div>
-        <h3 class="method-title">Что хранит система</h3>
-        <ul class="method-list">
-          <li>Название фильма и альтернативные названия</li>
-          <li>Год создания и периоды выпуска</li>
-          <li>Режиссёр, студия, участники производства</li>
-          <li>Жанр, язык, формат, продолжительность</li>
-          <li>Аннотация, исторический контекст, эпоха</li>
-          <li>Статус сохранности и цифровой доступности</li>
-        </ul>
       </div>
 
-      <div class="method-block reveal">
-        <div class="section-kicker">Будущее развитие</div>
-        <h3 class="method-title">Как это может работать на национальном уровне</h3>
-        <ul class="method-list">
-          <li>Единый онлайн-каталог казахстанского кино</li>
-          <li>Интеграция с архивами, синематеками и вузами</li>
-          <li>Публичные тематические подборки и выставки</li>
-          <li>Исследовательский доступ по эпохам, авторам и жанрам</li>
-          <li>Мультиязычная подача: казахский, русский, английский</li>
-          <li>Отдельные режимы для исследователя и широкой аудитории</li>
-        </ul>
+      <div class="stars-stage reveal">
+        <canvas id="starsCanvas" width="1200" height="760" aria-label="Интерактивная карта режиссёров"></canvas>
+        <div class="director-card" id="directorCard">
+          <small class="director-era">1960–1970-е</small>
+          <h3 class="director-name">Султан-Ахмет Ходжиков</h3>
+          <p class="director-desc">
+            Один из авторов, через которых исторический эпос и национальная визуальная поэтика получили экранное звучание.
+          </p>
+          <div class="director-meta">Связь: историческое кино • визуальная традиция • эпоха становления</div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="quote-band reveal">
-      <p>
-        TAMGA рассматривает кино не только как медиатекст, но и как форму
-        исторической памяти, требующую бережного описания, сохранения и открытого доступа.
-      </p>
+  <section class="about-section">
+    <div class="container">
+      <div class="about-head reveal">
+        <div class="section-kicker" data-i18n="about_kicker">О проекте</div>
+        <h2 class="section-title" data-i18n="about_title">Цифровой архив как инфраструктура культурной памяти</h2>
+        <p class="section-text" data-i18n="about_text">
+          TAMGA — концепт цифровой архивной системы, направленной на сохранение,
+          описание и расширение доступности истории казахстанского кино. Проект
+          разрабатывается как дипломная работа, но мыслится как основа для
+          масштабирования на национальном уровне.
+        </p>
+      </div>
+
+      <div class="principles-grid reveal">
+        <article class="principle-card">
+          <small>01</small>
+          <h3 data-i18n="p1_title">Сохранение</h3>
+          <p data-i18n="p1_text">Архив хранит не только название фильма, но и контекст: эпоху, авторов, жанр, производственную историю и культурную значимость.</p>
+        </article>
+        <article class="principle-card">
+          <small>02</small>
+          <h3 data-i18n="p2_title">Метаданные</h3>
+          <p data-i18n="p2_text">Основа системы — структурированное описание фильмов по архивным принципам, совместимым с международной каталогизацией кинонаследия.</p>
+        </article>
+        <article class="principle-card">
+          <small>03</small>
+          <h3 data-i18n="p3_title">Доступ</h3>
+          <p data-i18n="p3_text">Цель интерфейса — сделать сложный архив понятным для студентов, исследователей, кураторов и широкой аудитории.</p>
+        </article>
+        <article class="principle-card">
+          <small>04</small>
+          <h3 data-i18n="p4_title">Масштабирование</h3>
+          <p data-i18n="p4_text">Платформа проектируется как база для будущего расширения: национальный каталог, поисковая система, архивные коллекции и цифровые выставки.</p>
+        </article>
+      </div>
+
+      <div class="method-grid">
+        <div class="method-block reveal">
+          <div class="section-kicker" data-i18n="m1_kicker">Архивная логика</div>
+          <h3 class="method-title" data-i18n="m1_title">Что хранит система</h3>
+          <ul class="method-list">
+            <li data-i18n="m1_li1">Название фильма и альтернативные названия</li>
+            <li data-i18n="m1_li2">Год создания и периоды выпуска</li>
+            <li data-i18n="m1_li3">Режиссёр, студия, участники производства</li>
+            <li data-i18n="m1_li4">Жанр, язык, формат, продолжительность</li>
+            <li data-i18n="m1_li5">Аннотация, исторический контекст, эпоха</li>
+            <li data-i18n="m1_li6">Статус сохранности и цифровой доступности</li>
+          </ul>
+        </div>
+
+        <div class="method-block reveal">
+          <div class="section-kicker" data-i18n="m2_kicker">Будущее развитие</div>
+          <h3 class="method-title" data-i18n="m2_title">Как это может работать на национальном уровне</h3>
+          <ul class="method-list">
+            <li data-i18n="m2_li1">Единый онлайн-каталог казахстанского кино</li>
+            <li data-i18n="m2_li2">Интеграция с архивами, синематеками и вузами</li>
+            <li data-i18n="m2_li3">Публичные тематические подборки и выставки</li>
+            <li data-i18n="m2_li4">Исследовательский доступ по эпохам, авторам и жанрам</li>
+            <li data-i18n="m2_li5">Мультиязычная подача: казахский, русский, английский</li>
+            <li data-i18n="m2_li6">Отдельные режимы для исследователя и широкой аудитории</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="quote-band reveal">
+        <p data-i18n="quote_band">
+          TAMGA рассматривает кино не только как медиатекст, но и как форму
+          исторической памяти, требующую бережного описания, сохранения и открытого доступа.
+        </p>
+      </div>
     </div>
-  </div>
-</section>
-  </main>
-  <footer class="site-footer">
+  </section>
+</main>
+
+<footer class="site-footer">
   <div class="container footer-inner">
     <div>
       <div class="footer-brand">TAMGA</div>
-      <p class="footer-text">
-        Концепт цифрового архива истории казахстанского кино.
-      </p>
+      <p class="footer-text" data-i18n="footer_desc">Концепт цифрового архива истории казахстанского кино.</p>
     </div>
-
     <div class="footer-meta">
-      <span>Дипломный проект</span>
-      <span>Русская версия интерфейса</span>
+      <span data-i18n="footer_tag1">Дипломный проект</span>
+      <span data-i18n="footer_tag2">Русская версия интерфейса</span>
       <span>Dark / Light mode</span>
     </div>
   </div>
 </footer>
+<script src="i18n.js"></script>
 
-<script src="header.js"></script>
-  <script>renderHeader('LL');</script>
   <script>
       document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
   const trigger = dropdown.querySelector('.nav-trigger');
@@ -1740,5 +1741,6 @@ document.addEventListener('click', () => {
 
 
   </script>
+
 </body>
 </html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Персоналии — TAMGA</title>
+//fonts.googleapis.com">
+//fonts.gstatic.com" crossorigin>
+//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="light"] {
+  --bg: #f0ebe2; --bg-soft: #e4ddd1; --bg-card: #ffffff;
+  --surface: rgba(255,255,255,0.9); --surface-strong: rgba(255,255,255,1);
+  --text: #1a1510; --text-muted: #5a5048; --text-label: #8a7a6a;
+  --line: rgba(31,26,23,0.15); --accent: #8f6740; --accent-2: #a07840;
+  --shadow: 0 10px 30px rgba(31,26,23,0.12); --card-bg: #ffffff;
+}
+[data-theme="dark"] {
+  --bg: #0f0d0c; --bg-soft: #171311; --bg-card: #1a1714;
+  --surface: rgba(255,255,255,0.05); --surface-strong: rgba(255,255,255,0.08);
+  --text: #f3eee7; --text-muted: #b8ada2; --text-label: #8a8078;
+  --line: rgba(255,255,255,0.10); --accent: #b78a57; --accent-2: #e2b97d;
+  --shadow: 0 20px 40px rgba(0,0,0,0.35); --card-bg: #1a1714;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { min-height: 100vh; font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; border: none; background: none; cursor: pointer; }
+.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 76px; gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line); display: grid; place-items: center;
+  background: var(--surface); box-shadow: var(--shadow); position: relative;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ''; position: absolute; width: 18px; height: 18px;
+  border: 1.5px solid var(--accent-2); border-radius: 50%;
+}
+.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; color: var(--text); }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  padding: 8px 14px; border-radius: 999px; font-size: 0.85rem;
+  color: var(--text-muted); transition: color 0.2s, background 0.2s; white-space: nowrap;
+}
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem;
+}
+.theme-toggle:hover { background: var(--surface-strong); }
+@media (max-width: 900px) { .site-nav { display: none; } }
+
+/* ===== BACK BTN ===== */
+.back-btn {
+  position: fixed; top: 96px; left: 24px; z-index: 99;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card-bg);
+  color: var(--text-muted); font-size: 0.82rem;
+  transition: all 0.2s; box-shadow: var(--shadow); white-space: nowrap;
+}
+.back-btn:hover { color: var(--accent-2); border-color: var(--accent-2); background: var(--surface-strong); }
+
+/* ===== PAGE HERO ===== */
+.page-hero {
+  padding: 110px 0 48px;
+  border-bottom: 1px solid var(--line);
+}
+.page-kicker {
+  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 14px; font-weight: 600;
+}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  line-height: 0.95; color: var(--text); margin-bottom: 16px;
+}
+.page-subtitle {
+  font-size: 0.95rem; color: var(--text-muted);
+  max-width: 480px; line-height: 1.7;
+}
+
+/* ===== TOOLBAR ===== */
+.toolbar {
+  padding: 28px 0 0;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.search-wrap {
+  position: relative; flex: 1; min-width: 220px; max-width: 360px;
+}
+.search-wrap svg {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 16px; color: var(--text-label); pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 10px 16px 10px 40px;
+  background: var(--card-bg); border: 1px solid var(--line);
+  border-radius: 999px; color: var(--text); font-family: inherit; font-size: 0.88rem;
+  outline: none; transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--text-label); }
+.search-input:focus { border-color: var(--accent-2); }
+.filter-select {
+  padding: 10px 36px 10px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--text-muted); font-family: inherit; font-size: 0.85rem;
+  outline: none; cursor: pointer; transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238a8078' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.filter-select:focus { border-color: var(--accent-2); }
+.filter-select option { background: var(--bg-card); color: var(--text); }
+.count-badge {
+  margin-left: auto; font-size: 0.78rem; color: var(--text-label);
+  background: var(--surface); border: 1px solid var(--line);
+  padding: 6px 14px; border-radius: 999px; white-space: nowrap;
+}
+
+/* ===== ALPHABET BAR ===== */
+.alpha-bar {
+  padding: 20px 0 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.alpha-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--card-bg);
+  color: var(--text-muted); font-size: 0.82rem; font-weight: 600;
+  transition: all 0.18s; cursor: pointer;
+  display: grid; place-items: center;
+}
+.alpha-btn:hover { color: var(--accent-2); border-color: var(--accent-2); }
+.alpha-btn.active { background: var(--accent-2); color: #0f0d0c; border-color: var(--accent-2); }
+.alpha-btn.disabled { opacity: 0.22; pointer-events: none; }
+.alpha-btn.all { width: auto; padding: 0 16px; letter-spacing: 0.06em; font-size: 0.75rem; text-transform: uppercase; }
+
+/* ===== PERSONS SECTION ===== */
+.persons-section { padding: 48px 0 100px; }
+
+/* ===== LETTER GROUP ===== */
+.letter-group { margin-bottom: 60px; }
+.letter-anchor {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 24px;
+}
+.letter-anchor__char {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; line-height: 1; color: var(--accent-2);
+  opacity: 0.65; flex-shrink: 0; width: 52px;
+}
+.letter-anchor__line { flex: 1; height: 1px; background: var(--line); }
+.letter-anchor__count {
+  font-size: 0.72rem; color: var(--text-label);
+  background: var(--surface); border: 1px solid var(--line);
+  padding: 3px 10px; border-radius: 999px;
+}
+
+/* ===== PERSONS GRID ===== */
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+/* ===== PERSON CARD ===== */
+.person-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer; display: flex; flex-direction: column;
+}
+.person-card:hover { border-color: var(--accent-2); transform: translateY(-3px); }
+[data-theme="light"] .person-card { box-shadow: 0 4px 20px rgba(31,26,23,0.08); }
+
+.person-card__photo {
+  aspect-ratio: 3/4; overflow: hidden;
+  background: var(--bg-soft); position: relative;
+}
+.person-card__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.person-card:hover .person-card__photo img { transform: scale(1.05); }
+.person-card__photo-placeholder {
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  background: linear-gradient(160deg, var(--bg-soft) 0%, var(--bg) 100%);
+}
+.person-card__photo-placeholder svg { width: 38%; opacity: 0.12; color: var(--text-muted); }
+
+.person-card__body {
+  padding: 16px 18px 18px; flex: 1;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.person-card__role {
+  font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-2); font-weight: 600;
+}
+.person-card__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; line-height: 1.2; color: var(--text);
+}
+[data-theme="light"] .person-card__name { color: #1a1510; }
+.person-card__years { font-size: 0.76rem; color: var(--text-label); }
+.person-card__tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+}
+.person-card__tag {
+  padding: 3px 10px; border-radius: 999px;
+  border: 1px solid var(--line); font-size: 0.63rem;
+  color: var(--text-muted); background: var(--surface);
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center; padding: 80px 20px;
+  color: var(--text-muted);
+}
+.empty-state__icon { font-size: 2.5rem; opacity: 0.2; margin-bottom: 12px; }
+.empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+/* ===== LOADING ===== */
+.page-loading {
+  min-height: 60vh; display: flex
+  ; flex-direction: column;
+  align-items: center; justify-content: center; color: var(--text-muted); gap: 16px;
+}
+.loading-spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--line); border-top-color: var(--accent-2);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== FOOTER ===== */
+.site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); }
+.footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; flex-wrap: wrap; }
+.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
+.footer-text { color: var(--text-muted); font-size: 0.9rem; }
+.footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-meta span {
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--text-muted);
+  font-size: 0.78rem; background: var(--surface);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .persons-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .alpha-btn { width: 30px; height: 30px; font-size: 0.72rem; border-radius: 8px; }
+  .alpha-btn.all { width: auto; padding: 0 12px; }
+  .toolbar { gap: 8px; }
+  .count-badge { margin-left: 0; }
+}
+@media (max-width: 480px) {
+  .page-hero { padding: 96px 0 36px; }
+  .page-title { font-size: 2.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">
+        <strong>TAMGA</strong>
+        <span>Архив казахского кино</span>
+      </div>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Главная</a>
+      <a href="films.html">Каталог</a>
+      <a href="persons.html" class="active">Персоналии</a>
+      <a href="collections.html">Коллекции</a>
+      <a href="timeline.html">Хроника</a>
+      <a href="media.html">Медиа</a>
+      <a href="about.html">О проекте</a>
+      <a href="contacts.html">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">☀</button>
+    </div>
+  </div>
+</header>
+
+<!-- BACK BTN -->
+<a href="index.html" class="back-btn">← Главная</a>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-kicker">Архив · Персоналии</div>
+    <h1 class="page-title">Персоналии</h1>
+    <p class="page-subtitle">Режиссёры, операторы, актёры и сценаристы казахского кино — от истоков до современности.</p>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          ircle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" type="text" id="searchInput" placeholder="Поиск по имени...">
+      </div>
+      <select class="filter-select" id="roleFilter">
+        <option value="">Все роли</option>
+        <option value="Режиссёр">Режиссёр</option>
+        <option value="Оператор">Оператор</option>
+        <option value="Актёр">Актёр</option>
+        <option value="Актриса">Актриса</option>
+        <option value="Сценарист">Сценарист</option>
+        <option value="Продюсер">Продюсер</option>
+        <option value="Композитор">Композитор</option>
+      </select>
+      <div class="count-badge" id="countBadge">0 персон</div>
+    </div>
+
+    <!-- ALPHABET BAR -->
+    <div class="alpha-bar" id="alphaBar"></div>
+  </div>
+</section>
+
+<!-- PERSONS LIST -->
+<section class="persons-section">
+  <div class="container">
+    <div id="personsContent">
+      <div class="page-loading">
+        <div class="loading-spinner"></div>
+        <p>Загружаем персоналии...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">TAMGA</div>
+      <p class="footer-text">Цифровой архив казахского кино</p>
+    </div>
+    <div class="footer-meta">
+      <span>EN 15907</span>
+      <span>FIAF</span>
+      <span>© 2024 TAMGA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const SPREADSHEET_ID = '1oCMcofMMof0uTL28qvxO1SJRNWuKL3cYtl4rk6dC_PQ';
+const API_KEY = 'AIzaSyACQxPG8ljmrAnTlad3ZpvgEkBz5mafviA';
+
+/* ===== ТЕМА ===== */
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const saved = localStorage.getItem('tamga-theme') || 'dark';
+root.setAttribute('data-theme', saved);
+themeToggle.textContent = saved === 'dark' ? '☀' : '☾';
+themeToggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('tamga-theme', next);
+});
+
+/* ===== ДАННЫЕ ===== */
+let allPersons  = [];
+let activeLetter = 'ALL';
+
+const RU_ALPHABET  = ['А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я'];
+const LAT_ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+function getFirstLetter(name) {
+  if (!name) return '#';
+  return name.trim()[0].toUpperCase();
+}
+
+/* ===== АЛФАВИТНАЯ ПАНЕЛЬ ===== */
+function buildAlphaBar(persons) {
+  const letters = new Set(persons.map(p => getFirstLetter(p.name_ru || p.name_kz || p.name_en)));
+  const bar = document.getElementById('alphaBar');
+
+  let html = `<button class="alpha-btn all ${activeLetter === 'ALL' ? 'active' : ''}" data-letter="ALL">Все</button>`;
+
+  RU_ALPHABET.forEach(l => {
+    const has = letters.has(l);
+    html += `<button class="alpha-btn ${!has ? 'disabled' : ''} ${activeLetter === l ? 'active' : ''}" data-letter="${l}">${l}</button>`;
+  });
+
+  LAT_ALPHABET.forEach(l => {
+    const has = letters.has(l);
+    html += `<button class="alpha-btn ${!has ? 'disabled' : ''} ${activeLetter === l ? 'active' : ''}" data-letter="${l}">${l}</button>`;
+  });
+
+  bar.innerHTML = html;
+
+  bar.querySelectorAll('.alpha-btn:not(.disabled)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeLetter = btn.dataset.letter;
+      renderPersons();
+      document.querySelector('.persons-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
+/* ===== ФИЛЬТРАЦИЯ ===== */
+function getFilteredPersons() {
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+  const role   = document.getElementById('roleFilter').value;
+
+  return allPersons.filter(p => {
+    const name        = (p.name_ru || p.name_kz || p.name_en || '').toLowerCase();
+    const matchSearch = !search || name.includes(search);
+    const matchRole   = !role   || (p.role || '').includes(role);
+    const matchLetter = activeLetter === 'ALL' ||
+                        getFirstLetter(p.name_ru || p.name_kz || p.name_en) === activeLetter;
+    return matchSearch && matchRole && matchLetter;
+  });
+}
+
+/* ===== КАРТОЧКА ПЕРСОНЫ ===== */
+function personCardHTML(p) {
+  const name = p.name_ru || p.name_kz || p.name_en || 'Без имени';
+  const tags = p.tags ? p.tags.split(',').filter(t => t.trim()).slice(0, 3) : [];
+
+  const photoHTML = p.photo_url
+    ? `<img src="${p.photo_url}" alt="${name}" loading="lazy">`
+    : `<div class="person-card__photo-placeholder">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          ircle cx="50" cy="36" r="18" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 80 Q50 58 80 80" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>`;
+
+  return `
+    <div class="person-card" onclick="window.location.href='person.html?id=${p.id}'">
+      <div class="person-card__photo">${photoHTML}</div>
+      <div class="person-card__body">
+        ${p.role   ? `<div class="person-card__role">${p.role}</div>` : ''}
+        <div class="person-card__name">${name}</div>
+        ${p.years  ? `<div class="person-card__years">${p.years}</div>` : ''}
+        ${tags.length ? `<div class="person-card__tags">${tags.map(t =>
+          `<span class="person-card__tag">${t.trim()}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>`;
+}
+
+/* ===== РЕНДЕР ===== */
+function renderPersons() {
+  const filtered = getFilteredPersons();
+  const content  = document.getElementById('personsContent');
+  document.getElementById('countBadge').textContent = `${filtered.length} персон`;
+
+  buildAlphaBar(allPersons);
+
+  if (!filtered.length) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state__icon">◎</div>
+        <p>Персоны не найдены.<br>Попробуйте изменить фильтры или запрос.</p>
+      </div>`;
+    return;
+  }
+
+  if (activeLetter === 'ALL') {
+    const groups = {};
+    filtered.forEach(p => {
+      const l = getFirstLetter(p.name_ru || p.name_kz || p.name_en);
+      if (!groups[l]) groups[l] = [];
+      groups[l].push(p);
+    });
+
+    const sortedLetters = Object.keys(groups).sort((a, b) => a.localeCompare(b, 'ru'));
+
+    content.innerHTML = sortedLetters.map(letter => `
+      <div class="letter-group" id="group-${letter}">
+        <div class="letter-anchor">
+          <div class="letter-anchor__char">${letter}</div>
+          <div class="letter-anchor__line"></div>
+          <div class="letter-anchor__count">${groups[letter].length}</div>
+        </div>
+        <div class="persons-grid">
+          ${groups[letter].map(p => personCardHTML(p)).join('')}
+        </div>
+      </div>
+    `).join('');
+
+  } else {
+    content.innerHTML = `
+      <div class="letter-group">
+        <div class="letter-anchor">
+          <div class="letter-anchor__char">${activeLetter}</div>
+          <div class="letter-anchor__line"></div>
+          <div class="letter-anchor__count">${filtered.length}</div>
+        </div>
+        <div class="persons-grid">
+          ${filtered.map(p => personCardHTML(p)).join('')}
+        </div>
+      </div>`;
+  }
+}
+
+/* ===== ЗАГРУЗКА ===== */
+async function loadPersons() {
+  try {
+    const url  = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Persons?key=${API_KEY}`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
+
+    allPersons = rows.slice(1).map(r => ({
+      id:         r[0]  || '',
+      name_kz:    r[1]  || '',
+      name_ru:    r[2]  || '',
+      name_en:    r[3]  || '',
+      role:       r[4]  || '',
+      years:      r[5]  || '',
+      bio_ru:     r[6]  || '',
+      bio_kz:     r[7]  || '',
+      bio_en:     r[8]  || '',
+      films:      r[9]  || '',
+      photo_url:  r[10] || '',
+      tags:       r[11] || '',
+      era:        r[12] || '',
+          status:     r[13] || '',
+      date_added: r[14] || '',
+      added_by:   r[15] || '',
+    })).filter(p => p.id);
+
+    renderPersons();
+
+  } catch(e) {
+    document.getElementById('personsContent').innerHTML = `
+      <div class="page-loading">
+        <p style="color:var(--text-muted)">Ошибка загрузки. Проверьте подключение.</p>
+      </div>`;
+  }
+}
+
+/* ===== СОБЫТИЯ ===== */
+document.getElementById('searchInput').addEventListener('input', () => {
+  activeLetter = 'ALL';
+  renderPersons();
+});
+document.getElementById('roleFilter').addEventListener('change', renderPersons);
+
+window.addEventListener('load', loadPersons);
+</script>
+</body>
+</html>

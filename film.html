@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Фильм — TAMGA</title>
+//fonts.googleapis.com">
+//fonts.gstatic.com" crossorigin>
+//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="light"] {
+  --bg: #f0ebe2;
+  --bg-soft: #e4ddd1;
+  --bg-card: #ffffff;
+  --surface: rgba(255,255,255,0.9);
+  --surface-strong: rgba(255,255,255,1);
+  --text: #1a1510;
+  --text-muted: #5a5048;
+  --text-label: #8a7a6a;
+  --line: rgba(31,26,23,0.15);
+  --accent: #8f6740;
+  --accent-2: #a07840;
+  --shadow: 0 10px 30px rgba(31,26,23,0.12);
+  --card-bg: #ffffff;
+  --hero-overlay: linear-gradient(to bottom, rgba(240,235,226,0.6) 0%, #f0ebe2 100%);
+}
+[data-theme="dark"] {
+  --bg: #0f0d0c;
+  --bg-soft: #171311;
+  --bg-card: #1a1714;
+  --surface: rgba(255,255,255,0.05);
+  --surface-strong: rgba(255,255,255,0.08);
+  --text: #f3eee7;
+  --text-muted: #b8ada2;
+  --text-label: #8a8078;
+  --line: rgba(255,255,255,0.10);
+  --accent: #b78a57;
+  --accent-2: #e2b97d;
+  --shadow: 0 20px 40px rgba(0,0,0,0.35);
+  --card-bg: #1a1714;
+  --hero-overlay: linear-gradient(to bottom, transparent 0%, #0f0d0c 100%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; border: none; background: none; cursor: pointer; }
+.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 76px; gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  background: var(--surface); box-shadow: var(--shadow);
+  position: relative;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--accent-2); border-radius: 50%;
+}
+.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; color: var(--text); }
+.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+.site-nav { display: flex; align-items: center; gap: 4px; }
+.site-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 0.85rem; color: var(--text-muted);
+  transition: color 0.2s, background 0.2s; white-space: nowrap;
+}
+.site-nav a:hover { color: var(--text); background: var(--surface); }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem; cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-strong); }
+@media (max-width: 900px) { .site-nav { display: none; } }
+
+/* ===== КНОПКА НАЗАД ===== */
+.back-btn {
+  position: fixed;
+  top: 96px;
+  left: 24px;
+  z-index: 99;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+.back-btn:hover {
+  color: var(--accent-2);
+  border-color: var(--accent-2);
+  background: var(--surface-strong);
+}
+/* ===== HERO ===== */
+.film-hero {
+  padding: 100px 0 60px;
+  position: relative; min-height: 70vh;
+}
+.film-hero__bg {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+}
+.film-hero__bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: blur(80px) saturate(0.3) brightness(0.25);
+  transform: scale(1.15);
+}
+.film-hero__bg-overlay {
+  position: absolute; inset: 0;
+  background: var(--hero-overlay);
+}
+.film-hero__inner {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 260px 1fr;
+  gap: 52px; align-items: start;
+}
+
+/* ===== ПОСТЕР ===== */
+.film-poster {
+  width: 260px; border-radius: 16px;
+  overflow: hidden; border: 1px solid var(--line);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.35);
+  flex-shrink: 0; position: sticky; top: 100px;
+}
+[data-theme="light"] .film-poster {
+  box-shadow: 0 20px 60px rgba(31,26,23,0.2);
+}
+.film-poster img { width: 100%; display: block; }
+.film-poster__placeholder {
+  width: 260px; aspect-ratio: 2/3;
+  background: var(--bg-soft);
+  display: grid; place-items: center;
+  border-radius: 16px; border: 1px solid var(--line);
+}
+.film-poster__placeholder svg { opacity: 0.2; width: 50%; color: var(--text-muted); }
+
+/* ===== FILM INFO ===== */
+.film-info { padding-top: 4px; }
+.film-kicker {
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-weight: 600;
+}
+.film-kicker-dot { color: var(--line); }
+.film-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  line-height: 0.95; margin-bottom: 8px;
+  color: var(--text);
+}
+.film-title-alt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; color: var(--text-muted);
+  margin-bottom: 28px; line-height: 1.4;
+  font-style: italic;
+}
+.film-tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 32px;
+}
+.film-tag {
+  padding: 5px 14px; border-radius: 999px;
+  border: 1px solid var(--line); font-size: 0.75rem;
+  color: var(--text-muted); background: var(--card-bg);
+  transition: border-color 0.2s;
+}
+[data-theme="light"] .film-tag {
+  color: var(--text-muted);
+  border-color: rgba(31,26,23,0.2);
+}
+.film-tag:hover { border-color: var(--accent-2); }
+
+/* ===== EN15907 / FIAF МЕТАДАННЫЕ ===== */
+.fiaf-section {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+[data-theme="light"] .fiaf-section {
+  background: #ffffff;
+  border-color: rgba(31,26,23,0.12);
+  box-shadow: 0 4px 20px rgba(31,26,23,0.08);
+}
+.fiaf-section__title {
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 18px; font-weight: 600;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+.fiaf-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fiaf-item { }
+.fiaf-item__label {
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-label); margin-bottom: 4px; font-weight: 500;
+}
+.fiaf-item__value {
+  font-size: 0.9rem; color: var(--text); line-height: 1.5;
+  font-weight: 500;
+}
+[data-theme="light"] .fiaf-item__value {
+  color: #1a1510;
+}
+.fiaf-item__value.empty { color: var(--text-muted); font-style: italic; }
+
+/* ===== СИНОПСИС ===== */
+.film-body { padding: 0 0 80px; }
+.synopsis-block {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px; padding: 32px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+[data-theme="light"] .synopsis-block {
+  background: #ffffff;
+  border-color: rgba(31,26,23,0.12);
+  box-shadow: 0 4px 20px rgba(31,26,23,0.08);
+}
+.synopsis-label {
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-2); margin-bottom: 16px; font-weight: 600;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+.synopsis-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  line-height: 1.75; color: var(--text);
+}
+[data-theme="light"] .synopsis-text { color: #1a1510; }
+
+/* ===== СТАНДАРТ КАРТОЧКА ===== */
+.standard-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.68rem; color: var(--text-muted);
+  background: var(--surface); letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ===== BODY GRID ===== */
+.film-body__grid {
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 24px; align-items: start;
+}
+
+/* ===== FOOTER ===== */
+.return-bar {
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+  background: var(--card-bg);
+}
+[data-theme="light"] .return-bar { background: #faf7f3; }
+.return-bar__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.return-bar__text {
+  font-size: 0.
+  85rem; color: var(--text-muted);
+}
+.return-bar__text strong { color: var(--text); }
+.site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); }
+.footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; flex-wrap: wrap; }
+.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
+.footer-text { color: var(--text-muted); font-size: 0.9rem; }
+.footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-meta span {
+  padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--text-muted);
+  font-size: 0.78rem; background: var(--surface);
+}
+
+/* LOADING */
+.page-loading {
+  min-height: 80vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--text-muted); gap: 16px;
+}
+.loading-spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--line); border-top-color: var(--accent-2);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .film-hero__inner { grid-template-columns: 1fr; }
+  .film-poster { width: 100%; max-width: 240px; position: static; }
+  .film-body__grid { grid-template-columns: 1fr; }
+  .fiaf-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .film-hero { padding: 90px 0 40px; }
+  .film-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Главная</a>
+      <a href="films.html" class="active">Каталог</a>
+      <a href="persons.html">Персоналии</a>
+      <a href="collections.html">Коллекции</a>
+      <a href="timeline.html">Хроника</a>
+      <a href="media.html">Медиа</a>
+      <a href="about.html">О проекте</a>
+      <a href="contacts.html">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle">☀</button>
+    </div>
+  </div>
+</header>
+<a href="films.html" class="back-btn">← Каталог</a>
+<!-- КОНТЕНТ -->
+<div id="pageContent">
+  <div class="page-loading">
+    <div class="loading-spinner"></div>
+    <p>Загружаем фильм...</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="siteFooter" style="display:none">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">TAMGA</div>
+      <p class="footer-text">Цифровой архив казахского кино</p>
+    </div>
+    <div class="footer-meta">
+      <span>EN 15907</span>
+      <span>FIAF</span>
+      <span>© 2024 TAMGA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const SPREADSHEET_ID = '1oCMcofMMof0uTL28qvxO1SJRNWuKL3cYtl4rk6dC_PQ';
+const API_KEY = 'AIzaSyACQxPG8ljmrAnTlad3ZpvgEkBz5mafviA';
+
+// Тема
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const saved = localStorage.getItem('tamga-theme') || 'dark';
+root.setAttribute('data-theme', saved);
+themeToggle.textContent = saved === 'dark' ? '☀' : '☾';
+themeToggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('tamga-theme', next);
+});
+
+// ID из URL
+const params = new URLSearchParams(window.location.search);
+const filmId = params.get('id');
+if (!filmId) window.location.href = 'films.html';
+
+function val(v) {
+  return v && v.trim() ? v.trim() : null;
+}
+
+function fiafItem(label, value) {
+  if (!value) {
+    return `<div class="fiaf-item">
+      <div class="fiaf-item__label">${label}</div>
+      <div class="fiaf-item__value empty">—</div>
+    </div>`;
+  }
+  return `<div class="fiaf-item">
+    <div class="fiaf-item__label">${label}</div>
+    <div class="fiaf-item__value">${value}</div>
+  </div>`;
+}
+
+async function loadFilm() {
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Films?key=${API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const rows = data.values || [];
+
+    const row = rows.slice(1).find(r => r[0] === filmId);
+
+    if (!row) {
+      document.getElementById('pageContent').innerHTML = `
+        <div class="page-loading">
+          <p>Фильм не найден в архиве.</p>
+          <a href="films.html" class="back-btn">← Вернуться в каталог</a>
+        </div>`;
+      return;
+    }
+
+    const film = {
+      id:          row[0]  || '',
+      title_kz:    row[1]  || '',
+      title_ru:    row[2]  || '',
+      title_en:    row[3]  || '',
+      year:        row[4]  || '',
+      direction:   (row[5] || '').trim(),
+      genre:       row[6]  || '',
+      director:    row[7]  || '',
+      operator:    row[8]  || '',
+      duration:    row[9]  || '',
+      studio:      row[10] || '',
+      synopsis_ru: row[11] || '',
+      synopsis_kz: row[12] || '',
+      synopsis_en: row[13] || '',
+      poster_url:  row[14] || '',
+      stills:      row[15] || '',
+      access:      row[16] || '',
+      tags:        row[17] || '',
+      era:         row[18] || '',
+      status:      row[19] || '',
+      date_added:  row[20] || '',
+      added_by:    row[21] || '',
+    };
+
+    document.title = `${film.title_ru || film.title_kz || 'Фильм'} — TAMGA`;
+
+    // Теги
+    const tagsHTML = film.tags
+      ? film.tags.split(',').filter(t => t.trim()).map(t =>
+          `<span class="film-tag">${t.trim()}</span>`).join('')
+      : '';
+
+    // Постер
+    const posterHTML = film.poster_url
+      ? `<div class="film-poster">
+           <img src="${film.poster_url}" alt="${film.title_ru}" loading="lazy">
+         </div>`
+      : `<div class="film-poster__placeholder">
+           <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <rect x="20" y="15" width="60" height="70" rx="4" stroke="currentColor" stroke-width="2"/>
+             ircle cx="50" cy="42" r="12" stroke="currentColor" stroke-width="2"/>
+             <path d="M30 72 Q50 55 70 72" stroke="currentColor" stroke-width="2"/>
+           </svg>
+         </div>`;
+
+    // Фон
+    const bgHTML = film.poster_url
+      ? `<div class="film-hero__bg">
+           <img src="${film.poster_url}" alt="" aria-hidden="true">
+           <div class="film-hero__bg-overlay"></div>
+         </div>`
+      : '';
+
+    // Альтернативные названия
+    const altTitles = [film.title_kz, film.title_en]
+      .filter(t => t && t !== film.title_ru)
+      .join(' · ');
+
+    document.getElementById('pageContent').innerHTML = `
+
+      <!-- HERO -->
+      <section class="film-hero">
+        ${bgHTML}
+        <div class="container">
+          <div class="film-hero__inner">
+            ${posterHTML}
+            <div class="film-info">
+
+              <!-- Кикер -->
+              <div class="film-kicker">
+                ${film.year ? `<span>${film.year}</span><span class="film-kicker-dot">·</span>` : ''}
+                ${film.direction ? `<span>${film.direction}</span>` : ''}
+                ${film.era ? `<span class="film-kicker-dot">·</span><span>${film.era}</span>` : ''}
+                <span class="standard-badge">EN 15907</span>
+                <span class="standard-badge">FIAF</span>
+              </div>
+
+              <!-- Название -->
+              <h1 class="film-title">${film.title_ru || film.title_kz || 'Без названия'}</h1>
+              ${altTitles ? `<div class="film-title-alt">${altTitles}</div>` : '<div style="margin-bottom:28px"></div>'}
+
+              <!-- Теги -->
+              ${tagsHTML ? `<div class="film-tags">${tagsHTML}</div>` : ''}
+
+              <!-- EN15907: Идентификация произведения -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Идентификация произведения · EN 15907 §5.1</div>
+                <div class="fiaf-grid">
+                  ${fiafItem('Идентификатор (ID)', film.id)}
+                  ${fiafItem('Тип произведения', film.direction || 'Кинематографическое')}
+                  ${fiafItem('Год производства', film.year)}
+                  ${fiafItem('Студия / Продюсер', film.studio)}
+                </div>
+              </div>
+
+              <!-- EN15907: Агенты -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Агенты · EN 15907 §5.3 / FIAF</div>
+                <div class="fiaf-grid">
+                  ${fiafItem('Режиссёр', film.director)}
+                  ${fiafItem('Оператор-постановщик', film.operator)}
+                  ${fiafItem('Длительность', film.duration ? film.duration + ' мин' : null)}
+                  ${fiafItem('Жанр / Форма', film.genre)}
+                </div>
+              </div>
+
+              <!-- Доступность -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Доступ и статус · FIAF Cataloguing Rules</div>
+                <div class="fiaf-grid">
+                  ${fiafItem('Статус доступа', film.access || film.status)}
+                  ${fiafItem('Статус записи', film.status)}
+                  ${fiafItem('Дата добавления', film.date_added)}
+                  ${fiafItem('Источник', film.added_by)}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- СИНОПСИС И МЕТАДАННЫЕ -->
+      <section class="film-body">
+        <div class="container">
+          <div class="film-body__grid">
+
+            <!-- Синопсис -->
+            <div>
+              ${film.synopsis_ru ? `
+                <div class="synopsis-block">
+                  <div class="synopsis-label">Синопсис · Русский</div>
+                  <p class="synopsis-text">${film.synopsis_ru}</p>
+                </div>
+              ` : ''}
+              ${film.synopsis_kz ? `
+                <div class="synopsis-block">
+                  <div class="synopsis-label">Синопсис · Қазақша</div>
+                  <p class="synopsis-text">${film.synopsis_kz}</p>
+                </div>
+              ` : ''}
+              ${film.synopsis_en ? `
+                <div class="synopsis-block">
+                  <div class="synopsis-label">Synopsis · English</div>
+                  <p class="synopsis-text">${film.synopsis_en}</p>
+                </div>
+              ` : ''}
+              ${!film.synopsis_ru && !film.synopsis_kz && !film.synopsis_en ? `
+                <div class="synopsis-block">
+                  <div class="synopsis-label">Синопсис</div>
+                  <p class="synopsis-text" style="color:var(--text-muted);font-style:italic;">
+                    Описание отсутствует в архиве.
+                  </p>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Боковая панель -->
+            <div>
+
+              <!-- Все названия EN15907 -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Названия · EN 15907 §5.2</div>
+                <div style="display:grid;gap:12px">
+                  ${fiafItem('Казахское', film.title_kz)}
+                  ${fiafItem('Русское', film.title_ru)}
+                  ${fiafItem('Английское', film.title_en)}
+                </div>
+              </div>
+
+              <!-- Технические данные -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Технические данные · FIAF</div>
+                <div style="display:grid;gap:12px">
+                  ${fiafItem('Тип', film.direction
+                                  )}
+                  ${fiafItem('Жанр', film.genre)}
+                  ${fiafItem('Длительность', film.duration ? film.duration + ' мин' : null)}
+                  ${fiafItem('Студия', film.studio)}
+                  ${fiafItem('Год', film.year)}
+                </div>
+              </div>
+
+              <!-- Стандарт -->
+              <div class="fiaf-section">
+                <div class="fiaf-section__title">Стандарт описания</div>
+                <div style="display:grid;gap:8px">
+                  <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">
+                    <span class="standard-badge">EN 15907</span>
+                    <span style="font-size:0.8rem;color:var(--text-muted)">European Standard for Film Identification</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
+                    <span class="standard-badge">FIAF</span>
+                    <span style="font-size:0.8rem;color:var(--text-muted)">International Federation of Film Archives</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ВЕРНУТЬСЯ В КАТАЛОГ -->
+      <div class="return-bar">
+        <div class="container return-bar__inner">
+          <div class="return-bar__text">
+            <strong>TAMGA</strong> — Цифровой архив казахского кино
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    document.getElementById('siteFooter').style.display = 'block';
+
+  } catch (e) {
+    document.getElementById('pageContent').innerHTML = `
+      <div class="page-loading">
+        <p style="color:var(--text-muted)">Ошибка загрузки. Проверьте подключение.</p>
+        <a href="films.html" class="back-btn">← Вернуться в каталог</a>
+      </div>`;
+  }
+}
+
+window.addEventListener('load', loadFilm);
+</script>
+</body>
+</html>
