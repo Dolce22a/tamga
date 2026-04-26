@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Персоналии — TAMGA</title>
-//fonts.googleapis.com">
-//fonts.gstatic.com" crossorigin>
-//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root, [data-theme="light"] {
   --bg: #f0ebe2; --bg-soft: #e4ddd1; --bg-card: #ffffff;
@@ -72,16 +72,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 .theme-toggle:hover { background: var(--surface-strong); }
 @media (max-width: 900px) { .site-nav { display: none; } }
 
-/* ===== BACK BTN ===== */
-.back-btn {
-  position: fixed; top: 96px; left: 24px; z-index: 99;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 999px;
-  border: 1px solid var(--line); background: var(--card-bg);
-  color: var(--text-muted); font-size: 0.82rem;
-  transition: all 0.2s; box-shadow: var(--shadow); white-space: nowrap;
-}
-.back-btn:hover { color: var(--accent-2); border-color: var(--accent-2); background: var(--surface-strong); }
+
 
 /* ===== PAGE HERO ===== */
 .page-hero {
@@ -311,15 +302,14 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   </div>
 </header>
 
-<!-- BACK BTN -->
-<a href="index.html" class="back-btn">← Главная</a>
+
 
 <!-- HERO -->
 <section class="page-hero">
   <div class="container">
     <div class="page-kicker">Архив · Персоналии</div>
     <h1 class="page-title">Персоналии</h1>
-    <p class="page-subtitle">Режиссёры, операторы, актёры и сценаристы казахского кино — от истоков до современности.</p>
+    <p class="page-subtitle">Режиссёры, операторы, актёры и сценаристы казахского кино - от истоков до современности.</p>
 
     <!-- TOOLBAR -->
     <div class="toolbar">
@@ -364,12 +354,12 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   <div class="container footer-inner">
     <div>
       <div class="footer-brand">TAMGA</div>
-      <p class="footer-text">Цифровой архив казахского кино</p>
+      <p class="footer-text" data-i18n="footer_desc">Концепт цифрового архива истории казахстанского кино.</p>
     </div>
     <div class="footer-meta">
-      <span>EN 15907</span>
-      <span>FIAF</span>
-      <span>© 2024 TAMGA</span>
+      <span data-i18n="footer_tag1">Astana IT University</span>
+      <span data-i18n="footer_tag2">Diploma Project</span>
+      <span>© 2026 TAMGA</span>
     </div>
   </div>
 </footer>

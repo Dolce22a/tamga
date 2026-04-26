@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Контакты — TAMGA</title>
-//fonts.googleapis.com">
-//fonts.gstatic.com" crossorigin>
-//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root, [data-theme="light"] {
-  --bg: #f0ebe2;
-  --bg-soft: #e4ddd1;
-  --bg-card: #ffffff;
-  --surface: rgba(255,255,255,0.9);
-  --surface-strong: rgba(255,255,255,1);
-  --text: #1a1510;
-  --text-muted: #5a5048;
-  --text-label: #8a7a6a;
-  --line: rgba(31,26,23,0.15);
-  --accent: #8f6740;
-  --accent-2: #a07840;
-  --shadow: 0 10px 30px rgba(31,26,23,0.12);
-  --card-bg: #ffffff;
-}
+ :root,
+    [data-theme="light"] {
+      --bg: #f3efe8;
+      --bg-soft: #ebe4d8;
+      --surface: rgba(255,255,255,0.58);
+      --surface-strong: rgba(255,255,255,0.72);
+      --text: #1f1a17;
+      --text-muted: #655c56;
+      --line: rgba(31,26,23,0.12);
+      --accent: #8f6740;
+      --accent-2: #c79d5f;
+      --shadow: 0 10px 30px rgba(31,26,23,0.10);
+      --hero-glow: radial-gradient(circle at 50% 30%, rgba(199,157,95,0.20), transparent 45%);
+    }
 [data-theme="dark"] {
   --bg: #0f0d0c;
   --bg-soft: #171311;
@@ -49,14 +48,17 @@ body {
   overflow-x: hidden;
 }
 a { color: inherit; text-decoration: none; }
-button { font: inherit; border: none; background: none; cursor: pointer; }
-.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+    button { font: inherit; border: none; background: none; cursor: pointer; }
 
-/* ===== HEADER ===== */
+    .container {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
 .site-header {
   position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
   backdrop-filter: blur(18px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background: color-mix(in srgb, var(--bg) 74%, transparent);
   border-bottom: 1px solid var(--line);
 }
 .site-header__inner {
@@ -80,38 +82,27 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   border: 1.5px solid var(--accent-2); border-radius: 50%;
 }
 .brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
-.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; color: var(--text); }
+.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; }
 .brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
+
+/* NAV */
 .site-nav { display: flex; align-items: center; gap: 4px; }
 .site-nav a {
   padding: 8px 14px; border-radius: 999px;
   font-size: 0.85rem; color: var(--text-muted);
-  transition: color 0.2s, background 0.2s; white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
 }
 .site-nav a:hover { color: var(--text); background: var(--surface); }
-.site-nav a.active { color: var(--accent-2); background: var(--surface); font-weight: 600; }
+.site-nav a.active { color: var(--accent-2); background: var(--surface); }
+
 .header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .theme-toggle {
   width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid var(--line); background: var(--surface); color: var(--text);
-  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem; cursor: pointer;
+  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem;
 }
 .theme-toggle:hover { background: var(--surface-strong); }
-@media (max-width: 900px) { .site-nav { display: none; } }
-
-/* ===== BACK BTN ===== */
-.back-btn {
-  position: fixed;
-  top: 96px; left: 24px; z-index: 99;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--card-bg);
-  color: var(--text-muted); font-size: 0.82rem;
-  transition: all 0.2s; cursor: pointer;
-  box-shadow: var(--shadow); white-space: nowrap;
-}
-.back-btn:hover { color: var(--accent-2); border-color: var(--accent-2); background: var(--surface-strong); }
 
 /* ===== PAGE HERO ===== */
 .page-hero {
@@ -377,18 +368,15 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 <body>
 
 <!-- HEADER -->
-<header class="site-header">
+ <header class="site-header">
   <div class="container site-header__inner">
     <a href="index.html" class="brand">
       <div class="brand-mark"></div>
-      <div class="brand-text">
-        <strong>TAMGA</strong>
-        <span>Архив казахского кино</span>
-      </div>
+      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
     </a>
     <nav class="site-nav">
       <a href="index.html">Главная</a>
-      <a href="films.html">Каталог</a>
+      <a href="films.html" >Каталог</a>
       <a href="persons.html">Персоналии</a>
       <a href="collections.html">Коллекции</a>
       <a href="timeline.html">Хроника</a>
@@ -410,7 +398,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
     <p class="page-subtitle">
       TAMGA открыт для сотрудничества, исследований и предложений.
       Если вы хотите передать материалы, сообщить об ошибке или стать
-      партнёром — напишите нам.
+      партнёром - напишите нам.
     </p>
   </div>
 </section>
@@ -510,24 +498,24 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
         <!-- Форма -->
         <div id="formBlock">
           <div class="form-title">Написать нам</div>
-          <div class="form-subtitle">Ответим в течение одного рабочего дня на казахском, русском или английском языке.</div>
+          <div class="form-subtitle">Ответим в течение одного рабочего дня</div>
 
           <form id="contactForm" novalidate>
 
             <div class="form-group">
-              abel class="form-label" for="cf-name">Ваше имя</label>
+              </label> Ваше имя</label>
               <input class="form-input" type="text" id="cf-name" placeholder="Айгерим Сейткали" required>
             </div>
 
             <div class="form-group">
-              abel class="form-label" for="cf-email">Email</label>
+              </label> Email</label>
               <input class="form-input" type="email" id="cf-email" placeholder="name@example.com" required>
             </div>
 
             <div class="form-group">
-              abel class="form-label" for="cf-topic">Тема обращения</label>
+              </label> Тема обращения</label>
               <select class="form-select" id="cf-topic">
-                <option value="">— Выберите тему —</option>
+                <option value="">-Выберите тему-</option>
                 <option>Передача материалов в архив</option>
                 <option>Исправление данных в каталоге</option>
                 <option>Исследовательский запрос</option>
@@ -538,7 +526,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
             </div>
 
             <div class="form-group">
-              abel class="form-label" for="cf-message">Сообщение</label>
+              </label>Сообщение</label>
               <textarea class="form-textarea" id="cf-message" placeholder="Опишите ваш запрос подробнее..." required></textarea>
             </div>
 
@@ -575,7 +563,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
           <span class="faq-question__icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Напишите нам на research@tamga.kz с кратким описанием материала — год, тип носителя, источник. Наши специалисты свяжутся с вами для организации передачи и оцифровки.</p>
+          <p>Напишите нам на research@tamga.kz с кратким описанием материала - год, тип носителя, источник. Наши специалисты свяжутся с вами для организации передачи и оцифровки.</p>
         </div>
       </div>
 
@@ -585,13 +573,13 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
           <span class="faq-question__icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Да. Академические и образовательные запросы рассматриваются в приоритетном порядке. Укажите тему исследования и аффилиацию при обращении — это ускорит процесс.</p>
+          <p>Да. Академические и образовательные запросы рассматриваются в приоритетном порядке. Укажите тему исследования и аффилиацию при обращении - это ускорит процесс.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button         class="faq-question">
-          Я нашёл ошибку в данных фильма — как сообщить?
+          Я нашёл ошибку в данных фильма, как сообщить?
           <span class="faq-question__icon">+</span>
         </button>
         <div class="faq-answer">
@@ -628,12 +616,12 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   <div class="container footer-inner">
     <div>
       <div class="footer-brand">TAMGA</div>
-      <p class="footer-text">Цифровой архив казахского кино</p>
+      <p class="footer-text" data-i18n="footer_desc">Концепт цифрового архива истории казахстанского кино.</p>
     </div>
     <div class="footer-meta">
-      <span>EN 15907</span>
-      <span>FIAF</span>
-      <span>© 2024 TAMGA</span>
+      <span data-i18n="footer_tag1">Astana IT University</span>
+      <span data-i18n="footer_tag2">Diploma Project</span>
+      <span>© 2026 TAMGA</span>
     </div>
   </div>
 </footer>

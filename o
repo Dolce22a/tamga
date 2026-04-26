@@ -1,0 +1,630 @@
+pip install fpdf2
+from fpdf import FPDF
+from fpdf.enums import XPos, YPos
+import math, os
+
+class TAMGA_PDF(FPDF):
+    def __init__(self):
+        super().__init__(orientation='L', unit='mm', format='A4')
+        self.set_auto_page_break(False)
+        self.set_margins(0, 0, 0)
+
+    def bg_dark(self):
+        self.set_fill_color(15, 13, 12)
+        self.rect(0, 0, 297, 210, 'F')
+        self.set_fill_color(226, 185, 125)
+        self.rect(0, 0, 3, 210, 'F')
+
+    def kicker(self, text, y=22):
+        self.set_text_color(226, 185, 125)
+        self.set_font("Helvetica", "B", 9)
+        self.set_xy(22, y)
+        self.cell(0, 0, text)
+
+    def gold_line(self, x=22, y=58, w=100):
+        self.set_fill_color(226, 185, 125)
+        self.rect(x, y, w, 0.7, 'F')
+
+    def logo(self, cx, cy, r=40):
+        self.set_draw_color(226, 185, 125)
+        self.set_line_width(0.5)
+        self.ellipse(cx-r, cy-r, r*2, r*2)
+        ri = r * 0.45
+        self.ellipse(cx-ri, cy-ri, ri*2, ri*2)
+        rd = r * 0.08
+        self.set_fill_color(226, 185, 125)
+        self.ellipse(cx-rd, cy-rd, rd*2, rd*2, 'F')
+        for a in [0, 90, 180, 270]:
+            rad = math.radians(a)
+            mx = cx + (r*0.7) * math.cos(rad)
+            my = cy + (r*0.7) * math.sin(rad)
+            self.ellipse(mx-0.8, my-0.8, 1.6, 1.6, 'F')
+
+pdf = TAMGA_PDF()
+
+# ── SLIDE 1: TITLE ──────────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "B", 72)
+pdf.set_xy(22, 35)
+pdf.cell(0, 0, "TAMGA")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "", 16)
+pdf.set_xy(24, 90)
+pdf.cell(0, 0, "Digital Archive of Kazakh Cinema")
+pdf.gold_line(24, 106, 90)
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 9)
+pdf.set_xy(24, 112)
+pdf.cell(0, 0, "Astana IT University  |  Diploma Project  |  2026")
+for i, line in enumerate(["Alua - Design, Concept, UX, Interviews", "Diana - Research, Data", "Tyro - Logic, Backend"]):
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_xy(24, 125 + i*10)
+    pdf.cell(0, 0, line)
+pdf.logo(225, 90, 42)
+
+# ── SLIDE 2: PROBLEM ────────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("THE PROBLEM")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 38)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "Kazakh cinema has")
+pdf.set_text_color(226, 185, 125)
+pdf.set_xy(22, 56)
+pdf.cell(0, 0, "no digital home.")
+pdf.gold_line(22, 78, 130)
+
+problems = [
+    ("01", "Films get lost", "No single database of Kazakh films exists"),
+    ("02", "Data is scattered", "Each studio keeps records separately. No standard."),
+    ("03", "No access", "Researchers have no open structured resource"),
+]
+for i, (num, title, desc) in enumerate(problems):
+    bx = 22 + i * 90
+    by = 86
+    pdf.set_fill_color(30, 25, 22)
+    pdf.rect(bx, by, 83, 72, 'F')
+    pdf.set_draw_color(60, 50, 44)
+    pdf.set_line_width(0.3)
+    pdf.rect(bx, by, 83, 72)
+    pdf.set_fill_color(226, 185, 125)
+    pdf.rect(bx, by, 83, 1.5, 'F')
+    pdf.set_text_color(226, 185, 125)
+    pdf.set_font("Helvetica", "B", 28)
+    pdf.set_xy(bx+6, by+6)
+    pdf.cell(0, 0, num)
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.set_xy(bx+6, by+38)
+    pdf.cell(0, 0, title)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_xy(bx+6, by+50)
+    pdf.multi_cell(71, 5, desc)
+
+# right quote block
+pdf.set_fill_color(23, 19, 17)
+pdf.rect(295-120, 86, 113, 72, 'F')
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "I", 12)
+pdf.set_xy(180, 95)
+pdf.multi_cell(105, 7, '"Only reason, knowledge and memory elevate a people."')
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 9)
+pdf.set_xy(180, 145)
+pdf.cell(0, 0, "- Abai Kunanbayev")
+
+# ── SLIDE 3: NAME & CONCEPT ─────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("NAME & CONCEPT")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 60)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "TAMGA")
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "", 13)
+pdf.set_xy(22, 82)
+pdf.cell(0, 0, "tamga (kaz.) - a mark, a symbol, a clan seal")
+pdf.gold_line(22, 94, 170)
+
+items = [
+    "Named after Tamgaly - ancient petroglyphs site in Kazakhstan",
+    "Every petroglyph = a mark of memory, just like every film frame",
+    "Logo: abstract tamga - concentric circles with center point",
+    "Interface: stone textures, warm tones, orbit forms",
+]
+for i, item in enumerate(items):
+    pdf.set_fill_color(226, 185, 125)
+    pdf.ellipse(22, 104 + i*14 + 3, 3, 3, 'F')
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_xy(30, 102 + i*14)
+    pdf.cell(0, 0, item)
+pdf.logo(225, 105, 52)
+
+# ── SLIDE 4: COLORS & FONTS ──────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("VISUAL IDENTITY")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "Colors & Typography")
+pdf.gold_line(22, 58, 100)
+
+swatches = [
+    ("#0f0d0c", (15,13,12), "Background Dark"),
+    ("#f3efe8", (243,239,232), "Background Light"),
+    ("#e2b97d", (226,185,125), "Gold Accent"),
+    ("#b78a57", (183,138,87), "Bronze"),
+    ("#9fb7c9", (159,183,201), "Blue Accent"),
+    ("#b89ac8", (184,154,200), "Purple Accent"),
+    ("#f3eee7", (243,238,231), "Primary Text"),
+    ("#b8ada2", (184,173,162), "Muted Text"),
+]
+pdf.set_font("Helvetica", "B", 9)
+pdf.set_text_color(184, 173, 162)
+pdf.set_xy(22, 64)
+pdf.cell(0, 0, "PALETTE")
+for i, (hex_c, rgb, name) in enumerate(swatches):
+    col, row = i % 4, i // 4
+    bx, by = 22 + col * 65, 72 + row * 42
+    pdf.set_fill_color(*rgb)
+    pdf.rect(bx, by, 59, 23, 'F')
+    if rgb[0] > 200:
+        pdf.set_draw_color(160, 150, 140)
+        pdf.set_line_width(0.2)
+        pdf.rect(bx, by, 59, 23)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 7)
+    pdf.set_xy(bx, by+25)
+    pdf.cell(59, 0, hex_c, align='C')
+    pdf.set_xy(bx, by+31)
+    pdf.cell(59, 0, name, align='C')
+
+tx = 162
+pdf.set_font("Helvetica", "B", 9)
+pdf.set_text_color(184, 173, 162)
+pdf.set_xy(tx, 64)
+pdf.cell(0, 0, "TYPOGRAPHY")
+for j, (label, sub, ex) in enumerate([
+    ("Cormorant Garamond", "Serif | 500-700 | Headings, Quotes", "Elegant. Archival. Cultural."),
+    ("Inter", "Sans-serif | 400-700 | Body, Navigation, UI", "Clear. Readable. Universal."),
+]):
+    by2 = 72 + j * 58
+    pdf.set_fill_color(30, 25, 22)
+    pdf.rect(tx, by2, 125, 48, 'F')
+    pdf.set_draw_color(60, 50, 44)
+    pdf.set_line_width(0.3)
+    pdf.rect(tx, by2, 125, 48)
+    pdf.set_text_color(226, 185, 125)
+    sz = 20 if j == 0 else 16
+    pdf.set_font("Helvetica", "B", sz)
+    pdf.set_xy(tx+6, by2+6)
+    pdf.cell(0, 0, label)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(tx+6, by2+26)
+    pdf.cell(0, 0, sub)
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "I", 10)
+    pdf.set_xy(tx+6, by2+36)
+    pdf.cell(0, 0, ex)
+
+# ── SLIDE 5: SITE STRUCTURE ──────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("SITE ARCHITECTURE")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "8 Pages. One System.")
+pdf.gold_line(22, 58, 100)
+
+pages_data = [
+    ("index.html", "HOME", "Hero + DNA Spiral + Stars"),
+    ("films.html", "CATALOG", "Films, filters, search"),
+    ("film.html", "FILM CARD", "Poster, metadata, synopsis"),
+    ("persons.html", "FIGURES", "Directors, cinematographers"),
+    ("about.html", "ABOUT", "Mission, team, experts"),
+    ("contacts.html", "CONTACTS", "Contact form"),
+    ("collections.html", "COLLECTIONS", "Thematic sets [WIP]"),
+    ("timeline.html", "TIMELINE", "Visual history [WIP]"),
+]
+for i, (file, name, desc) in enumerate(pages_data):
+    col, row = i % 4, i // 4
+    bx, by = 22 + col * 68, 66 + row * 66
+    pdf.set_fill_color(23, 19, 17)
+    pdf.rect(bx, by, 63, 56, 'F')
+    pdf.set_draw_color(50, 42, 37)
+    pdf.set_line_width(0.3)
+    pdf.rect(bx, by, 63, 56)
+    pdf.set_fill_color(226, 185, 125)
+    pdf.rect(bx, by, 63, 1.5, 'F')
+    pdf.set_text_color(226, 185, 125)
+    pdf.set_font("Helvetica", "B", 11)
+    pdf.set_xy(bx+4, by+6)
+    pdf.cell(0, 0, name)
+    pdf.set_text_color(100, 88, 80)
+    pdf.set_font("Helvetica", "", 7)
+    pdf.set_xy(bx+4, by+18)
+    pdf.cell(0, 0, file)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(bx+4, by+28)
+    pdf.multi_cell(55, 5, desc)
+
+# ── SLIDE 6: UNIQUE FEATURES ─────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("UNIQUE FEATURES")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 28)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "What makes TAMGA different")
+pdf.gold_line(22, 55, 140)
+
+# DNA block
+pdf.set_fill_color(23, 19, 17)
+pdf.rect(22, 62, 125, 130, 'F')
+pdf.set_draw_color(60, 50, 44)
+pdf.set_line_width(0.4)
+pdf.rect(22, 62, 125, 130)
+cx = 84
+for step in range(18):
+    y_ = 72 + step * 6
+    angle = step * 0.45
+    x1 = cx + math.sin(angle) * 22
+    x2 = cx + math.sin(angle + math.pi) * 22
+    depth = (math.cos(angle) + 1) / 2
+    pdf.set_draw_color(60, 50, 44)
+    pdf.set_line_width(0.3)
+    pdf.line(x1, y_, x2, y_)
+    r1, r2 = 1.5 + depth * 3, 1.5 + (1-depth) * 3
+    pdf.set_fill_color(226, 185, int(80 + 100 * depth))
+    pdf.ellipse(x1-r1/2, y_-r1/2, r1, r1, 'F')
+    pdf.set_fill_color(159, 183, 201)
+    pdf.ellipse(x2-r2/2, y_-r2/2, r2, r2, 'F')
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "B", 12)
+pdf.set_xy(27, 170)
+pdf.cell(0, 0, "DNA Spiral of Cinema History")
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 8)
+pdf.set_xy(27, 180)
+pdf.multi_cell(113, 4, "Drag to spin. Click a node to reveal a Kazakh film.")
+
+# Stars block
+pdf.set_fill_color(10, 9, 9)
+pdf.rect(152, 62, 132, 130, 'F')
+pdf.set_draw_color(60, 50, 44)
+pdf.set_line_width(0.4)
+pdf.rect(152, 62, 132, 130)
+stars_pos = [
+    (218, 100, 5.5, (226,185,125)), (200, 88, 4.5, (226,185,125)),
+    (188, 102, 4.5, (226,185,125)), (205, 78, 4.0, (226,185,125)),
+    (230, 112, 4.5, (159,183,201)), (240, 122, 4.8, (159,183,201)),
+    (245, 115, 3.8, (184,154,200)), (223, 90, 4.0, (184,154,200)),
+]
+for a, b in [(0,1),(0,2),(0,4),(4,5),(5,6),(1,3),(3,7)]:
+    pdf.set_draw_color(226, 185, 125)
+    pdf.set_line_width(0.2)
+    pdf.line(stars_pos[a][0], stars_pos[a][1], stars_pos[b][0], stars_pos[b][1])
+for (sx, sy, r, color) in stars_pos:
+    pdf.set_fill_color(*color)
+    pdf.ellipse(sx-r, sy-r, r*2, r*2, 'F')
+    pdf.set_fill_color(255, 245, 220)
+    pdf.ellipse(sx-r*0.3, sy-r*0.3, r*0.6, r*0.6, 'F')
+for i in range(60):
+    bx_ = 155 + (i * 37) % 126
+    by_ = 65 + (i * 29) % 108
+    pdf.set_fill_color(200, 195, 190)
+    pdf.ellipse(bx_, by_, 0.3, 0.3, 'F')
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "B", 12)
+pdf.set_xy(157, 170)
+pdf.cell(0, 0, "Zhetikaraksy Constellation")
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 8)
+pdf.set_xy(157, 180)
+pdf.multi_cell(120, 4, "8 stars = 8 directors. 3 generations: Gold / Blue / Purple.")
+
+# ── SLIDE 7: LANGUAGES ───────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("MULTILINGUAL")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "3 Languages. Zero reload.")
+pdf.gold_line(22, 58, 140)
+
+langs = [
+    ("RU", "Russian", "Primary language", (226,185,125)),
+    ("EN", "English", "International audience", (159,183,201)),
+    ("KZ", "Qazaqsha", "National language", (184,154,200)),
+]
+for i, (code, name, note, color) in enumerate(langs):
+    bx = 22 + i * 90
+    by = 70
+    pdf.set_fill_color(23, 19, 17)
+    pdf.rect(bx, by, 82, 90, 'F')
+    pdf.set_fill_color(*color)
+    pdf.rect(bx, by, 82, 2, 'F')
+    pdf.set_text_color(*color)
+    pdf.set_font("Helvetica", "B", 36)
+    pdf.set_xy(bx+6, by+8)
+    pdf.cell(0, 0, code)
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "B", 13)
+    pdf.set_xy(bx+6, by+48)
+    pdf.cell(0, 0, name)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_xy(bx+6, by+62)
+    pdf.cell(0, 0, note)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(bx+6, by+75)
+    pdf.cell(0, 0, "localStorage saved")
+
+pdf.set_fill_color(30, 25, 22)
+pdf.rect(22, 168, 260, 28, 'F')
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 9)
+pdf.set_xy(30, 174)
+pdf.cell(0, 0, "Powered by: i18n.js  |  Switch without page reload  |  Language saved in localStorage")
+
+# ── SLIDE 8: TECH STACK ───────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("TECH STACK")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "How it is built")
+pdf.gold_line(22, 58, 100)
+
+tech_groups = [
+    ("FRONTEND", (226,185,125), [
+        ("HTML5 / CSS3", "Markup, themes, CSS variables"),
+        ("JavaScript", "Canvas API, animations, i18n"),
+        ("Google Fonts", "Cormorant Garamond + Inter"),
+    ]),
+    ("DATA", (159,183,201), [
+        ("Google Sheets", "Main database for films & persons"),
+        ("Sheets API", "Frontend reads data live"),
+        ("Telegram Bot", "Team fills data via chat"),
+    ]),
+    ("BACKEND", (184,154,200), [
+        ("Flask / Python", "Server logic, REST API"),
+        ("Render", "Backend hosting"),
+        ("GitHub Pages", "Frontend deploy"),
+    ]),
+]
+for i, (group, color, items) in enumerate(tech_groups):
+    bx = 22 + i * 90
+    by = 65
+    # group header
+    pdf.set_fill_color(*color)
+    pdf.rect(bx, by, 83, 7, 'F')
+    pdf.set_text_color(15, 13, 12)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_xy(bx+4, by+1)
+    pdf.cell(0, 0, group)
+    # items
+    for j, (tech, desc) in enumerate(items):
+        iy = by + 12 + j * 32
+        pdf.set_fill_color(23, 19, 17)
+        pdf.rect(bx, iy, 83, 27, 'F')
+        pdf.set_draw_color(50, 42, 37)
+        pdf.set_line_width(0.2)
+        pdf.rect(bx, iy, 83, 27)
+        pdf.set_text_color(*color)
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.set_xy(bx+5, iy+4)
+        pdf.cell(0, 0, tech)
+        pdf.set_text_color(184, 173, 162)
+        pdf.set_font("Helvetica", "", 8)
+        pdf.set_xy(bx+5, iy+16)
+        pdf.multi_cell(73, 4, desc)
+
+# GitHub + Render logos (text badges)
+pdf.set_fill_color(30, 25, 22)
+pdf.rect(22, 172, 260, 24, 'F')
+for k, badge in enumerate(["GitHub", "GitHub Pages", "Render", "Google Sheets API", "Telegram Bot API"]):
+    bx2 = 28 + k * 52
+    pdf.set_fill_color(40, 35, 30)
+    pdf.rect(bx2, 176, 48, 14, 'F')
+    pdf.set_draw_color(80, 70, 60)
+    pdf.set_line_width(0.2)
+    pdf.rect(bx2, 176, 48, 14)
+    pdf.set_text_color(226, 185, 125)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(bx2, 176)
+    pdf.cell(48, 14, badge, align='C')
+
+# ── SLIDE 9: DATABASE STRUCTURE ──────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("DATABASE")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "Google Sheets as a database")
+pdf.gold_line(22, 58, 140)
+
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 10)
+pdf.set_xy(22, 64)
+pdf.cell(0, 0, "Why? Team can edit without touching code. Telegram Bot writes directly to it. API serves data to frontend.")
+
+fields = [
+    ("ID", "KZ-0001", "Unique film identifier"),
+    ("title_kz / ru / en", "My Name is Kozha / ...", "Title in 3 languages"),
+    ("year", "1963", "Release year"),
+    ("director_id", "DIR-0012", "Link to persons table"),
+    ("genre / studio", "Drama / Kazakhfilm", "Genre and production studio"),
+    ("synopsis_ru/kz/en", "Story about...", "Description in 3 languages"),
+    ("poster_url", "https://...", "Film poster image"),
+    ("access_status", "archive / catalog / lost", "Availability status"),
+    ("status", "verified / draft / pending", "Data quality status"),
+]
+
+# Table header
+hx, hy = 22, 75
+col_ws = [45, 60, 90]
+headers = ["Field", "Example", "Purpose"]
+pdf.set_fill_color(35, 28, 24)
+pdf.rect(hx, hy, sum(col_ws)+4, 10, 'F')
+pdf.set_fill_color(226, 185, 125)
+pdf.rect(hx, hy, sum(col_ws)+4, 1.5, 'F')
+for k, h in enumerate(headers):
+    pdf.set_text_color(226, 185, 125)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_xy(hx + sum(col_ws[:k]) + 2, hy+2)
+    pdf.cell(col_ws[k], 0, h)
+
+for row_i, (field, ex, purpose) in enumerate(fields):
+    ry = hy + 12 + row_i * 12
+    if row_i % 2 == 0:
+        pdf.set_fill_color(23, 19, 17)
+        pdf.rect(hx, ry, sum(col_ws)+4, 11, 'F')
+    pdf.set_text_color(159, 183, 201)
+    pdf.set_font("Helvetica", "B", 8)
+    pdf.set_xy(hx+2, ry+2)
+    pdf.cell(col_ws[0], 0, field)
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(hx+col_ws[0]+2, ry+2)
+    pdf.cell(col_ws[1], 0, ex)
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(hx+col_ws[0]+col_ws[1]+2, ry+2)
+    pdf.cell(col_ws[2], 0, purpose)
+
+# Right: Telegram bot flow
+rx = 210
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "B", 11)
+pdf.set_xy(rx, 75)
+pdf.cell(0, 0, "Telegram Bot Flow")
+flow_steps = [
+    "Team member sends film info to bot",
+    "Bot parses: title, year, director...",
+    "Bot writes row to Google Sheets",
+    "Frontend fetches via Sheets API",
+    "Film appears on the website",
+]
+for fi, step in enumerate(flow_steps):
+    fy = 88 + fi * 18
+    pdf.set_fill_color(226, 185, 125)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_text_color(15, 13, 12)
+    pdf.rect(rx, fy, 8, 8, 'F')
+    pdf.set_xy(rx, fy)
+    pdf.cell(8, 8, str(fi+1), align='C')
+    pdf.set_text_color(184, 173, 162)
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_xy(rx+12, fy+1)
+    pdf.cell(0, 0, step)
+    if fi < 4:
+        pdf.set_draw_color(60, 50, 44)
+        pdf.set_line_width(0.3)
+        pdf.line(rx+4, fy+9, rx+4, fy+18)
+
+# ── SLIDE 10: TEAM ───────────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+pdf.kicker("THE TEAM")
+pdf.set_text_color(243, 239, 232)
+pdf.set_font("Helvetica", "B", 32)
+pdf.set_xy(22, 30)
+pdf.cell(0, 0, "3 people. 1 archive.")
+pdf.gold_line(22, 58, 100)
+
+team = [
+    ("Alua", "Lead Designer & PM", (226,185,125),
+     ["UX / UI Design", "Concept & Branding", "Expert Interviews", "Data Analysis", "Project Management"],
+     "Design, concept, interface, interviews, analysis"),
+    ("Diana", "Research & Data", (159,183,201),
+     ["European archives research", "Data collection", "Google Sheets structure", "Film descriptions"],
+     "Research, data structuring"),
+    ("Tyro", "Developer", (184,154,200),
+     ["Frontend logic", "Backend (Flask)", "API integration", "GitHub management"],
+     "Logic and backend"),
+]
+for i, (name, role, color, skills, quote) in enumerate(team):
+    bx = 22 + i * 91
+    by = 65
+    pdf.set_fill_color(23, 19, 17)
+    pdf.rect(bx, by, 84, 130, 'F')
+    pdf.set_fill_color(*color)
+    pdf.rect(bx, by, 84, 2, 'F')
+    # avatar circle
+    pdf.set_draw_color(*color)
+    pdf.set_line_width(1)
+    pdf.ellipse(bx+32, by+8, 20, 20)
+    pdf.set_font("Helvetica", "B", 14)
+    pdf.set_text_color(*color)
+    pdf.set_xy(bx+32, by+8)
+    pdf.cell(20, 20, name[0], align='C')
+    # name
+    pdf.set_text_color(243, 239, 232)
+    pdf.set_font("Helvetica", "B", 13)
+    pdf.set_xy(bx+4, by+34)
+    pdf.cell(76, 0, name, align='C')
+    # role
+    pdf.set_text_color(*color)
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_xy(bx+4, by+44)
+    pdf.cell(76, 0, role, align='C')
+    # skills
+    for si, skill in enumerate(skills):
+        pdf.set_fill_color(*[int(c*0.3) for c in color])
+        pdf.rect(bx+6, by+56+si*14, 72, 11, 'F')
+        pdf.set_text_color(184, 173, 162)
+        pdf.set_font("Helvetica", "", 8)
+        pdf.set_xy(bx+8, by+57+si*14)
+        pdf.cell(0, 0, skill)
+
+# Experts note
+pdf.set_fill_color(30, 25, 22)
+pdf.rect(22, 198, 260, 8, 'F')
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 8)
+pdf.set_xy(22, 199)
+pdf.cell(0, 0, "Interviews conducted with: archivists, film scholars, IT specialists, developers, designers  |  2025-2026")
+
+# ── SLIDE 11: FINAL ──────────────────────────────────────────
+pdf.add_page()
+pdf.bg_dark()
+
+# big centered layout
+pdf.logo(148, 80, 55)
+
+pdf.set_text_color(226, 185, 125)
+pdf.set_font("Helvetica", "B", 52)
+pdf.set_xy(0, 130)
+pdf.cell(297, 0, "TAMGA", align='C')
+
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 13)
+pdf.set_xy(0, 155)
+pdf.cell(297, 0, "Archive. Memory. The Heritage of Kazakh Cinema.", align='C')
+
+pdf.gold_line(98, 165, 100)
+
+pdf.set_text_color(184, 173, 162)
+pdf.set_font("Helvetica", "", 9)
+pdf.set_xy(0, 172)
+pdf.cell(297, 0, "Astana IT University  |  Media Technologies  |  2026", align='C')
+
+# Save
+pdf.output("output/TAMGA_Presentation.pdf")
+print("PDF saved!")
