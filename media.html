@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медиа Архив — TAMGA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --buttermilk: #FFF1B5;
+            --pastel-blue: #C1DBE8;
+            --old-burgundy: #43302E;
+            --white: #FFFFFF;
+
+            --bg-primary: #FFF1B5;
+            --bg-secondary: #F7E7A4;
+            --bg-card: rgba(255, 255, 255, 0.70);
+            --bg-card-strong: rgba(255, 255, 255, 0.86);
+
+            --text-primary: #43302E;
+            --text-secondary: rgba(67, 48, 46, 0.72);
+
+            --accent: #C1DBE8;
+            --border: rgba(67, 48, 46, 0.15);
+            --border-strong: rgba(67, 48, 46, 0.24);
+
+            --shadow: rgba(67, 48, 46, 0.10);
+            --shadow-strong: rgba(67, 48, 46, 0.16);
+
+            --gold-accent: #B89052;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #43302E;
+            --bg-secondary: #43302E;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --bg-card-strong: rgba(255, 255, 255, 0.08);
+
+            --text-primary: #FFF1B5;
+            --text-secondary: rgba(255, 241, 181, 0.68);
+
+            --accent: #C1DBE8;
+            --border: rgba(255, 241, 181, 0.14);
+            --border-strong: rgba(255, 241, 181, 0.22);
+
+            --shadow: rgba(0, 0, 0, 0.18);
+            --shadow-strong: rgba(0, 0, 0, 0.24);
+
+            --gold-accent: #E5C07B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body,
+        .scene,
+        .diagonal-ribbon,
+        .photo-slice,
+        .photo-slice *,
+        .controls,
+        .view-toggle,
+        .view-btn,
+        .category-sidebar,
+        .category-sidebar * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background 0.45s ease, color 0.45s ease;
+            overflow-x: hidden;
+        }
+
+        body.locked {
+            overflow: hidden;
+        }
+
+        body::before {
+            display: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+        .slice-img,
+        .grid-item img,
+        .lightbox-img {
+            pointer-events: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -56px;
+            left: 16px;
+            z-index: 9999;
+            padding: 10px 14px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-radius: 12px;
+            transition: top .25s ease;
+        }
+
+        .skip-link:focus {
+            top: 16px;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 150;
+            padding-top: 14px;
+        }
+
+        .site-header__shell {
+            width: min(1320px, calc(100% - 40px));
+            margin: 0 auto;
+            border-radius: 26px;
+            border: 1px solid var(--border);
+            background: var(--bg-card-strong);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 24px var(--shadow);
+            position: relative;
+        }
+
+        .site-header__inner {
+            min-height: 62px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 18px;
+            align-items: center;
+            padding: 8px 14px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            position: relative;
+            display: grid;
+            place-items: center;
+            background: transparent;
+            border: 1px solid var(--border);
+            box-shadow: none;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--text-primary);
+        }
+
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold-accent);
+            box-shadow: none;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: .92rem;
+            line-height: 1;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+        }
+
+        .brand-text span {
+            display: block;
+            margin-top: 4px;
+            font-size: .68rem;
+            line-height: 1.2;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .site-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .site-nav a {
+            padding: 9px 12px;
+            border-radius: 999px;
+            font-size: .84rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: .24s ease;
+            white-space: nowrap;
+        }
+
+        .site-nav a:hover,
+        .site-nav a.active {
+            color: var(--text-primary);
+            background: rgba(193, 219, 232, 0.24);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lang-dropdown {
+            position: relative;
+        }
+
+        .lang-trigger,
+        .theme-toggle,
+        .menu-toggle {
+            height: 40px;
+            min-width: 40px;
+            padding: 0 14px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            box-shadow: none;
+            color: var(--text-primary);
+            transition: .24s ease;
+            flex-shrink: 0;
+        }
+
+        .lang-trigger:hover,
+        .theme-toggle:hover,
+        .menu-toggle:hover {
+            transform: translateY(-1px);
+            background: var(--bg-card);
+        }
+
+        .lang-trigger {
+            min-width: 64px;
+            font-size: .84rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .lang-trigger::after {
+            content: "▾";
+            font-size: .72rem;
+            opacity: .7;
+        }
+
+        .lang-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 124px;
+            padding: 8px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: var(--bg-card-strong);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 14px 28px var(--shadow-strong);
+            display: none;
+            z-index: 200;
+        }
+
+        .lang-menu.is-open {
+            display: grid;
+            gap: 4px;
+        }
+
+        .lang-option {
+            width: 100%;
+            min-height: 38px;
+            padding: 0 12px;
+            border-radius: 12px;
+            text-align: left;
+            color: var(--text-secondary);
+            font-size: .84rem;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .lang-option:hover,
+        .lang-option.is-active {
+            background: rgba(193, 219, 232, 0.24);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            font-size: 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: relative;
+            padding: 0;
+        }
+
+        .menu-toggle span,
+        .menu-toggle::before,
+        .menu-toggle::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 1.8px;
+            border-radius: 999px;
+            background: currentColor;
+            transition: transform .24s ease, opacity .24s ease;
+        }
+
+        .menu-toggle span {
+            transform: translateY(0);
+        }
+
+        .menu-toggle::before {
+            transform: translateY(-5px);
+        }
+
+        .menu-toggle::after {
+            transform: translateY(5px);
+        }
+
+        .menu-toggle.is-open span {
+            opacity: 0;
+        }
+
+        .menu-toggle.is-open::before {
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.is-open::after {
+            transform: rotate(-45deg);
+        }
+
+        .main {
+            padding-top: 108px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .hero-copy {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 34px 40px 0;
+        }
+
+        .hero-copy-inner {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 30px 32px;
+            box-shadow: 0 10px 26px var(--shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .hero-kicker {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            line-height: 1;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+        }
+
+        .hero-text {
+            max-width: 760px;
+            font-size: 15px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+        }
+
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 620px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: var(--old-burgundy);
+            box-shadow: none;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 250px);
+            min-height: 420px;
+            perspective: 2000px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+        }
+
+        .scene:active {
+            cursor: grabbing;
+        }
+
+        .diagonal-ribbon {
+            position: relative;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            will-change: transform;
+            transition: transform 0.15s ease-out;
+            padding: 40px;
+        }
+
+        .photo-slice {
+            position: relative;
+            width: 140px;
+            height: 200px;
+            flex-shrink: 0;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: rotateY(8deg);
+            transform-origin: center center;
+        }
+
+        .slice-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .photo-slice:hover {
+            transform: rotateY(0deg) translateZ(80px) scale(1.15);
+            z-index: 1000;
+            margin: 0 20px;
+        }
+
+        .photo-slice:hover .slice-img {
+            box-shadow: 0 20px 44px rgba(0,0,0,0.28);
+            border-radius: 10px;
+        }
+
+        .slice-info {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+            font-size: 11px;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .photo-slice:hover .slice-info {
+            opacity: 1;
+        }
+
+        .info-title {
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .info-meta {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .category-sidebar {
+            position: fixed;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            min-width: 170px;
+        }
+
+        .category-sidebar h4 {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            padding: 6px 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-list li:hover,
+        .category-list li.active {
+            color: var(--text-primary);
+        }
+
+        .category-list .count {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+
+        .grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+            display: none;
+        }
+
+        .grid-container.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-item {
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 34px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .image-wrap {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255,255,255,0.10);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .grid-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .loading,
+        .empty-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 16px;
+        }
+
+        .scroll-hint {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.55;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+            z-index: 50;
+            text-align: center;
+        }
+
+        .site-footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 10px 40px 48px;
+        }
+
+        .footer-inner-custom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .footer-text {
+            max-width: 640px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .footer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-meta span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            background: var(--bg-card);
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            background: var(--bg-card);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 28px 60px rgba(0,0,0,0.28);
+            animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-close:hover {
+            background: var(--accent);
+            color: var(--old-burgundy);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-close svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .lightbox-img-wrap {
+            width: 100%;
+            height: 55vh;
+            min-height: 300px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .lightbox-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lightbox-info {
+            padding: 28px 32px;
+            background: var(--bg-primary);
+        }
+
+        .lightbox-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .lightbox-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .lightbox-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .category-sidebar {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 980px) {
+            .site-header__inner {
+                grid-template-columns: auto auto;
+                justify-content: space-between;
+            }
+
+            .site-nav {
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: calc(100% + 10px);
+                padding: 12px;
+                border-radius: 22px;
+                border: 1px solid var(--border);
+                background: var(--bg-card-strong);
+                backdrop-filter: blur(14px);
+                box-shadow: 0 14px 28px var(--shadow-strong);
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .site-nav.is-open {
+                display: flex;
+            }
+
+            .site-nav a {
+                width: 100%;
+                text-align: left;
+            }
+
+            .menu-toggle {
+                display: grid;
+            }
+
+            .main {
+                padding-top: 110px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-header {
+                padding-top: 10px;
+            }
+
+            .site-header__shell {
+                width: min(1320px, calc(100% - 20px));
+                border-radius: 24px;
+            }
+
+            .site-header__inner {
+                padding: 10px 12px;
+                gap: 12px;
+            }
+
+            .brand-text span {
+                display: none;
+            }
+
+            .hero-copy,
+            .controls,
+            .grid-container,
+            .site-footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .hero-title {
+                font-size: 30px;
+            }
+
+            .main {
+                padding-top: 96px;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .photo-slice {
+                width: 100px;
+                height: 150px;
+            }
+
+            .photo-slice:hover {
+                margin: 0 10px;
+            }
+
+            .lightbox-content {
+                width: 95%;
+            }
+
+            .lightbox-img-wrap {
+                height: 40vh;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner-custom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .scroll-hint {
+                width: calc(100% - 40px);
+            }
+
+            .lang-trigger {
+                min-width: 56px;
+                padding: 0 12px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main">Перейти к контенту</a>
+
+    <header class="site-header">
+        <div class="site-header__shell">
+            <div class="site-header__inner">
+                <a href="index.html" class="brand" aria-label="TAMGA — главная">
+                    <div class="brand-mark" aria-hidden="true"></div>
+                    <div class="brand-text">
+                        <strong>TAMGA</strong>
+                        <span>Архив казахского кино</span>
+                    </div>
+                </a>
+
+                <nav class="site-nav" id="siteNav" aria-label="Основная навигация">
+                    <a href="index.html">Главная</a>
+                    <a href="films.html">Каталог</a>
+                    <a href="persons.html">Персоналии</a>
+                    <a href="media.html" class="active">Медиа</a>
+                    <a href="about.html">О проекте</a>
+                    <a href="contacts.html">Контакты</a>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="lang-dropdown">
+                        <button class="lang-trigger" id="langTrigger" type="button" aria-label="Выбор языка" aria-expanded="false">
+                            RU
+                        </button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option is-active" type="button" data-lang="RU">Русский</button>
+                            <button class="lang-option" type="button" data-lang="EN">English</button>
+                            <button class="lang-option" type="button" data-lang="KZ">Қазақша</button>
+                        </div>
+                    </div>
+
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">◐</button>
+
+                    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню">
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main" id="main">
+        <section class="hero-copy">
+            <div class="hero-copy-inner">
+                <p class="hero-kicker">Цифровой архив визуальной памяти</p>
+                <h1 class="hero-title">Медиа TAMGA</h1>
+                <p class="hero-text">
+                    Фотографии, архивные материалы, события, киностудии и визуальные следы истории казахстанского кино.
+                    Здесь медиа можно просматривать как в 3D-ленте, так и в сетке — с быстрым переходом к деталям каждого материала.
+                </p>
+            </div>
+        </section>
+
+        <section class="controls">
+            <div>
+                <h2 class="page-title">Медиа архив</h2>
+                <p class="page-subtitle">Исследуйте коллекцию через пространственную ленту или классическую сетку.</p>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="ribbon" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="3" height="16" rx="1"></rect>
+                        <rect x="7" y="4" width="3" height="16" rx="1"></rect>
+                        <rect x="12" y="4" width="3" height="16" rx="1"></rect>
+                        <rect x="17" y="4" width="3" height="16" rx="1"></rect>
+                    </svg>
+                    3D Лента
+                </button>
+
+                <button class="view-btn" data-view="grid" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    </svg>
+                    Сетка
+                </button>
+            </div>
+        </section>
+
+        <div class="scene" id="ribbonScene">
+            <div class="diagonal-ribbon" id="diagonalRibbon">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Загрузка медиа...
+                </div>
+            </div>
+        </div>
+
+        <aside class="category-sidebar" id="categorySidebar">
+            <h4>Категории архива</h4>
+            <ul class="category-list" id="categoryList"></ul>
+        </aside>
+
+        <section class="grid-container" id="gridView">
+            <div class="grid" id="grid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Загрузка медиа...
+                </div>
+            </div>
+        </section>
+
+        <div class="scroll-hint" id="scrollHint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            Прокручивайте ленту, наводите на карточки и открывайте материалы по клику
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner-custom">
+            <div>
+                <div class="footer-brand">TAMGA</div>
+                <p class="footer-text">
+                    Цифровой архив казахстанского кино: фильмы, персоны, коллекции, временные линии и визуальные материалы в одном пространстве.
+                </p>
+            </div>
+
+            <div class="footer-meta">
+                <span>Astana IT University</span>
+                <span>Diploma Project</span>
+                <span>2026 TAMGA</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <div class="lightbox-img-wrap">
+                <img class="lightbox-img" id="lightboxImg" src="" alt="">
+            </div>
+
+            <div class="lightbox-info">
+                <h2 id="lightboxTitle"></h2>
+                <div class="lightbox-meta">
+                    <span id="lightboxDate"></span>
+                    <span id="lightboxCategory"></span>
+                </div>
+                <p id="lightboxDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEMO_DATA = [
+            {
+                id: 1,
+                title: "Алматы, 1985",
+                date: "1985",
+                category: "Город",
+                description: "Вид на город с Кок-Тобе в советские годы.",
+                image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 2,
+                title: "Кино Алма-Ата",
+                date: "1972",
+                category: "Кинотеатр",
+                description: "Премьера фильма на большом экране.",
+                image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 3,
+                title: "На съемках",
+                date: "1990",
+                category: "Бэкстейдж",
+                description: "Режиссер за работой на павильоне киностудии.",
+                image: "https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 4,
+                title: "Фестиваль",
+                date: "2001",
+                category: "Событие",
+                description: "Международный кинофестиваль в Алматы.",
+                image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 5,
+                title: "Актеры",
+                date: "1995",
+                category: "Портрет",
+                description: "Театральная труппа после спектакля.",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 6,
+                title: "Площадь",
+                date: "1980",
+                category: "Город",
+                description: "Центральная площадь зимним днем.",
+                image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 7,
+                title: "Киностудия",
+                date: "1978",
+                category: "Студия",
+                description: "Павильон съемок киностудии Казахстан.",
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80"
+            },
+            {
+                id: 8,
+                title: "Премьера",
+                date: "2005",
+                category: "Событие",
+                description: "Премьерный показ в центральном кинотеатре.",
+                image: "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?auto=format&fit=crop&w=1200&q=80"
+            }
+        ];
+
+        const root = document.documentElement;
+        const body = document.body;
+
+        const themeToggle = document.getElementById('themeToggle');
+        const menuToggle = document.getElementById('menuToggle');
+        const siteNav = document.getElementById('siteNav');
+
+        const langTrigger = document.getElementById('langTrigger');
+        const langMenu = document.getElementById('langMenu');
+        const langOptions = document.querySelectorAll('.lang-option');
+
+        const viewBtns = document.querySelectorAll('.view-btn');
+        const ribbonScene = document.getElementById('ribbonScene');
+        const gridView = document.getElementById('gridView');
+        const categorySidebar = document.getElementById('categorySidebar');
+        const scrollHint = document.getElementById('scrollHint');
+        const diagonalRibbon = document.getElementById('diagonalRibbon');
+        const grid = document.getElementById('grid');
+        const categoryList = document.getElementById('categoryList');
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxDate = document.getElementById('lightboxDate');
+        const lightboxCategory = document.getElementById('lightboxCategory');
+        const lightboxDesc = document.getElementById('lightboxDesc');
+
+        let allData = [...DEMO_DATA];
+        let currentFilter = 'all';
+
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        root.setAttribute('data-theme', currentTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+                root.setAttribute('data-theme', currentTheme);
+                localStorage.setItem('theme', currentTheme);
+            });
+        }
+
+        if (menuToggle && siteNav) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('is-open');
+                siteNav.classList.toggle('is-open');
+            });
+
+            document.querySelectorAll('.site-nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    siteNav.classList.remove('is-open');
+                    menuToggle.classList.remove('is-open');
+                });
+            });
+        }
+
+        if (langTrigger && langMenu && langOptions.length) {
+            langTrigger.addEventListener('click', () => {
+                const opened = langMenu.classList.toggle('is-open');
+                langTrigger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+            });
+
+            langOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    langOptions.forEach(btn => btn.classList.remove('is-active'));
+                    option.classList.add('is-active');
+                    langTrigger.childNodes[0].nodeValue = option.dataset.lang;
+                    langMenu.classList.remove('is-open');
+                    langTrigger.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.lang-dropdown')) {
+                    langMenu.classList.remove('is-open');
+                    langTrigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        function setView(view) {
+            if (view === 'ribbon') {
+                ribbonScene.style.display = 'flex';
+                gridView.classList.remove('active');
+                scrollHint.style.display = 'flex';
+                categorySidebar.style.display = window.innerWidth > 1100 ? 'block' : 'none';
+            } else {
+                ribbonScene.style.display = 'none';
+                gridView.classList.add('active');
+                scrollHint.style.display = 'none';
+                categorySidebar.style.display = 'none';
+            }
+        }
+
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                viewBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                setView(btn.dataset.view);
+            });
+        });
+
+        function openLightbox(item) {
+            lightboxImg.src = item.image;
+            lightboxImg.alt = item.title;
+            lightboxTitle.textContent = item.title;
+            lightboxDate.textContent = item.date;
+            lightboxCategory.textContent = item.category;
+            lightboxDesc.textContent = item.description;
+            lightbox.classList.add('active');
+            body.classList.add('locked');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            body.classList.remove('locked');
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        function createRibbonItem(item) {
+            const div = document.createElement('div');
+            div.className = 'photo-slice';
+            div.dataset.category = item.category;
+            div.dataset.id = item.id;
+
+            div.innerHTML = `
+                <img class="slice-img" src="${item.image}" alt="${item.title}" loading="lazy">
+                <div class="slice-info">
+                    <div class="info-title">${item.title}</div>
+                    <div class="info-meta">${item.date} · ${item.category}</div>
+                </div>
+            `;
+
+            div.addEventListener('click', () => openLightbox(item));
+            return div;
+        }
+
+        function createGridItem(item) {
+            const div = document.createElement('article');
+            div.className = 'grid-item';
+
+            div.innerHTML = `
+                <div class="image-wrap">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy">
+                </div>
+                <div class="content">
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <div class="meta">
+                        <span>${item.date}</span>
+                        <span>${item.category}</span>
+                    </div>
+                </div>
+            `;
+
+            div.addEventListener('click', () => openLightbox(item));
+            return div;
+        }
+
+        function getFilteredData() {
+            if (currentFilter === 'all') return allData;
+            return allData.filter(item => item.category === currentFilter);
+        }
+
+        function renderRibbon(data) {
+            diagonalRibbon.innerHTML = '';
+
+            if (!data.length) {
+                diagonalRibbon.innerHTML = `<div class="empty-state">Ничего не найдено для этой категории.</div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                diagonalRibbon.appendChild(createRibbonItem(item));
+            });
+        }
+
+        function renderGrid(data) {
+            grid.innerHTML = '';
+
+            if (!data.length) {
+                grid.innerHTML = `<div class="empty-state">Ничего не найдено для этой категории.</div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                grid.appendChild(createGridItem(item));
+            });
+        }
+
+        function updateFilter(cat) {
+            currentFilter = cat;
+
+            categoryList.querySelectorAll('li').forEach(li => {
+                li.classList.toggle('active', li.dataset.cat === cat);
+            });
+
+            const filtered = getFilteredData();
+            renderRibbon(filtered);
+            renderGrid(filtered);
+        }
+
+        function renderCategories(data) {
+            const categories = {};
+            data.forEach(item => {
+                categories[item.category] = (categories[item.category] || 0) + 1;
+            });
+
+            categoryList.innerHTML = '';
+
+            const allItem = document.createElement('li');
+            allItem.className = 'active';
+            allItem.dataset.cat = 'all';
+            allItem.innerHTML = `Все <span class="count">${data.length}</span>`;
+            categoryList.appendChild(allItem);
+
+            Object.entries(categories).forEach(([cat, count]) => {
+                const li = document.createElement('li');
+                li.dataset.cat = cat;
+                li.innerHTML = `${cat} <span class="count">${count}</span>`;
+                categoryList.appendChild(li);
+            });
+
+            categoryList.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', () => {
+                    updateFilter(li.dataset.cat);
+                });
+            });
+        }
+
+        function renderAll() {
+            renderCategories(allData);
+            updateFilter('all');
+        }
+
+        let targetRotateX = 0;
+        let targetRotateY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        let scrollOffset = 0;
+        let targetScrollOffset = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startScrollOffset = 0;
+
+        ribbonScene.addEventListener('mousemove', (e) => {
+            const rect = ribbonScene.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const mouseX = (e.clientX - rect.left - centerX) / centerX;
+            const mouseY = (e.clientY - rect.top - centerY) / centerY;
+
+            targetRotateY = mouseX * 10;
+            targetRotateX = -mouseY * 6;
+        });
+
+        ribbonScene.addEventListener('mouseleave', () => {
+            targetRotateX = 0;
+            targetRotateY = 0;
+        });
+
+        ribbonScene.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.photo-slice')) return;
+            e.preventDefault();
+            isDragging = true;
+            startX = e.clientX;
+            startScrollOffset = scrollOffset;
+            ribbonScene.style.cursor = 'grabbing';
+            document.body.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            targetScrollOffset = startScrollOffset + dx * 2;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            ribbonScene.style.cursor = 'grab';
+            document.body.style.cursor = 'default';
+        });
+
+        window.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
+
+        ribbonScene.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            targetScrollOffset -= e.deltaY * 1.2;
+        }, { passive: false });
+
+        function animateRibbon() {
+            currentRotateX += (targetRotateX - currentRotateX) * 0.08;
+            currentRotateY += (targetRotateY - currentRotateY) * 0.08;
+            scrollOffset += (targetScrollOffset - scrollOffset) * 0.1;
+
+            diagonalRibbon.style.transform = `
+                translateX(${scrollOffset}px)
+                rotateX(${-8 + currentRotateX}deg)
+                rotateY(${15 + currentRotateY}deg)
+            `;
+
+            requestAnimationFrame(animateRibbon);
+        }
+
+        renderAll();
+        setView('ribbon');
+        animateRibbon();
+
+        window.addEventListener('resize', () => {
+            const activeView = document.querySelector('.view-btn.active')?.dataset.view || 'ribbon';
+            if (activeView === 'ribbon') {
+                categorySidebar.style.display = window.innerWidth > 1100 ? 'block' : 'none';
+            }
+        });
+
+        window.addEventListener('error', (event) => {
+            console.error('Media page error:', event.message);
+        });
+    </script>
+</body>
+</html>

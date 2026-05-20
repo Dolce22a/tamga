@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAMGA — Person</title>
+  <meta name="description" content="Персоналия архива казахского кино." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --buttermilk: #FFF1B5;
+      --pastel-blue: #C1DBE8;
+      --old-burgundy: #43302E;
+      --white: #FFFFFF;
+      --bg-primary: #FFF1B5;
+      --bg-secondary: #F7E7A4;
+      --bg-card: rgba(255, 255, 255, 0.72);
+      --bg-card-strong: rgba(255, 255, 255, 0.88);
+      --bg-glass: rgba(255, 255, 255, 0.55);
+      --text-primary: #43302E;
+      --text-secondary: rgba(67, 48, 46, 0.74);
+      --text-label: rgba(67, 48, 46, 0.54);
+      --accent: #C1DBE8;
+      --accent-soft: rgba(193, 219, 232, 0.24);
+      --border: rgba(67, 48, 46, 0.14);
+      --border-strong: rgba(67, 48, 46, 0.22);
+      --shadow: rgba(67, 48, 46, 0.10);
+      --shadow-strong: rgba(67, 48, 46, 0.16);
+      --gold-accent: #B89052;
+      --container: min(1320px, calc(100% - 40px));
+    }
+
+    html[data-theme="dark"] {
+      --bg-primary: #43302E;
+      --bg-secondary: #3c2a28;
+      --bg-card: rgba(255, 255, 255, 0.06);
+      --bg-card-strong: rgba(255, 255, 255, 0.08);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      --text-primary: #FFF1B5;
+      --text-secondary: rgba(255, 241, 181, 0.70);
+      --text-label: rgba(255, 241, 181, 0.48);
+      --accent: #C1DBE8;
+      --border: rgba(255, 241, 181, 0.14);
+      --border-strong: rgba(255, 241, 181, 0.24);
+      --shadow: rgba(0, 0, 0, 0.18);
+      --shadow-strong: rgba(0, 0, 0, 0.26);
+      --gold-accent: #E5C07B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(193, 219, 232, 0.20), transparent 20%),
+        radial-gradient(circle at 85% 18%, rgba(184, 144, 82, 0.12), transparent 20%),
+        linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+    .container { width: var(--container); margin: 0 auto; }
+
+    .skip-link {
+      position: absolute;
+      top: -56px;
+      left: 16px;
+      z-index: 9999;
+      padding: 10px 14px;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-radius: 12px;
+      transition: top .25s ease;
+    }
+
+    .skip-link:focus { top: 16px; }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 120;
+      padding-top: 14px;
+    }
+
+    .site-header-shell {
+      width: min(1360px, calc(100% - 40px));
+      margin: 0 auto;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 24px var(--shadow);
+      position: relative;
+    }
+
+    .site-header-inner {
+      min-height: 62px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 8px 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-primary);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold-accent);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: .92rem;
+      line-height: 1;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 4px;
+      font-size: .68rem;
+      line-height: 1.2;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .site-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .site-nav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: .24s ease;
+      white-space: nowrap;
+    }
+
+    .site-nav a:hover,
+    .site-nav a.active {
+      color: var(--text-primary);
+      background: rgba(193, 219, 232, 0.24);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-dropdown { position: relative; }
+
+    .lang-trigger,
+    .theme-toggle,
+    .menu-toggle {
+      height: 40px;
+      min-width: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-primary);
+      transition: .24s ease;
+      flex-shrink: 0;
+    }
+
+    .lang-trigger:hover,
+    .theme-toggle:hover,
+    .menu-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--bg-card);
+    }
+
+    .lang-trigger {
+      min-width: 64px;
+      font-size: .84rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .lang-trigger::after {
+      content: "▾";
+      font-size: .72rem;
+      opacity: .7;
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 124px;
+      padding: 8px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 14px 28px var(--shadow-strong);
+      display: none;
+      z-index: 200;
+    }
+
+    .lang-menu.is-open { display: grid; gap: 4px; }
+
+    .lang-option {
+      width: 100%;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 12px;
+      text-align: left;
+      color: var(--text-secondary);
+      font-size: .84rem;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .lang-option:hover,
+    .lang-option.is-active {
+      background: rgba(193, 219, 232, 0.24);
+      color: var(--text-primary);
+    }
+
+    .theme-toggle { font-size: 1rem; }
+
+    .menu-toggle {
+      display: none;
+      position: relative;
+      padding: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 1.8px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform .24s ease, opacity .24s ease;
+    }
+
+    .menu-toggle span { transform: translateY(0); }
+    .menu-toggle::before { transform: translateY(-5px); }
+    .menu-toggle::after { transform: translateY(5px); }
+    .menu-toggle.is-open span { opacity: 0; }
+    .menu-toggle.is-open::before { transform: rotate(45deg); }
+    .menu-toggle.is-open::after { transform: rotate(-45deg); }
+
+    .main {
+      padding-top: 108px;
+      min-height: 100vh;
+    }
+
+    .person-page {
+      padding: 20px 0 80px;
+    }
+
+    .person-layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: 0 10px 26px var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .person-photo-card {
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+    }
+
+    .person-photo {
+      aspect-ratio: 3 / 4;
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+      overflow: hidden;
+    }
+
+    .person-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .person-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      opacity: 0.3;
+      font-size: 4rem;
+    }
+
+    .person-side {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .person-role {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      font-weight: 700;
+    }
+
+    .person-years {
+      color: var(--text-label);
+      font-size: 0.92rem;
+    }
+
+    .person-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .person-tag {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-glass);
+      font-size: 0.76rem;
+    }
+
+    .person-main {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-card {
+      padding: 34px;
+    }
+
+    .person-kicker {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .person-name {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      line-height: 0.95;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .person-subtitle {
+      max-width: 760px;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-secondary);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .info-card {
+      padding: 28px;
+    }
+
+    .info-title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+
+    .info-text {
+      color: var(--text-secondary);
+      line-height: 1.9;
+      white-space: pre-line;
+    }
+
+    .film-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .film-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      width: fit-content;
+      transition: .2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .page-loading,
+    .page-empty {
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold-accent);
+      animation: spin .8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .site-footer {
+      padding: 10px 40px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-inner-custom {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      max-width: 640px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-meta span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px;
+      background: var(--bg-card);
+    }
+
+    @media (max-width: 980px) {
+      .site-header-inner {
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+      }
+
+      .site-nav {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        top: calc(100% + 10px);
+        padding: 12px;
+        border-radius: 22px;
+        border: 1px solid var(--border);
+        background: var(--bg-card-strong);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 14px 28px var(--shadow-strong);
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .site-nav.is-open { display: flex; }
+      .site-nav a { width: 100%; text-align: left; }
+      .menu-toggle { display: grid; }
+      .main { padding-top: 110px; }
+      .person-layout { grid-template-columns: 1fr; }
+      .person-photo-card { position: static; }
+    }
+
+    @media (max-width: 768px) {
+      .site-header { padding-top: 10px; }
+      .site-header-shell { width: min(1360px, calc(100% - 20px)); border-radius: 24px; }
+      .site-header-inner { padding: 10px 12px; gap: 12px; }
+      .brand-text span { display: none; }
+      .container, .site-footer { width: min(1360px, calc(100% - 20px)); }
+      .main { padding-top: 96px; }
+      .hero-card, .info-card { padding: 24px 20px; }
+      .lang-trigger { min-width: 56px; padding: 0 12px; }
+      .footer-inner-custom { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" id="skipLink">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header-shell">
+      <div class="site-header-inner">
+        <a href="index.html" class="brand" aria-label="TAMGA home">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <strong>TAMGA</strong>
+            <span id="brandSub">Archive of Kazakh Cinema</span>
+          </div>
+        </a>
+
+        <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+          <a href="index.html" data-i18n="navhome">Home</a>
+          <a href="films.html" data-i18n="navfilms">Catalog</a>
+          <a href="persons.html" class="active" data-i18n="navpersons">Persons</a>
+          <a href="media.html" data-i18n="navmedia">Media</a>
+          <a href="about.html" data-i18n="navabout">About</a>
+          <a href="contacts.html" data-i18n="navcontacts">Contacts</a>
+        </nav>
+
+        <div class="header-actions">
+          <div class="lang-dropdown">
+            <button class="lang-trigger" id="langTrigger" type="button" aria-label="Select language" aria-expanded="false">RU</button>
+            <div class="lang-menu" id="langMenu">
+              <button class="lang-option" type="button" data-lang="RU">Русский</button>
+              <button class="lang-option" type="button" data-lang="EN">English</button>
+              <button class="lang-option" type="button" data-lang="KZ">Қазақша</button>
+            </div>
+          </div>
+
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme"></button>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu"><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <section class="person-page">
+      <div class="container">
+        <a href="persons.html" class="back-link" id="backLink">← Назад к персонам</a>
+
+        <div id="personRoot" class="glass-card page-loading" style="margin-top:18px;">
+          <div class="loading-spinner"></div>
+          <p id="loadingText">Загружаем персоналию...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner-custom">
+      <div>
+        <div class="footer-brand">TAMGA</div>
+        <p class="footer-text" id="footerText">Концепт цифрового архива истории казахстанского кино.</p>
+      </div>
+      <div class="footer-meta">
+        <span>Astana IT University</span>
+        <span>Diploma Project</span>
+        <span>© 2026 TAMGA</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const SPREADSHEET_ID = '1oCMcofMMof0uTL28qvxO1SJRNWuKL3cYtl4rk6dC_PQ';
+    const API_KEY = 'AIzaSyACQxPG8ljmrAnTlad3ZpvgEkBz5mafviA';
+
+    const STORAGE_KEYS = {
+      theme: 'tamga-theme',
+      language: 'tamga-language',
+      view: 'tamga-films-view'
+    };
+
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const menuToggle = document.getElementById('menuToggle');
+    const siteNav = document.getElementById('siteNav');
+    const langTrigger = document.getElementById('langTrigger');
+    const langMenu = document.getElementById('langMenu');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    let currentTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'dark';
+    let currentLang = localStorage.getItem(STORAGE_KEYS.language) || 'RU';
+
+    const UI = {
+      RU: {
+        htmlLang: 'ru',
+        pageTitle: 'TAMGA — Персоналия',
+        pageDescription: 'Персоналия архива казахского кино.',
+        brandSub: 'Архив казахского кино',
+        navhome: 'Главная',
+        navfilms: 'Каталог',
+        navpersons: 'Персоналии',
+        navmedia: 'Медиа',
+        navabout: 'О проекте',
+        navcontacts: 'Контакты',
+        back: '← Назад к персонам',
+        loading: 'Загружаем персоналию...',
+        notFound: 'Персоналия не найдена.',
+        bioTitle: 'Биография',
+        filmsTitle: 'Фильмы',
+        tagsTitle: 'Темы',
+        roleFallback: 'Участник киноистории',
+        yearsFallback: 'Годы не указаны',
+        noBio: 'Биография пока не добавлена.',
+        noFilms: 'Фильмография пока не указана.',
+        footerText: 'Концепт цифрового архива истории казахстанского кино.'
+      },
+      EN: {
+        htmlLang: 'en',
+        pageTitle: 'TAMGA — Person',
+        pageDescription: 'Person page in the archive of Kazakh cinema.',
+        brandSub: 'Archive of Kazakh Cinema',
+        navhome: 'Home',
+        navfilms: 'Catalog',
+        navpersons: 'Persons',
+        navmedia: 'Media',
+        navabout: 'About',
+        navcontacts: 'Contacts',
+        back: '← Back to persons',
+        loading: 'Loading person...',
+        notFound: 'Person not found.',
+        bioTitle: 'Biography',
+        filmsTitle: 'Films',
+        tagsTitle: 'Themes',
+        roleFallback: 'Cinema contributor',
+        yearsFallback: 'Years not specified',
+        noBio: 'Biography has not been added yet.',
+        noFilms: 'Filmography has not been added yet.',
+        footerText: 'A concept for a digital archive of the history of Kazakh cinema.'
+      },
+      KZ: {
+        htmlLang: 'kk',
+        pageTitle: 'TAMGA — Тұлға',
+        pageDescription: 'Қазақ киносы архивіндегі тұлға беті.',
+        brandSub: 'Қазақ киносының архиві',
+        navhome: 'Басты бет',
+        navfilms: 'Каталог',
+        navpersons: 'Тұлғалар',
+        navmedia: 'Медиа',
+        navabout: 'Жоба туралы',
+        navcontacts: 'Байланыс',
+        back: '← Тұлғаларға оралу',
+        loading: 'Тұлға жүктелуде...',
+        notFound: 'Тұлға табылмады.',
+        bioTitle: 'Өмірбаян',
+        filmsTitle: 'Фильмдер',
+        tagsTitle: 'Тақырыптар',
+        roleFallback: 'Кино тарихының қатысушысы',
+        yearsFallback: 'Жылдары көрсетілмеген',
+        noBio: 'Өмірбаян әлі қосылмаған.',
+        noFilms: 'Фильмография әлі көрсетілмеген.',
+        footerText: 'Қазақстан киносы тарихының цифрлық архиві тұжырымдамасы.'
+      }
+    };
+
+    function t() {
+      return UI[currentLang] || UI.RU;
+    }
+
+    function escapeHtml(value = '') {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function applyTheme() {
+      root.setAttribute('data-theme', currentTheme);
+      themeToggle.setAttribute('aria-label', currentTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggle.textContent = currentTheme === 'dark' ? '☾' : '☼';
+    }
+
+    function applyUILanguage() {
+      const langUI = t();
+
+      document.documentElement.lang = langUI.htmlLang;
+      document.title = langUI.pageTitle;
+
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) metaDescription.setAttribute('content', langUI.pageDescription);
+
+      if (langTrigger.firstChild) {
+        langTrigger.firstChild.nodeValue = currentLang;
+      } else {
+        langTrigger.textContent = currentLang;
+      }
+
+      langOptions.forEach(option => {
+        option.classList.toggle('is-active', option.dataset.lang === currentLang);
+      });
+
+      document.getElementById('skipLink').textContent = currentLang === 'EN' ? 'Skip to content' : currentLang === 'KZ' ? 'Мазмұнға өту' : 'Перейти к содержанию';
+      document.getElementById('brandSub').textContent = langUI.brandSub;
+      document.querySelector('[data-i18n="navhome"]').textContent = langUI.navhome;
+      document.querySelector('[data-i18n="navfilms"]').textContent = langUI.navfilms;
+      document.querySelector('[data-i18n="navpersons"]').textContent = langUI.navpersons;
+      document.querySelector('[data-i18n="navmedia"]').textContent = langUI.navmedia;
+      document.querySelector('[data-i18n="navabout"]').textContent = langUI.navabout;
+      document.querySelector('[data-i18n="navcontacts"]').textContent = langUI.navcontacts;
+      document.getElementById('backLink').textContent = langUI.back;
+      document.getElementById('loadingText').textContent = langUI.loading;
+      document.getElementById('footerText').textContent = langUI.footerText;
+    }
+
+    function syncFromStorage() {
+      const storedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'dark';
+      const storedLang = localStorage.getItem(STORAGE_KEYS.language) || 'RU';
+
+      if (storedTheme !== currentTheme) {
+        currentTheme = storedTheme;
+        applyTheme();
+      }
+
+      if (storedLang !== currentLang) {
+        currentLang = storedLang;
+        applyUILanguage();
+        if (window.currentPerson) renderPerson(window.currentPerson);
+      }
+    }
+
+    function getDisplayName(person) {
+      if (currentLang === 'KZ') return person.name_kz || person.name_ru || person.name_en || t().roleFallback;
+      if (currentLang === 'EN') return person.name_en || person.name_ru || person.name_kz || t().roleFallback;
+      return person.name_ru || person.name_kz || person.name_en || t().roleFallback;
+    }
+
+    function getBio(person) {
+      if (currentLang === 'KZ') return person.bio_kz || person.bio_ru || person.bio_en || '';
+      if (currentLang === 'EN') return person.bio_en || person.bio_ru || person.bio_kz || '';
+      return person.bio_ru || person.bio_kz || person.bio_en || '';
+    }
+
+    function photoPlaceholder() {
+      return `<div class="person-photo-placeholder">◎</div>`;
+    }
+
+    function renderPerson(person) {
+      window.currentPerson = person;
+
+      const langUI = t();
+      const name = getDisplayName(person);
+      const role = person.role || langUI.roleFallback;
+      const years = person.years || langUI.yearsFallback;
+      const bio = getBio(person) || langUI.noBio;
+      const films = (person.films || '').split(',').map(x => x.trim()).filter(Boolean);
+      const tags = (person.tags || '').split(',').map(x => x.trim()).filter(Boolean);
+      const era = person.era ? `<span class="person-tag">${escapeHtml(person.era)}</span>` : '';
+
+      document.title = `${name} — TAMGA`;
+
+      const photo = person.photo_url
+        ? `<img src="${escapeHtml(person.photo_url)}" alt="${escapeHtml(name)}" loading="lazy" onerror="this.onerror=null; this.parentNode.innerHTML=${JSON.stringify(photoPlaceholder())}">`
+        : photoPlaceholder();
+
+      document.getElementById('personRoot').className = '';
+      document.getElementById('personRoot').innerHTML = `
+        <div class="person-layout">
+          <aside class="glass-card person-photo-card">
+            <div class="person-photo">${photo}</div>
+            <div class="person-side">
+              <div class="person-role">${escapeHtml(role)}</div>
+              <div class="person-years">${escapeHtml(years)}</div>
+              ${(tags.length || person.era) ? `
+                <div class="person-tags">
+                  ${tags.map(tag => `<span class="person-tag">${escapeHtml(tag)}</span>`).join('')}
+                  ${era}
+                </div>
+              ` : ''}
+            </div>
+          </aside>
+
+          <section class="person-main">
+            <div class="glass-card hero-card">
+              <div class="person-kicker">${escapeHtml(role)}</div>
+              <h1 class="person-name">${escapeHtml(name)}</h1>
+              <p class="person-subtitle">${escapeHtml(years)}</p>
+            </div>
+
+            <div class="info-grid">
+              <article class="glass-card info-card">
+                <h2 class="info-title">${escapeHtml(langUI.bioTitle)}</h2>
+                <div class="info-text">${escapeHtml(bio)}</div>
+              </article>
+
+              <article class="glass-card info-card">
+                <h2 class="info-title">${escapeHtml(langUI.filmsTitle)}</h2>
+                <div class="film-list">
+                  ${films.length
+                    ? films.map(film => `<span class="film-chip">${escapeHtml(film)}</span>`).join('')
+                    : `<span class="film-chip">${escapeHtml(langUI.noFilms)}</span>`
+                  }
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    async function loadPerson() {
+      const params = new URLSearchParams(window.location.search);
+      const personId = params.get('id');
+
+      if (!personId) {
+        document.getElementById('personRoot').innerHTML = `<div class="page-empty">${escapeHtml(t().notFound)}</div>`;
+        return;
+      }
+
+      try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Persons?key=${API_KEY}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const rows = data.values || [];
+
+        const persons = rows.slice(1).map(row => ({
+          id: row[0] || '',
+          name_kz: row[1] || '',
+          name_ru: row[2] || '',
+          name_en: row[3] || '',
+          role: row[4] || '',
+          years: row[5] || '',
+          bio_ru: row[6] || '',
+          bio_kz: row[7] || '',
+          bio_en: row[8] || '',
+          films: row[9] || '',
+          photo_url: row[10] || '',
+          tags: row[11] || '',
+          era: row[12] || '',
+          status: row[13] || '',
+          date_added: row[14] || '',
+          added_by: row[15] || ''
+        }));
+
+        const person = persons.find(item => String(item.id) === String(personId));
+
+        if (!person) {
+          document.getElementById('personRoot').innerHTML = `<div class="page-empty">${escapeHtml(t().notFound)}</div>`;
+          return;
+        }
+
+        renderPerson(person);
+      } catch (error) {
+        document.getElementById('personRoot').innerHTML = `<div class="page-empty">${escapeHtml(t().notFound)}</div>`;
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
+      applyTheme();
+    });
+
+    if (menuToggle && siteNav) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('is-open');
+        siteNav.classList.toggle('is-open');
+      });
+
+      document.querySelectorAll('.site-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          siteNav.classList.remove('is-open');
+          menuToggle.classList.remove('is-open');
+        });
+      });
+    }
+
+    if (langTrigger && langMenu && langOptions.length) {
+      langTrigger.addEventListener('click', () => {
+        const opened = langMenu.classList.toggle('is-open');
+        langTrigger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+
+      langOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          currentLang = option.dataset.lang;
+          localStorage.setItem(STORAGE_KEYS.language, currentLang);
+          applyUILanguage();
+          if (window.currentPerson) renderPerson(window.currentPerson);
+          langMenu.classList.remove('is-open');
+          langTrigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.lang-dropdown')) {
+          langMenu.classList.remove('is-open');
+          langTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    window.addEventListener('storage', event => {
+      if ([STORAGE_KEYS.language, STORAGE_KEYS.theme].includes(event.key)) {
+        syncFromStorage();
+      }
+    });
+
+    window.addEventListener('focus', syncFromStorage);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') syncFromStorage();
+    });
+
+    applyTheme();
+    applyUILanguage();
+    window.addEventListener('load', () => {
+      syncFromStorage();
+      loadPerson();
+    });
+  </script>
+</body>
+</html>

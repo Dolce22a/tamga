@@ -1,675 +1,1984 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Фильм - TAMGA</title>
-//fonts.googleapis.com">
-//fonts.gstatic.com" crossorigin>
-//fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root, [data-theme="light"] {
-  --bg: #f0ebe2;
-  --bg-soft: #e4ddd1;
-  --bg-card: #ffffff;
-  --surface: rgba(255,255,255,0.9);
-  --surface-strong: rgba(255,255,255,1);
-  --text: #1a1510;
-  --text-muted: #5a5048;
-  --text-label: #8a7a6a;
-  --line: rgba(31,26,23,0.15);
-  --accent: #8f6740;
-  --accent-2: #a07840;
-  --shadow: 0 10px 30px rgba(31,26,23,0.12);
-  --card-bg: #ffffff;
-  --hero-overlay: linear-gradient(to bottom, rgba(240,235,226,0.6) 0%, #f0ebe2 100%);
-}
-[data-theme="dark"] {
-  --bg: #0f0d0c;
-  --bg-soft: #171311;
-  --bg-card: #1a1714;
-  --surface: rgba(255,255,255,0.05);
-  --surface-strong: rgba(255,255,255,0.08);
-  --text: #f3eee7;
-  --text-muted: #b8ada2;
-  --text-label: #8a8078;
-  --line: rgba(255,255,255,0.10);
-  --accent: #b78a57;
-  --accent-2: #e2b97d;
-  --shadow: 0 20px 40px rgba(0,0,0,0.35);
-  --card-bg: #1a1714;
-  --hero-overlay: linear-gradient(to bottom, transparent 0%, #0f0d0c 100%);
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAMGA Film</title>
+  <meta name="description" content="Detailed film page from the digital archive of Kazakh cinema." />
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  min-height: 100vh;
-  font-family: 'Inter', sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  overflow-x: hidden;
-}
-a { color: inherit; text-decoration: none; }
-button { font: inherit; border: none; background: none; cursor: pointer; }
-.container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
 
-/* ===== HEADER ===== */
-.site-header {
-  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-  backdrop-filter: blur(18px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  border-bottom: 1px solid var(--line);
-}
-.site-header__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  min-height: 76px; gap: 20px;
-}
-.brand {
-  display: flex; align-items: center; gap: 14px;
-  letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0;
-}
-.brand-mark {
-  width: 42px; height: 42px; border-radius: 50%;
-  border: 1px solid var(--line);
-  display: grid; place-items: center;
-  background: var(--surface); box-shadow: var(--shadow);
-  position: relative;
-}
-.brand-mark::before, .brand-mark::after {
-  content: ''; position: absolute;
-  width: 18px; height: 18px;
-  border: 1.5px solid var(--accent-2); border-radius: 50%;
-}
-.brand-mark::after { width: 6px; height: 6px; background: var(--accent-2); border: none; }
-.brand-text strong { display: block; font-size: 0.86rem; font-weight: 700; color: var(--text); }
-.brand-text span { display: block; font-size: 0.72rem; color: var(--text-muted); }
-.site-nav { display: flex; align-items: center; gap: 4px; }
-.site-nav a {
-  padding: 8px 14px; border-radius: 999px;
-  font-size: 0.85rem; color: var(--text-muted);
-  transition: color 0.2s, background 0.2s; white-space: nowrap;
-}
-.site-nav a:hover { color: var(--text); background: var(--surface); }
-.site-nav a.active { color: var(--accent-2); background: var(--surface); font-weight: 600; }
-.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.theme-toggle {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--line); background: var(--surface); color: var(--text);
-  display: grid; place-items: center; transition: 0.25s ease; font-size: 1rem; cursor: pointer;
-}
-.theme-toggle:hover { background: var(--surface-strong); }
-@media (max-width: 900px) { .site-nav { display: none; } }
+  <style>
+    :root {
+      --buttermilk: #FFF1B5;
+      --pastel-blue: #C1DBE8;
+      --old-burgundy: #43302E;
+      --white: #FFFFFF;
 
-/* ===== КНОПКА НАЗАД ===== */
-.back-btn {
-  position: fixed;
-  top: 96px;
-  left: 24px;
-  z-index: 99;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--card-bg);
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  transition: all 0.2s;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  white-space: nowrap;
-}
-.back-btn:hover {
-  color: var(--accent-2);
-  border-color: var(--accent-2);
-  background: var(--surface-strong);
-}
-/* ===== HERO ===== */
-.film-hero {
-  padding: 100px 0 60px;
-  position: relative; min-height: 70vh;
-}
-.film-hero__bg {
-  position: absolute; inset: 0; z-index: 0; overflow: hidden;
-}
-.film-hero__bg img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: blur(80px) saturate(0.3) brightness(0.25);
-  transform: scale(1.15);
-}
-.film-hero__bg-overlay {
-  position: absolute; inset: 0;
-  background: var(--hero-overlay);
-}
-.film-hero__inner {
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: 260px 1fr;
-  gap: 52px; align-items: start;
-}
+      --bg-primary: #FFF1B5;
+      --bg-secondary: #F7E7A4;
+      --bg-card: rgba(255, 255, 255, 0.72);
+      --bg-card-strong: rgba(255, 255, 255, 0.88);
+      --bg-glass: rgba(255, 255, 255, 0.55);
 
-/* ===== ПОСТЕР ===== */
-.film-poster {
-  width: 260px; border-radius: 16px;
-  overflow: hidden; border: 1px solid var(--line);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.35);
-  flex-shrink: 0; position: sticky; top: 100px;
-}
-[data-theme="light"] .film-poster {
-  box-shadow: 0 20px 60px rgba(31,26,23,0.2);
-}
-.film-poster img { width: 100%; display: block; }
-.film-poster__placeholder {
-  width: 260px; aspect-ratio: 2/3;
-  background: var(--bg-soft);
-  display: grid; place-items: center;
-  border-radius: 16px; border: 1px solid var(--line);
-}
-.film-poster__placeholder svg { opacity: 0.2; width: 50%; color: var(--text-muted); }
+      --text-primary: #43302E;
+      --text-secondary: rgba(67, 48, 46, 0.74);
+      --text-label: rgba(67, 48, 46, 0.54);
 
-/* ===== FILM INFO ===== */
-.film-info { padding-top: 4px; }
-.film-kicker {
-  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent-2); margin-bottom: 14px;
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  font-weight: 600;
-}
-.film-kicker-dot { color: var(--line); }
-.film-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.2rem, 5vw, 4.5rem);
-  line-height: 0.95; margin-bottom: 8px;
-  color: var(--text);
-}
-.film-title-alt {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem; color: var(--text-muted);
-  margin-bottom: 28px; line-height: 1.4;
-  font-style: italic;
-}
-.film-tags {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  margin-bottom: 32px;
-}
-.film-tag {
-  padding: 5px 14px; border-radius: 999px;
-  border: 1px solid var(--line); font-size: 0.75rem;
-  color: var(--text-muted); background: var(--card-bg);
-  transition: border-color 0.2s;
-}
-[data-theme="light"] .film-tag {
-  color: var(--text-muted);
-  border-color: rgba(31,26,23,0.2);
-}
-.film-tag:hover { border-color: var(--accent-2); }
+      --accent: #C1DBE8;
+      --accent-soft: rgba(193, 219, 232, 0.24);
+      --accent-strong: #97c4d8;
 
-/* ===== EN15907 / FIAF МЕТАДАННЫЕ ===== */
-.fiaf-section {
-  background: var(--card-bg);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 28px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-[data-theme="light"] .fiaf-section {
-  background: #ffffff;
-  border-color: rgba(31,26,23,0.12);
-  box-shadow: 0 4px 20px rgba(31,26,23,0.08);
-}
-.fiaf-section__title {
-  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent-2); margin-bottom: 18px; font-weight: 600;
-  padding-bottom: 12px; border-bottom: 1px solid var(--line);
-}
-.fiaf-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.fiaf-item { }
-.fiaf-item__label {
-  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--text-label); margin-bottom: 4px; font-weight: 500;
-}
-.fiaf-item__value {
-  font-size: 0.9rem; color: var(--text); line-height: 1.5;
-  font-weight: 500;
-}
-[data-theme="light"] .fiaf-item__value {
-  color: #1a1510;
-}
-.fiaf-item__value.empty { color: var(--text-muted); font-style: italic; }
+      --border: rgba(67, 48, 46, 0.14);
+      --border-strong: rgba(67, 48, 46, 0.22);
 
-/* ===== СИНОПСИС ===== */
-.film-body { padding: 0 0 80px; }
-.synopsis-block {
-  background: var(--card-bg);
-  border: 1px solid var(--line);
-  border-radius: 20px; padding: 32px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-[data-theme="light"] .synopsis-block {
-  background: #ffffff;
-  border-color: rgba(31,26,23,0.12);
-  box-shadow: 0 4px 20px rgba(31,26,23,0.08);
-}
-.synopsis-label {
-  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent-2); margin-bottom: 16px; font-weight: 600;
-  padding-bottom: 12px; border-bottom: 1px solid var(--line);
-}
-.synopsis-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
-  line-height: 1.75; color: var(--text);
-}
-[data-theme="light"] .synopsis-text { color: #1a1510; }
+      --shadow: rgba(67, 48, 46, 0.10);
+      --shadow-strong: rgba(67, 48, 46, 0.16);
 
-/* ===== СТАНДАРТ КАРТОЧКА ===== */
-.standard-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 12px; border-radius: 999px;
-  border: 1px solid var(--line);
-  font-size: 0.68rem; color: var(--text-muted);
-  background: var(--surface); letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
+      --gold-accent: #B89052;
+      --gold-soft: rgba(184, 144, 82, 0.16);
+      --input-bg: rgba(255,255,255,0.72);
+      --danger: #c95d4f;
 
-/* ===== BODY GRID ===== */
-.film-body__grid {
-  display: grid; grid-template-columns: 1fr 340px;
-  gap: 24px; align-items: start;
-}
-
-/* ===== FOOTER ===== */
-.return-bar {
-  padding: 32px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 0;
-  background: var(--card-bg);
-}
-[data-theme="light"] .return-bar { background: #faf7f3; }
-.return-bar__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 16px;
-}
-.return-bar__text {
-  font-size: 0.
-  85rem; color: var(--text-muted);
-}
-.return-bar__text strong { color: var(--text); }
-.site-footer { padding: 24px 0 48px; border-top: 1px solid var(--line); }
-.footer-inner { display: flex; justify-content: space-between; gap: 24px; align-items: end; flex-wrap: wrap; }
-.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent-2); margin-bottom: 8px; }
-.footer-text { color: var(--text-muted); font-size: 0.9rem; }
-.footer-meta { display: flex; flex-wrap: wrap; gap: 10px; }
-.footer-meta span {
-  padding: 6px 12px; border-radius: 999px;
-  border: 1px solid var(--line); color: var(--text-muted);
-  font-size: 0.78rem; background: var(--surface);
-}
-
-/* LOADING */
-.page-loading {
-  min-height: 80vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  color: var(--text-muted); gap: 16px;
-}
-.loading-spinner {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 2px solid var(--line); border-top-color: var(--accent-2);
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@media (max-width: 900px) {
-  .film-hero__inner { grid-template-columns: 1fr; }
-  .film-poster { width: 100%; max-width: 240px; position: static; }
-  .film-body__grid { grid-template-columns: 1fr; }
-  .fiaf-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .film-hero { padding: 90px 0 40px; }
-  .film-title { font-size: 2rem; }
-}
-</style>
-</head>
-<body>
-
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container site-header__inner">
-    <a href="index.html" class="brand">
-      <div class="brand-mark"></div>
-      <div class="brand-text"><strong>TAMGA</strong><span>Архив казахского кино</span></div>
-    </a>
-    <nav class="site-nav">
-      <a href="index.html">Главная</a>
-      <a href="films.html" class="active">Каталог</a>
-      <a href="persons.html">Персоналии</a>
-      <a href="collections.html">Коллекции</a>
-      <a href="timeline.html">Хроника</a>
-      <a href="media.html">Медиа</a>
-      <a href="about.html">О проекте</a>
-      <a href="contacts.html">Контакты</a>
-    </nav>
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggle">☀</button>
-    </div>
-  </div>
-</header>
-<a href="films.html" class="back-btn">← Каталог</a>
-<!-- КОНТЕНТ -->
-<div id="pageContent">
-  <div class="page-loading">
-    <div class="loading-spinner"></div>
-    <p>Загружаем фильм...</p>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div>
-      <div class="footer-brand">TAMGA</div>
-      <p class="footer-text" data-i18n="footer_desc">Концепт цифрового архива истории казахстанского кино.</p>
-    </div>
-    <div class="footer-meta">
-      <span data-i18n="footer_tag1">Astana IT University</span>
-      <span data-i18n="footer_tag2">Diploma Project</span>
-      <span>© 2026 TAMGA</span>
-    </div>
-  </div>
-</footer>
-
-<script>
-const SPREADSHEET_ID = '1oCMcofMMof0uTL28qvxO1SJRNWuKL3cYtl4rk6dC_PQ';
-const API_KEY = 'AIzaSyACQxPG8ljmrAnTlad3ZpvgEkBz5mafviA';
-
-// Тема
-const root = document.documentElement;
-const themeToggle = document.getElementById('themeToggle');
-const saved = localStorage.getItem('tamga-theme') || 'dark';
-root.setAttribute('data-theme', saved);
-themeToggle.textContent = saved === 'dark' ? '☀' : '☾';
-themeToggle.addEventListener('click', () => {
-  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  root.setAttribute('data-theme', next);
-  themeToggle.textContent = next === 'dark' ? '☀' : '☾';
-  localStorage.setItem('tamga-theme', next);
-});
-
-// ID из URL
-const params = new URLSearchParams(window.location.search);
-const filmId = params.get('id');
-if (!filmId) window.location.href = 'films.html';
-
-function val(v) {
-  return v && v.trim() ? v.trim() : null;
-}
-
-function fiafItem(label, value) {
-  if (!value) {
-    return `<div class="fiaf-item">
-      <div class="fiaf-item__label">${label}</div>
-      <div class="fiaf-item__value empty">—</div>
-    </div>`;
-  }
-  return `<div class="fiaf-item">
-    <div class="fiaf-item__label">${label}</div>
-    <div class="fiaf-item__value">${value}</div>
-  </div>`;
-}
-
-async function loadFilm() {
-  try {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Films?key=${API_KEY}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const rows = data.values || [];
-
-    const row = rows.slice(1).find(r => r[0] === filmId);
-
-    if (!row) {
-      document.getElementById('pageContent').innerHTML = `
-        <div class="page-loading">
-          <p>Фильм не найден в архиве.</p>
-          <a href="films.html" class="back-btn">← Вернуться в каталог</a>
-        </div>`;
-      return;
+      --container: min(1360px, calc(100% - 40px));
     }
 
-    const film = {
-      id:          row[0]  || '',
-      title_kz:    row[1]  || '',
-      title_ru:    row[2]  || '',
-      title_en:    row[3]  || '',
-      year:        row[4]  || '',
-      direction:   (row[5] || '').trim(),
-      genre:       row[6]  || '',
-      director:    row[7]  || '',
-      operator:    row[8]  || '',
-      duration:    row[9]  || '',
-      studio:      row[10] || '',
-      synopsis_ru: row[11] || '',
-      synopsis_kz: row[12] || '',
-      synopsis_en: row[13] || '',
-      poster_url:  row[14] || '',
-      stills:      row[15] || '',
-      access:      row[16] || '',
-      tags:        row[17] || '',
-      era:         row[18] || '',
-      status:      row[19] || '',
-      date_added:  row[20] || '',
-      added_by:    row[21] || '',
-    };
+    html[data-theme="dark"] {
+      --bg-primary: #43302E;
+      --bg-secondary: #3c2a28;
+      --bg-card: rgba(255, 255, 255, 0.06);
+      --bg-card-strong: rgba(255, 255, 255, 0.08);
+      --bg-glass: rgba(255, 255, 255, 0.05);
 
-    document.title = `${film.title_ru || film.title_kz || 'Фильм'} — TAMGA`;
+      --text-primary: #FFF1B5;
+      --text-secondary: rgba(255, 241, 181, 0.70);
+      --text-label: rgba(255, 241, 181, 0.48);
 
-    // Теги
-    const tagsHTML = film.tags
-      ? film.tags.split(',').filter(t => t.trim()).map(t =>
-          `<span class="film-tag">${t.trim()}</span>`).join('')
-      : '';
+      --accent: #C1DBE8;
+      --accent-soft: rgba(193, 219, 232, 0.20);
+      --accent-strong: #cbe7f1;
 
-    // Постер
-    const posterHTML = film.poster_url
-      ? `<div class="film-poster">
-           <img src="${film.poster_url}" alt="${film.title_ru}" loading="lazy">
-         </div>`
-      : `<div class="film-poster__placeholder">
-           <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-             <rect x="20" y="15" width="60" height="70" rx="4" stroke="currentColor" stroke-width="2"/>
-             ircle cx="50" cy="42" r="12" stroke="currentColor" stroke-width="2"/>
-             <path d="M30 72 Q50 55 70 72" stroke="currentColor" stroke-width="2"/>
-           </svg>
-         </div>`;
+      --border: rgba(255, 241, 181, 0.14);
+      --border-strong: rgba(255, 241, 181, 0.24);
 
-    // Фон
-    const bgHTML = film.poster_url
-      ? `<div class="film-hero__bg">
-           <img src="${film.poster_url}" alt="" aria-hidden="true">
-           <div class="film-hero__bg-overlay"></div>
-         </div>`
-      : '';
+      --shadow: rgba(0, 0, 0, 0.18);
+      --shadow-strong: rgba(0, 0, 0, 0.26);
 
-    // Альтернативные названия
-    const altTitles = [film.title_kz, film.title_en]
-      .filter(t => t && t !== film.title_ru)
-      .join(' · ');
+      --gold-accent: #E5C07B;
+      --gold-soft: rgba(229, 192, 123, 0.14);
+      --input-bg: rgba(255,255,255,0.05);
+      --danger: #d97a68;
+    }
 
-    document.getElementById('pageContent').innerHTML = `
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-      <!-- HERO -->
-      <section class="film-hero">
-        ${bgHTML}
-        <div class="container">
-          <div class="film-hero__inner">
-            ${posterHTML}
-            <div class="film-info">
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
 
-              <!-- Кикер -->
-              <div class="film-kicker">
-                ${film.year ? `<span>${film.year}</span><span class="film-kicker-dot">·</span>` : ''}
-                ${film.direction ? `<span>${film.direction}</span>` : ''}
-                ${film.era ? `<span class="film-kicker-dot">·</span><span>${film.era}</span>` : ''}
-                <span class="standard-badge">EN 15907</span>
-                <span class="standard-badge">FIAF</span>
-              </div>
+    body {
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      color: var(--text-primary);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(193, 219, 232, 0.20), transparent 20%),
+        radial-gradient(circle at 85% 18%, rgba(184, 144, 82, 0.12), transparent 20%),
+        linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
 
-              <!-- Название -->
-              <h1 class="film-title">${film.title_ru || film.title_kz || 'Без названия'}</h1>
-              ${altTitles ? `<div class="film-title-alt">${altTitles}</div>` : '<div style="margin-bottom:28px"></div>'}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-              <!-- Теги -->
-              ${tagsHTML ? `<div class="film-tags">${tagsHTML}</div>` : ''}
+    button {
+      font: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: inherit;
+    }
 
-              <!-- EN15907: Идентификация произведения -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Идентификация произведения · EN 15907 §5.1</div>
-                <div class="fiaf-grid">
-                  ${fiafItem('Идентификатор (ID)', film.id)}
-                  ${fiafItem('Тип произведения', film.direction || 'Кинематографическое')}
-                  ${fiafItem('Год производства', film.year)}
-                  ${fiafItem('Студия / Продюсер', film.studio)}
-                </div>
-              </div>
+    input {
+      font: inherit;
+      color: inherit;
+    }
 
-              <!-- EN15907: Агенты -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Агенты · EN 15907 §5.3 / FIAF</div>
-                <div class="fiaf-grid">
-                  ${fiafItem('Режиссёр', film.director)}
-                  ${fiafItem('Оператор-постановщик', film.operator)}
-                  ${fiafItem('Длительность', film.duration ? film.duration + ' мин' : null)}
-                  ${fiafItem('Жанр / Форма', film.genre)}
-                </div>
-              </div>
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
 
-              <!-- Доступность -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Доступ и статус · FIAF Cataloguing Rules</div>
-                <div class="fiaf-grid">
-                  ${fiafItem('Статус доступа', film.access || film.status)}
-                  ${fiafItem('Статус записи', film.status)}
-                  ${fiafItem('Дата добавления', film.date_added)}
-                  ${fiafItem('Источник', film.added_by)}
-                </div>
-              </div>
+    .skip-link {
+      position: absolute;
+      top: -56px;
+      left: 16px;
+      z-index: 9999;
+      padding: 10px 14px;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border-radius: 12px;
+      transition: top .25s ease;
+    }
 
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 120;
+      padding-top: 14px;
+    }
+
+    .site-header-shell {
+      width: min(1360px, calc(100% - 40px));
+      margin: 0 auto;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 24px var(--shadow);
+      position: relative;
+    }
+
+    .site-header-inner {
+      min-height: 62px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 8px 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-primary);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold-accent);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: .92rem;
+      line-height: 1;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 4px;
+      font-size: .68rem;
+      line-height: 1.2;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .site-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .site-nav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: .24s ease;
+      white-space: nowrap;
+    }
+
+    .site-nav a:hover,
+    .site-nav a.active {
+      color: var(--text-primary);
+      background: rgba(193, 219, 232, 0.24);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-dropdown {
+      position: relative;
+    }
+
+    .lang-trigger,
+    .theme-toggle,
+    .menu-toggle {
+      height: 40px;
+      min-width: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-primary);
+      transition: .24s ease;
+      flex-shrink: 0;
+    }
+
+    .lang-trigger:hover,
+    .theme-toggle:hover,
+    .menu-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--bg-card);
+    }
+
+    .lang-trigger {
+      min-width: 64px;
+      font-size: .84rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .lang-trigger::after {
+      content: "▾";
+      font-size: .72rem;
+      opacity: .7;
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 124px;
+      padding: 8px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 14px 28px var(--shadow-strong);
+      display: none;
+      z-index: 200;
+    }
+
+    .lang-menu.is-open {
+      display: grid;
+      gap: 4px;
+    }
+
+    .lang-option {
+      width: 100%;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 12px;
+      text-align: left;
+      color: var(--text-secondary);
+      font-size: .84rem;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .lang-option:hover,
+    .lang-option.is-active {
+      background: rgba(193, 219, 232, 0.24);
+      color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      font-size: 1rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      position: relative;
+      padding: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 1.8px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform .24s ease, opacity .24s ease;
+    }
+
+    .menu-toggle span {
+      transform: translateY(0);
+    }
+
+    .menu-toggle::before {
+      transform: translateY(-5px);
+    }
+
+    .menu-toggle::after {
+      transform: translateY(5px);
+    }
+
+    .menu-toggle.is-open span {
+      opacity: 0;
+    }
+
+    .menu-toggle.is-open::before {
+      transform: rotate(45deg);
+    }
+
+    .menu-toggle.is-open::after {
+      transform: rotate(-45deg);
+    }
+
+    .main {
+      padding-top: 108px;
+      min-height: 100vh;
+    }
+
+    .backbar {
+      padding: 18px 0 6px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      font-size: .9rem;
+      font-weight: 600;
+      transition: .24s ease;
+    }
+
+    .back-link:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-section {
+      padding: 8px 0 28px;
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 36px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: 0 18px 40px var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 34px;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(193, 219, 232, 0.22), transparent 24%),
+        radial-gradient(circle at 82% 20%, rgba(229, 192, 123, 0.14), transparent 24%),
+        linear-gradient(180deg, transparent, rgba(255,255,255,0.02));
+    }
+
+    .hero-layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(280px, 370px) 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .poster-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .poster-frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+      aspect-ratio: 2 / 3;
+      box-shadow: 0 18px 36px var(--shadow);
+    }
+
+    .poster-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .poster-overlay-year {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(67, 48, 46, 0.78);
+      color: #fff1b5;
+      font-size: .76rem;
+      letter-spacing: .12em;
+      backdrop-filter: blur(8px);
+    }
+
+    .poster-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-chip {
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .24s ease;
+    }
+
+    .action-chip:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .hero-content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hero-topline {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .eyebrow-chip,
+    .status-chip,
+    .access-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      color: var(--text-secondary);
+    }
+
+    .status-chip {
+      background: var(--gold-soft);
+      color: var(--text-primary);
+    }
+
+    .access-chip {
+      background: var(--accent-soft);
+      color: var(--text-primary);
+    }
+
+    .hero-title-block {
+      display: grid;
+      gap: 12px;
+    }
+
+    .film-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      line-height: .94;
+      letter-spacing: -.02em;
+      color: var(--text-primary);
+      max-width: 12ch;
+    }
+
+    .film-original {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      max-width: 64ch;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      max-width: 74ch;
+    }
+
+    .hero-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .meta-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+      box-shadow: 0 8px 22px var(--shadow);
+      min-height: 100px;
+    }
+
+    .meta-card-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-label);
+      font-size: .76rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .meta-card-value {
+      color: var(--text-primary);
+      font-size: .98rem;
+      line-height: 1.55;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      font-size: .78rem;
+      line-height: 1.3;
+    }
+
+    .content-grid {
+      padding: 6px 0 70px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 24px;
+    }
+
+    .panel {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: 0 14px 32px var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .panel-inner {
+      padding: 26px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-title {
+      font-family: "Playfair Display", serif;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .panel-eyebrow {
+      color: var(--gold-accent);
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .synopsis-text {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.95;
+      white-space: pre-line;
+    }
+
+    .details-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .details-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 180px) 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .details-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .details-label {
+      color: var(--text-label);
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .details-value {
+      color: var(--text-primary);
+      line-height: 1.75;
+      font-size: .96rem;
+      word-break: break-word;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+      cursor: zoom-in;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .sidebar-card {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: 0 14px 32px var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+    }
+
+    .sidebar-card-inner {
+      padding: 24px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .fact-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .fact-box {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-strong);
+    }
+
+    .fact-box-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-label);
+      font-size: .76rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .fact-box-value {
+      color: var(--text-primary);
+      line-height: 1.65;
+      font-size: .92rem;
+      word-break: break-word;
+    }
+
+    .mini-note {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px dashed var(--border-strong);
+      background: var(--gold-soft);
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-size: .92rem;
+    }
+
+    .placeholder-card,
+    .error-card {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: 0 14px 32px var(--shadow);
+      padding: 54px 24px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .placeholder-card h2,
+    .error-card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.3rem;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .loading-spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold-accent);
+      animation: spin .8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    .site-footer {
+      padding: 10px 40px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-inner-custom {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      max-width: 640px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-meta span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px;
+      background: var(--bg-card);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 12, 11, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox.is-open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(1100px, 100%);
+      max-height: 84vh;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.16);
+      font-size: 1.2rem;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .hero-layout {
+        grid-template-columns: 320px 1fr;
+      }
+
+      .hero-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .site-header-inner {
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+      }
+
+      .site-nav {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        top: calc(100% + 10px);
+        padding: 12px;
+        border-radius: 22px;
+        border: 1px solid var(--border);
+        background: var(--bg-card-strong);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 14px 28px var(--shadow-strong);
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .site-nav.is-open {
+        display: flex;
+      }
+
+      .site-nav a {
+        width: 100%;
+        text-align: left;
+      }
+
+      .menu-toggle {
+        display: grid;
+      }
+
+      .main {
+        padding-top: 110px;
+      }
+
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .poster-column {
+        max-width: 420px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-header {
+        padding-top: 10px;
+      }
+
+      .site-header-shell {
+        width: min(1360px, calc(100% - 20px));
+        border-radius: 24px;
+      }
+
+      .site-header-inner {
+        padding: 10px 12px;
+        gap: 12px;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+
+      .container,
+      .site-footer {
+        width: min(1360px, calc(100% - 20px));
+      }
+
+      .main {
+        padding-top: 96px;
+      }
+
+      .hero-card,
+      .panel-inner,
+      .sidebar-card-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero-card {
+        padding-top: 24px;
+        padding-bottom: 24px;
+        border-radius: 28px;
+      }
+
+      .hero-meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .details-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .film-title {
+        max-width: none;
+      }
+
+      .poster-column {
+        max-width: none;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" id="skipLink">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header-shell">
+      <div class="site-header-inner">
+        <a href="index.html" class="brand" aria-label="TAMGA home">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <strong>TAMGA</strong>
+            <span id="brandSub">Archive of Kazakh Cinema</span>
+          </div>
+        </a>
+
+        <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+          <a href="index.html" data-i18n="navhome">Home</a>
+          <a href="films.html" class="active" data-i18n="navfilms">Catalog</a>
+          <a href="persons.html" data-i18n="navpersons">Persons</a>
+          <a href="media.html" data-i18n="navmedia">Media</a>
+          <a href="about.html" data-i18n="navabout">About</a>
+          <a href="contacts.html" data-i18n="navcontacts">Contacts</a>
+        </nav>
+
+        <div class="header-actions">
+          <div class="lang-dropdown">
+            <button class="lang-trigger" id="langTrigger" type="button" aria-label="Select language" aria-expanded="false">RU</button>
+            <div class="lang-menu" id="langMenu">
+              <button class="lang-option" type="button" data-lang="RU">Русский</button>
+              <button class="lang-option" type="button" data-lang="EN">English</button>
+              <button class="lang-option" type="button" data-lang="KZ">Қазақша</button>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- СИНОПСИС И МЕТАДАННЫЕ -->
-      <section class="film-body">
-        <div class="container">
-          <div class="film-body__grid">
-
-            <!-- Синопсис -->
-            <div>
-              ${film.synopsis_ru ? `
-                <div class="synopsis-block">
-                  <div class="synopsis-label">Синопсис · Русский</div>
-                  <p class="synopsis-text">${film.synopsis_ru}</p>
-                </div>
-              ` : ''}
-              ${film.synopsis_kz ? `
-                <div class="synopsis-block">
-                  <div class="synopsis-label">Синопсис · Қазақша</div>
-                  <p class="synopsis-text">${film.synopsis_kz}</p>
-                </div>
-              ` : ''}
-              ${film.synopsis_en ? `
-                <div class="synopsis-block">
-                  <div class="synopsis-label">Synopsis · English</div>
-                  <p class="synopsis-text">${film.synopsis_en}</p>
-                </div>
-              ` : ''}
-              ${!film.synopsis_ru && !film.synopsis_kz && !film.synopsis_en ? `
-                <div class="synopsis-block">
-                  <div class="synopsis-label">Синопсис</div>
-                  <p class="synopsis-text" style="color:var(--text-muted);font-style:italic;">
-                    Описание отсутствует в архиве.
-                  </p>
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Боковая панель -->
-            <div>
-
-              <!-- Все названия EN15907 -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Названия · EN 15907 §5.2</div>
-                <div style="display:grid;gap:12px">
-                  ${fiafItem('Казахское', film.title_kz)}
-                  ${fiafItem('Русское', film.title_ru)}
-                  ${fiafItem('Английское', film.title_en)}
-                </div>
-              </div>
-
-              <!-- Технические данные -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Технические данные · FIAF</div>
-                <div style="display:grid;gap:12px">
-                  ${fiafItem('Тип', film.direction
-                                  )}
-                  ${fiafItem('Жанр', film.genre)}
-                  ${fiafItem('Длительность', film.duration ? film.duration + ' мин' : null)}
-                  ${fiafItem('Студия', film.studio)}
-                  ${fiafItem('Год', film.year)}
-                </div>
-              </div>
-
-              <!-- Стандарт -->
-              <div class="fiaf-section">
-                <div class="fiaf-section__title">Стандарт описания</div>
-                <div style="display:grid;gap:8px">
-                  <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">
-                    <span class="standard-badge">EN 15907</span>
-                    <span style="font-size:0.8rem;color:var(--text-muted)">European Standard for Film Identification</span>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
-                    <span class="standard-badge">FIAF</span>
-                    <span style="font-size:0.8rem;color:var(--text-muted)">International Federation of Film Archives</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ВЕРНУТЬСЯ В КАТАЛОГ -->
-      <div class="return-bar">
-        <div class="container return-bar__inner">
-          <div class="return-bar__text">
-            <strong>TAMGA</strong> — Цифровой архив казахского кино
-          </div>
-
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme"></button>
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu"><span></span></button>
         </div>
       </div>
-    `;
+    </div>
+  </header>
 
-    document.getElementById('siteFooter').style.display = 'block';
+  <main class="main" id="main">
+    <section class="backbar">
+      <div class="container">
+        <a href="films.html" class="back-link" id="backLink">← Назад</a>
+      </div>
+    </section>
 
-  } catch (e) {
-    document.getElementById('pageContent').innerHTML = `
-      <div class="page-loading">
-        <p style="color:var(--text-muted)">Ошибка загрузки. Проверьте подключение.</p>
-        <a href="films.html" class="back-btn">← Вернуться в каталог</a>
-      </div>`;
-  }
-}
+    <div class="container" id="pageContainer">
+      <div class="placeholder-card reveal" id="loadingState">
+        <div class="loading-spinner"></div>
+        <h2 id="loadingTitle">Loading film...</h2>
+        <p id="loadingText">Please wait while the archive page is being prepared.</p>
+      </div>
+    </div>
+  </main>
 
-window.addEventListener('load', loadFilm);
-</script>
+  <footer class="site-footer">
+    <div class="footer-inner-custom">
+      <div>
+        <div class="footer-brand">TAMGA</div>
+        <p class="footer-text" id="footerText">Digital archive of Kazakh cinema films, personalities, collections, timelines, and visual materials in one space.</p>
+      </div>
+      <div class="footer-meta">
+        <span>Astana IT University</span>
+        <span>Diploma Project</span>
+        <span>2026 TAMGA</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <img id="lightboxImage" src="" alt="" />
+  </div>
+
+  <script>
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJ066ikhgXSg9U5fCiRBfuJXKA0cJfMnnzXQzrsCiNUx9hkN6Wz-WQJkV9A15iXg/pub?gid=1367437043&single=true&output=csv';
+
+    const STORAGE_KEYS = {
+      theme: 'tamga-theme',
+      language: 'tamga-language',
+      view: 'tamga-films-view'
+    };
+
+    const COLS = {
+      id: 0,
+      titlekz: 1,
+      titleru: 2,
+      titleen: 3,
+      year: 4,
+      countrykz: 5,
+      countryen: 6,
+      countryru: 7,
+      directionkz: 8,
+      directionru: 9,
+      directionen: 10,
+      genrekz: 11,
+      genreru: 12,
+      genreen: 13,
+      subgenreen: 14,
+      subgenreru: 15,
+      subgenrekz: 16,
+      directorid: 17,
+      operatorid: 18,
+      screenwriterid: 19,
+      composerid: 20,
+      studioru: 21,
+      studioen: 22,
+      studiokz: 23,
+      synopsisru: 24,
+      synopsisen: 25,
+      synopsiskz: 26,
+      posterurl: 27,
+      stillsurls: 28,
+      accessstatus: 29,
+      tags: 30,
+      era: 31,
+      status: 32,
+      slug: 33,
+      dateadded: 34,
+      addedby: 35,
+      lastupdated: 36
+    };
+
+    const UI = {
+      RU: {
+        htmlLang: 'ru',
+        pageTitle: 'TAMGA Фильм',
+        pageDescription: 'Страница фильма в цифровом архиве казахского кино.',
+        brandSub: 'Архив казахского кино',
+        navhome: 'Главная',
+        navfilms: 'Каталог',
+        navpersons: 'Персоны',
+        navmedia: 'Медиа',
+        navabout: 'О проекте',
+        navcontacts: 'Контакты',
+        loadingTitle: 'Загрузка фильма...',
+        loadingText: 'Подготавливаем страницу архива.',
+        errorTitle: 'Фильм не найден',
+        errorText: 'Проверьте slug в URL или данные в опубликованной таблице.',
+        heroEyebrow: 'Страница фильма',
+        synopsisTitle: 'Синопсис',
+        synopsisEyebrow: 'Описание',
+        detailsTitle: 'Информация',
+        detailsEyebrow: 'Карточка фильма',
+        galleryTitle: 'Кадры',
+        galleryEyebrow: 'Галерея',
+        sidebarTitle: 'Быстрые факты',
+        sidebarEyebrow: 'Поля архива',
+        footerText: 'Цифровой архив казахского кино: фильмы, персоналии, коллекции, хронологии и визуальные материалы в одном пространстве.',
+        skip: 'Перейти к содержанию',
+        backSingle: 'Назад',
+        viewPoster: 'Открыть постер',
+        labels: {
+          year: 'Год',
+          country: 'Страна',
+          direction: 'Направление',
+          genre: 'Жанр',
+          subgenre: 'Поджанр',
+          studio: 'Студия',
+          era: 'Эпоха',
+          access: 'Доступ',
+          status: 'Статус',
+          slug: 'Slug',
+          id: 'ID',
+          director: 'ID режиссёра',
+          operator: 'ID оператора',
+          screenwriter: 'ID сценариста',
+          composer: 'ID композитора',
+          tags: 'Теги',
+          added: 'Дата добавления',
+          addedBy: 'Добавил',
+          updated: 'Последнее обновление',
+          originalTitle: 'Названия на других языках'
+        },
+        accessFallback: 'Не указано',
+        statusFallback: 'Не указано',
+        noSynopsis: 'Описание пока не добавлено.',
+        noGallery: 'Для этого фильма пока не добавлены кадры.',
+        noValue: '—',
+        archiveNote: 'На этой странице отображаются все доступные поля фильма из архивной таблицы, а пустые значения скрываются.'
+      },
+      EN: {
+        htmlLang: 'en',
+        pageTitle: 'TAMGA Film',
+        pageDescription: 'Detailed film page from the digital archive of Kazakh cinema.',
+        brandSub: 'Archive of Kazakh Cinema',
+        navhome: 'Home',
+        navfilms: 'Catalog',
+        navpersons: 'Persons',
+        navmedia: 'Media',
+        navabout: 'About',
+        navcontacts: 'Contacts',
+        loadingTitle: 'Loading film page...',
+        loadingText: 'Preparing archive materials.',
+        errorTitle: 'Film not found',
+        errorText: 'Check the slug in the URL or the published sheet.',
+        heroEyebrow: 'Archive film page',
+        synopsisTitle: 'Synopsis',
+        synopsisEyebrow: 'Description',
+        detailsTitle: 'Information',
+        detailsEyebrow: 'Film record',
+        galleryTitle: 'Stills',
+        galleryEyebrow: 'Gallery',
+        sidebarTitle: 'Quick facts',
+        sidebarEyebrow: 'Archive fields',
+        footerText: 'Digital archive of Kazakh cinema films, personalities, collections, timelines, and visual materials in one space.',
+        skip: 'Skip to content',
+        backSingle: 'Back',
+        viewPoster: 'Open poster',
+        labels: {
+          year: 'Year',
+          country: 'Country',
+          direction: 'Direction',
+          genre: 'Genre',
+          subgenre: 'Subgenre',
+          studio: 'Studio',
+          era: 'Era',
+          access: 'Access',
+          status: 'Status',
+          slug: 'Slug',
+          id: 'ID',
+          director: 'Director ID',
+          operator: 'Operator ID',
+          screenwriter: 'Screenwriter ID',
+          composer: 'Composer ID',
+          tags: 'Tags',
+          added: 'Date added',
+          addedBy: 'Added by',
+          updated: 'Last updated',
+          originalTitle: 'Titles in other languages'
+        },
+        accessFallback: 'Not specified',
+        statusFallback: 'Not specified',
+        noSynopsis: 'Description has not been added yet.',
+        noGallery: 'No stills have been added for this film yet.',
+        noValue: '—',
+        archiveNote: 'This page displays all available film fields from the archive table and hides only empty values.'
+      },
+      KZ: {
+        htmlLang: 'kk',
+        pageTitle: 'TAMGA Фильм',
+        pageDescription: 'Қазақ киносының цифрлық архивіндегі фильм беті.',
+        brandSub: 'Қазақ киносының архиві',
+        navhome: 'Басты бет',
+        navfilms: 'Каталог',
+        navpersons: 'Тұлғалар',
+        navmedia: 'Медиа',
+        navabout: 'Жоба туралы',
+        navcontacts: 'Байланыс',
+        loadingTitle: 'Фильм жүктелуде...',
+        loadingText: 'Архив беті дайындалып жатыр.',
+        errorTitle: 'Фильм табылмады',
+        errorText: 'URL ішіндегі slug немесе жарияланған кесте деректерін тексеріңіз.',
+        heroEyebrow: 'Фильм беті',
+        synopsisTitle: 'Сипаттама',
+        synopsisEyebrow: 'Мазмұны',
+        detailsTitle: 'Ақпарат',
+        detailsEyebrow: 'Фильм жазбасы',
+        galleryTitle: 'Кадрлар',
+        galleryEyebrow: 'Галерея',
+        sidebarTitle: 'Қысқаша деректер',
+        sidebarEyebrow: 'Архив өрістері',
+        footerText: 'Қазақ киносының цифрлық архиві: фильмдер, тұлғалар, коллекциялар, хронологиялар және визуалды материалдар бір кеңістікте.',
+        skip: 'Мазмұнға өту',
+        backSingle: 'Артқа',
+        viewPoster: 'Постерді ашу',
+        labels: {
+          year: 'Жыл',
+          country: 'Ел',
+          direction: 'Бағыт',
+          genre: 'Жанр',
+          subgenre: 'Ішкі жанр',
+          studio: 'Студия',
+          era: 'Дәуір',
+          access: 'Қолжетімділік',
+          status: 'Мәртебе',
+          slug: 'Slug',
+          id: 'ID',
+          director: 'Режиссёр ID',
+          operator: 'Оператор ID',
+          screenwriter: 'Сценарист ID',
+          composer: 'Композитор ID',
+          tags: 'Тегтер',
+          added: 'Қосылған күні',
+          addedBy: 'Қосқан',
+          updated: 'Соңғы жаңарту',
+          originalTitle: 'Басқа тілдердегі атаулар'
+        },
+        accessFallback: 'Көрсетілмеген',
+        statusFallback: 'Көрсетілмеген',
+        noSynopsis: 'Сипаттама әлі қосылмаған.',
+        noGallery: 'Бұл фильмге кадрлар әлі қосылмаған.',
+        noValue: '—',
+        archiveNote: 'Бұл бетте архив кестесіндегі фильмге қатысты барлық қолжетімді өрістер көрсетіледі, бос мәндер жасырылған.'
+      }
+    };
+
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const menuToggle = document.getElementById('menuToggle');
+    const siteNav = document.getElementById('siteNav');
+    const langTrigger = document.getElementById('langTrigger');
+    const langMenu = document.getElementById('langMenu');
+    const langOptions = document.querySelectorAll('.lang-option');
+    const pageContainer = document.getElementById('pageContainer');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    let currentTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'light';
+    let currentLang = localStorage.getItem(STORAGE_KEYS.language) || 'RU';
+    let filmData = null;
+
+    function t() {
+      return UI[currentLang] || UI.EN;
+    }
+
+    function cleanValue(value) {
+      const str = String(value ?? '').trim();
+      if (!str || str.toLowerCase() === 'null' || str.toLowerCase() === 'undefined') return '';
+      return str;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            cell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          row.push(cell);
+          cell = '';
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && next === '\n') i++;
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = '';
+        } else {
+          cell += char;
+        }
+      }
+
+      if (cell.length || row.length) {
+        row.push(cell);
+        rows.push(row);
+      }
+
+      return rows.filter(r => r.some(c => String(c).trim() !== ''));
+    }
+
+    function parseFilmRow(row, index) {
+      return {
+        index,
+        id: cleanValue(row[COLS.id]),
+        titlekz: cleanValue(row[COLS.titlekz]),
+        titleru: cleanValue(row[COLS.titleru]),
+        titleen: cleanValue(row[COLS.titleen]),
+        year: parseInt(cleanValue(row[COLS.year]), 10) || 0,
+        countrykz: cleanValue(row[COLS.countrykz]),
+        countryen: cleanValue(row[COLS.countryen]),
+        countryru: cleanValue(row[COLS.countryru]),
+        directionkz: cleanValue(row[COLS.directionkz]),
+        directionru: cleanValue(row[COLS.directionru]),
+        directionen: cleanValue(row[COLS.directionen]),
+        genrekz: cleanValue(row[COLS.genrekz]),
+        genreru: cleanValue(row[COLS.genreru]),
+        genreen: cleanValue(row[COLS.genreen]),
+        subgenreen: cleanValue(row[COLS.subgenreen]),
+        subgenreru: cleanValue(row[COLS.subgenreru]),
+        subgenrekz: cleanValue(row[COLS.subgenrekz]),
+        directorid: cleanValue(row[COLS.directorid]),
+        operatorid: cleanValue(row[COLS.operatorid]),
+        screenwriterid: cleanValue(row[COLS.screenwriterid]),
+        composerid: cleanValue(row[COLS.composerid]),
+        studioru: cleanValue(row[COLS.studioru]),
+        studioen: cleanValue(row[COLS.studioen]),
+        studiokz: cleanValue(row[COLS.studiokz]),
+        synopsisru: cleanValue(row[COLS.synopsisru]),
+        synopsisen: cleanValue(row[COLS.synopsisen]),
+        synopsiskz: cleanValue(row[COLS.synopsiskz]),
+        posterurl: cleanValue(row[COLS.posterurl]),
+        stillsurls: cleanValue(row[COLS.stillsurls]),
+        accessstatus: cleanValue(row[COLS.accessstatus]),
+        tags: cleanValue(row[COLS.tags]),
+        era: cleanValue(row[COLS.era]),
+        status: cleanValue(row[COLS.status]),
+        slug: cleanValue(row[COLS.slug]),
+        dateadded: cleanValue(row[COLS.dateadded]),
+        addedby: cleanValue(row[COLS.addedby]),
+        lastupdated: cleanValue(row[COLS.lastupdated])
+      };
+    }
+
+    function getVisibleFilms(source) {
+      const published = source.filter(film => cleanValue(film.status).toLowerCase() === 'published');
+      const draft = source.filter(film => cleanValue(film.status).toLowerCase() === 'draft');
+      if (published.length) return published;
+      if (draft.length) return draft;
+      return source;
+    }
+
+    function getTextByLang(film, keyBase) {
+      const key = keyBase + currentLang.toLowerCase();
+      return cleanValue(film[key]);
+    }
+
+    function getFilmTitle(film) {
+      return getTextByLang(film, 'title') || cleanValue(film.titleen) || cleanValue(film.titleru) || cleanValue(film.titlekz) || t().noValue;
+    }
+
+    function getFilmCountry(film) {
+      return getTextByLang(film, 'country') || cleanValue(film.countryen) || cleanValue(film.countryru) || cleanValue(film.countrykz);
+    }
+
+    function getFilmDirection(film) {
+      return getTextByLang(film, 'direction') || cleanValue(film.directionen) || cleanValue(film.directionru) || cleanValue(film.directionkz);
+    }
+
+    function getFilmGenre(film) {
+      return getTextByLang(film, 'genre') || cleanValue(film.genreen) || cleanValue(film.genreru) || cleanValue(film.genrekz);
+    }
+
+    function getFilmSubgenre(film) {
+      return getTextByLang(film, 'subgenre') || cleanValue(film.subgenreen) || cleanValue(film.subgenreru) || cleanValue(film.subgenrekz);
+    }
+
+    function getFilmStudio(film) {
+      return getTextByLang(film, 'studio') || cleanValue(film.studioen) || cleanValue(film.studioru) || cleanValue(film.studiokz);
+    }
+
+    function getFilmSynopsis(film) {
+      return getTextByLang(film, 'synopsis') || cleanValue(film.synopsisen) || cleanValue(film.synopsisru) || cleanValue(film.synopsiskz);
+    }
+
+    function getOtherTitles(film) {
+      const map = {
+        RU: [film.titleru, film.titleen, film.titlekz],
+        EN: [film.titleen, film.titleru, film.titlekz],
+        KZ: [film.titlekz, film.titleru, film.titleen]
+      };
+
+      const currentTitle = getFilmTitle(film).toLowerCase();
+      const arr = (map[currentLang] || map.EN)
+        .map(cleanValue)
+        .filter(Boolean)
+        .filter(item => item.toLowerCase() !== currentTitle);
+
+      return [...new Set(arr)];
+    }
+
+    function parseTags(raw) {
+      return cleanValue(raw)
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function parseStills(raw) {
+      return cleanValue(raw)
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => /^https?:\/\//i.test(item));
+    }
+
+    function applyTheme() {
+      root.setAttribute('data-theme', currentTheme);
+      themeToggle.setAttribute('aria-label', currentTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggle.textContent = currentTheme === 'dark' ? '☾' : '☼';
+    }
+
+    function applyUILanguage() {
+      const langUI = t();
+      document.documentElement.lang = langUI.htmlLang;
+      root.setAttribute('lang', langUI.htmlLang);
+      document.title = filmData ? `TAMGA — ${getFilmTitle(filmData)}` : langUI.pageTitle;
+
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) metaDescription.setAttribute('content', langUI.pageDescription);
+
+      if (langTrigger.firstChild) {
+        langTrigger.firstChild.nodeValue = currentLang;
+      } else {
+        langTrigger.textContent = currentLang;
+      }
+
+      langOptions.forEach(option => {
+        option.classList.toggle('is-active', option.dataset.lang === currentLang);
+      });
+
+      document.getElementById('skipLink').textContent = langUI.skip;
+      document.getElementById('brandSub').textContent = langUI.brandSub;
+      document.getElementById('backLink').textContent = '← ' + langUI.backSingle;
+      document.querySelector('[data-i18n="navhome"]').textContent = langUI.navhome;
+      document.querySelector('[data-i18n="navfilms"]').textContent = langUI.navfilms;
+      document.querySelector('[data-i18n="navpersons"]').textContent = langUI.navpersons;
+      document.querySelector('[data-i18n="navmedia"]').textContent = langUI.navmedia;
+      document.querySelector('[data-i18n="navabout"]').textContent = langUI.navabout;
+      document.querySelector('[data-i18n="navcontacts"]').textContent = langUI.navcontacts;
+      document.getElementById('loadingTitle').textContent = langUI.loadingTitle;
+      document.getElementById('loadingText').textContent = langUI.loadingText;
+      document.getElementById('footerText').textContent = langUI.footerText;
+
+      if (filmData) renderFilmPage(filmData);
+    }
+
+    function syncFromStorage() {
+      const storedTheme = localStorage.getItem(STORAGE_KEYS.theme) || 'light';
+      const storedLang = localStorage.getItem(STORAGE_KEYS.language) || 'RU';
+
+      if (storedTheme !== currentTheme) {
+        currentTheme = storedTheme;
+        applyTheme();
+      }
+
+      if (storedLang !== currentLang) {
+        currentLang = storedLang;
+        applyUILanguage();
+      }
+    }
+
+    function createPosterFallback(title) {
+      return `
+        <div class="poster-frame">
+          <div style="width:100%;height:100%;display:grid;place-items:center;padding:24px;text-align:center;color:var(--text-primary);">
+            <div>
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.16;width:110px;max-width:40%;margin-bottom:14px;">
+                <rect x="20" y="15" width="60" height="70" rx="4" stroke="currentColor" stroke-width="2"></rect>
+                <circle cx="50" cy="42" r="12" stroke="currentColor" stroke-width="2"></circle>
+                <path d="M30 72 Q50 55 70 72" stroke="currentColor" stroke-width="2"></path>
+              </svg>
+              <div style="font-size:1rem;font-weight:700;line-height:1.5;max-width:16ch;margin:0 auto;">${escapeHtml(title || t().noValue)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildPosterMarkup(film) {
+      const title = getFilmTitle(film);
+      if (!film.posterurl) return createPosterFallback(title);
+
+      return `
+        <div class="poster-frame">
+          <img src="${escapeHtml(film.posterurl)}" alt="${escapeHtml(title)}" loading="eager"
+               onerror="this.onerror=null; this.closest('.poster-frame').outerHTML=${JSON.stringify(createPosterFallback(title))}">
+          ${film.year ? `<div class="poster-overlay-year">${film.year}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function makeMetaCard(label, value) {
+      return `
+        <div class="meta-card">
+          <span class="meta-card-label">${escapeHtml(label)}</span>
+          <div class="meta-card-value">${escapeHtml(value || t().noValue)}</div>
+        </div>
+      `;
+    }
+
+    function makeDetailsRow(label, value) {
+      if (!cleanValue(value)) return '';
+      return `
+        <div class="details-row">
+          <div class="details-label">${escapeHtml(label)}</div>
+          <div class="details-value">${escapeHtml(value)}</div>
+        </div>
+      `;
+    }
+
+    function makeFactBox(label, value) {
+      if (!cleanValue(value)) return '';
+      return `
+        <div class="fact-box">
+          <span class="fact-box-label">${escapeHtml(label)}</span>
+          <div class="fact-box-value">${escapeHtml(value)}</div>
+        </div>
+      `;
+    }
+
+    function renderGallery(stills) {
+      if (!stills.length) {
+        return `<p class="details-value">${escapeHtml(t().noGallery)}</p>`;
+      }
+
+      return `
+        <div class="gallery-grid">
+          ${stills.map((url, index) => `
+            <div class="gallery-item">
+              <img src="${escapeHtml(url)}" alt="Still ${index + 1}" loading="lazy" data-full="${escapeHtml(url)}">
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderFilmPage(film) {
+      filmData = film;
+      const langUI = t();
+      const title = getFilmTitle(film);
+      const otherTitles = getOtherTitles(film);
+      const synopsis = getFilmSynopsis(film);
+      const tags = parseTags(film.tags);
+      const stills = parseStills(film.stillsurls);
+
+      const heroMeta = [
+        makeMetaCard(langUI.labels.year, film.year ? String(film.year) : langUI.noValue),
+        makeMetaCard(langUI.labels.country, getFilmCountry(film) || langUI.noValue),
+        makeMetaCard(langUI.labels.direction, getFilmDirection(film) || langUI.noValue),
+        makeMetaCard(langUI.labels.genre, getFilmGenre(film) || langUI.noValue)
+      ].join('');
+
+      const detailsRows = [
+        makeDetailsRow(langUI.labels.subgenre, getFilmSubgenre(film)),
+        makeDetailsRow(langUI.labels.studio, getFilmStudio(film)),
+        makeDetailsRow(langUI.labels.era, film.era),
+        makeDetailsRow(langUI.labels.tags, tags.join(', ')),
+        makeDetailsRow(langUI.labels.originalTitle, otherTitles.join(', ')),
+        makeDetailsRow(langUI.labels.director, film.directorid),
+        makeDetailsRow(langUI.labels.operator, film.operatorid),
+        makeDetailsRow(langUI.labels.screenwriter, film.screenwriterid),
+        makeDetailsRow(langUI.labels.composer, film.composerid)
+      ].join('');
+
+      const sidebarFacts = [
+        makeFactBox(langUI.labels.id, film.id),
+        makeFactBox(langUI.labels.slug, film.slug),
+        makeFactBox(langUI.labels.access, film.accessstatus || langUI.accessFallback),
+        makeFactBox(langUI.labels.status, film.status || langUI.statusFallback),
+        makeFactBox(langUI.labels.added, film.dateadded),
+        makeFactBox(langUI.labels.addedBy, film.addedby),
+        makeFactBox(langUI.labels.updated, film.lastupdated)
+      ].join('');
+
+      pageContainer.innerHTML = `
+        <section class="hero-section">
+          <div class="hero-card reveal">
+            <div class="hero-layout">
+              <div class="poster-column">
+                ${buildPosterMarkup(film)}
+
+                <div class="poster-actions">
+                  ${film.posterurl ? `
+                    <a class="action-chip" href="${escapeHtml(film.posterurl)}" target="_blank" rel="noopener noreferrer">
+                      <span>↗</span>
+                      <span>${escapeHtml(langUI.viewPoster)}</span>
+                    </a>
+                  ` : ''}
+                </div>
+              </div>
+
+              <div class="hero-content">
+                <div class="hero-topline">
+                  <span class="eyebrow-chip">${escapeHtml(langUI.heroEyebrow)}</span>
+                  <span class="status-chip">${escapeHtml(film.status || langUI.statusFallback)}</span>
+                  <span class="access-chip">${escapeHtml(film.accessstatus || langUI.accessFallback)}</span>
+                </div>
+
+                <div class="hero-title-block">
+                  <h1 class="film-title">${escapeHtml(title)}</h1>
+                  ${otherTitles.length ? `
+                    <div class="film-original">
+                      <strong>${escapeHtml(langUI.labels.originalTitle)}:</strong> ${escapeHtml(otherTitles.join(', '))}
+                    </div>
+                  ` : ''}
+                </div>
+
+                <p class="hero-description">${escapeHtml(synopsis || langUI.noSynopsis)}</p>
+
+                <div class="hero-meta-grid">${heroMeta}</div>
+
+                ${tags.length ? `
+                  <div class="hero-tags">
+                    ${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="stack">
+            <article class="panel reveal">
+              <div class="panel-inner">
+                <div class="panel-header">
+                  <div>
+                    <div class="panel-eyebrow">${escapeHtml(langUI.synopsisEyebrow)}</div>
+                    <h2 class="panel-title">${escapeHtml(langUI.synopsisTitle)}</h2>
+                  </div>
+                </div>
+                <div class="synopsis-text">${escapeHtml(synopsis || langUI.noSynopsis)}</div>
+              </div>
+            </article>
+
+            <article class="panel reveal">
+              <div class="panel-inner">
+                <div class="panel-header">
+                  <div>
+                    <div class="panel-eyebrow">${escapeHtml(langUI.detailsEyebrow)}</div>
+                    <h2 class="panel-title">${escapeHtml(langUI.detailsTitle)}</h2>
+                  </div>
+                </div>
+                <div class="details-list">
+                  ${detailsRows || `<div class="details-value">${escapeHtml(langUI.noValue)}</div>`}
+                </div>
+              </div>
+            </article>
+
+            <article class="panel reveal">
+              <div class="panel-inner">
+                <div class="panel-header">
+                  <div>
+                    <div class="panel-eyebrow">${escapeHtml(langUI.galleryEyebrow)}</div>
+                    <h2 class="panel-title">${escapeHtml(langUI.galleryTitle)}</h2>
+                  </div>
+                </div>
+                ${renderGallery(stills)}
+              </div>
+            </article>
+          </div>
+
+          <aside class="sidebar-card reveal">
+            <div class="sidebar-card-inner">
+              <div>
+                <div class="panel-eyebrow">${escapeHtml(langUI.sidebarEyebrow)}</div>
+                <h2 class="panel-title" style="font-size:1.8rem; margin-top:8px;">${escapeHtml(langUI.sidebarTitle)}</h2>
+              </div>
+
+              <div class="fact-grid">${sidebarFacts}</div>
+
+              <div class="mini-note">${escapeHtml(langUI.archiveNote)}</div>
+            </div>
+          </aside>
+        </section>
+      `;
+
+      document.title = `TAMGA — ${title}`;
+      bindGallery();
+      revealNow();
+    }
+
+    function renderError() {
+      pageContainer.innerHTML = `
+        <div class="error-card reveal">
+          <h2>${escapeHtml(t().errorTitle)}</h2>
+          <p>${escapeHtml(t().errorText)}</p>
+        </div>
+      `;
+      revealNow();
+    }
+
+    function bindGallery() {
+      document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.addEventListener('click', () => {
+          lightboxImage.src = img.dataset.full || img.src;
+          lightboxImage.alt = img.alt;
+          lightbox.classList.add('is-open');
+          lightbox.setAttribute('aria-hidden', 'false');
+        });
+      });
+    }
+
+    function revealNow() {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+    }
+
+    async function loadFilm() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const slug = cleanValue(params.get('slug')).toLowerCase();
+
+        if (!slug) {
+          renderError();
+          return;
+        }
+
+        const res = await fetch(SHEET_CSV_URL);
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+
+        const allFilms = rows
+          .slice(1)
+          .map((row, index) => parseFilmRow(row, index))
+          .filter(film => film.id || film.titleru || film.titlekz || film.titleen);
+
+        const visibleFilms = getVisibleFilms(allFilms);
+        const found = visibleFilms.find(film => cleanValue(film.slug).toLowerCase() === slug);
+
+        if (!found) {
+          renderError();
+          return;
+        }
+
+        renderFilmPage(found);
+      } catch (error) {
+        renderError();
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
+      applyTheme();
+    });
+
+    if (menuToggle && siteNav) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('is-open');
+        siteNav.classList.toggle('is-open');
+      });
+
+      document.querySelectorAll('.site-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          siteNav.classList.remove('is-open');
+          menuToggle.classList.remove('is-open');
+        });
+      });
+    }
+
+    if (langTrigger && langMenu && langOptions.length) {
+      langTrigger.addEventListener('click', () => {
+        const opened = langMenu.classList.toggle('is-open');
+        langTrigger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+
+      langOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          currentLang = option.dataset.lang;
+          localStorage.setItem(STORAGE_KEYS.language, currentLang);
+          applyUILanguage();
+          langMenu.classList.remove('is-open');
+          langTrigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.lang-dropdown')) {
+          langMenu.classList.remove('is-open');
+          langTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    window.addEventListener('storage', (event) => {
+      if ([STORAGE_KEYS.language, STORAGE_KEYS.theme].includes(event.key)) {
+        syncFromStorage();
+      }
+    });
+
+    window.addEventListener('focus', syncFromStorage);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') syncFromStorage();
+    });
+
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImage.src = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImage.src = '';
+      }
+    });
+
+    applyTheme();
+    applyUILanguage();
+    window.addEventListener('load', syncFromStorage);
+    loadFilm();
+  </script>
 </body>
 </html>
